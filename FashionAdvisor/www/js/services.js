@@ -1,28 +1,6 @@
 angular.module('starter.services', [])
 
-
-.factory('Chats', ['$http',function($http) {
-  // Might use a resource here that returns a JSON array
-  var chats;
-
-    
-
-    return { getData: function() {
-
-        return $http({method:"GET", url:"http://fashionadvisor.herokuapp.com/search/blue.json"}).then(function(result){
-            chats = result.data.products;
-            return result.data;
-        });
-      }, 
-            getty: function(chatId){
-              alert(chatId+" "+chats[chatId].name);
-              return chats[chatId];
-            }
-
-           };
-
-}])
-
+//Login service
 .factory('LoginService', ['$http',function($http) {
     var currentUser;
     return { 
@@ -38,18 +16,22 @@ angular.module('starter.services', [])
             },
             getCurrentUser: function(){
                 return currentUser;
+            },
+            setCurrentUser: function(user){
+              currentUser = user;
             }
            };
 }])
 
+//Register service
 .factory('RegisterService', ['$http',function($http) {
     var registerInfo;
     return { 
-            signup: function(email,password){
+            signup: function(email,password1,password2){
               return $http({
                 method:"POST", 
-                url:"http://fashionadvisor.herokuapp.com/users/sign_up",
-                data:{"user":{"email":email,"password":password}}}).
+                url:"http://fashionadvisor.herokuapp.com/users",
+                data:{"user":{"email":email,"password":password1,"password_confirmation":password2}}}).
                 then(function(result){
                   registerInfo = result.data;
                   return result.data;
@@ -61,15 +43,15 @@ angular.module('starter.services', [])
            };
 }])
 
+//Search service
 .factory('SearchService', ['$http',function($http) {
-  // Might use a resource here that returns a JSON array
   var items;
     return { 
             search: function(user,searchTerm){
               return $http({
                 method:"GET", 
                 url:"http://fashionadvisor.herokuapp.com/search/"+searchTerm+".json",
-                data:user}).
+                headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
                 then(function(result){
                   items = result.data.products;
                   return result.data.products;
@@ -77,7 +59,10 @@ angular.module('starter.services', [])
             },
             getItems: function(){
                 return items;
-            } 
+            },
+            getItem : function(id){
+                return items[id];
+            }
            };
 }])
 

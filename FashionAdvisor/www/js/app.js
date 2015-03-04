@@ -48,7 +48,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     url: '/register',
     templateUrl: 'templates/register.html',
     controller: 'RegisterCtrl'
-  })  
+  })
 
   //Tab dashboard state
   .state('tab.dash', {
@@ -71,16 +71,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-  
-    .state('tab.chat-detail', {
-      url: '/chats/:chatId',
+
+  //Tab search detail state
+  .state('tab.search-clothing-detail', {
+      url: '/search/clothing/:itemId',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
+        'tab-search': {
+          templateUrl: 'templates/tab-search-detail-clothing.html',
+          controller: 'SearchClothingDetailsCtrl'
         }
       }
     })
+
+  .state('tab.chat-detail', {
+    url: '/chats/:chatId',
+    views: {
+      'tab-chats': {
+        templateUrl: 'templates/chat-detail.html',
+        controller: 'ChatDetailCtrl'
+      }
+    }
+  })
 
   .state('tab.friends', {
       url: '/friends',
@@ -91,15 +102,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    .state('tab.friend-detail', {
-      url: '/friend/:friendId',
-      views: {
-        'tab-friends': {
-          templateUrl: 'templates/friend-detail.html',
-          controller: 'FriendDetailCtrl'
-        }
+  .state('tab.friend-detail', {
+    url: '/friend/:friendId',
+    views: {
+      'tab-friends': {
+        templateUrl: 'templates/friend-detail.html',
+        controller: 'FriendDetailCtrl'
       }
-    })
+    }
+  })
 
   .state('tab.account', {
     url: '/account',

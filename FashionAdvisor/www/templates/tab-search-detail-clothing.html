@@ -1,0 +1,31 @@
+<ion-view view-title="{{item.name}}">
+  <ion-content class="padding">
+      <div class="list card">
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-bag"></i>
+          {{item.name}}
+        </div>
+        <div href="#" class="item item-icon-left">
+          <img src="{{item.image_url}}">
+        </div>
+        <div class="item item-body">
+          {{item.description}}
+        </div>
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-tshirt-outline"></i>
+          {{item.brand_name}}
+        </div>
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-card"></i>
+          {{item.retailer}}
+        </div>
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-cash"></i>
+          {{item.price}}
+        </div>
+        <div href="#" class="item item-body">
+          <a href="{{item.retailer_url}}">Buy me now!</a>
+        </div>
+      </div>
+  </ion-content>
+</ion-view>

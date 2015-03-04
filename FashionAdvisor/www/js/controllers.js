@@ -5,13 +5,16 @@ angular.module('starter.controllers', [])
 .controller('RegisterCtrl', ['$scope','$state','RegisterService',function($scope, $state, RegisterService) {
     $scope.register = function(email,password1,password2){
       if(password1==password2){
-        var registerPromise = RegisterService.signup(email,password1);
+        var registerPromise = RegisterService.signup(email,password1,password2);
         registerPromise.then(function(result){
           alert(JSON.stringify(result));
-          $state.go('tab.dash');
+          if(result.auth_token!=null){
+            //Register succesful
+            $state.go('tab.dash');
+          }else{
+            //Register unsuccesful
+          }
         });
-      }else{
-        //Passwords don't match
       }
     }
 }])
@@ -45,15 +48,12 @@ angular.module('starter.controllers', [])
    }
 }])
 
+.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','SearchService',function($scope, $state, $stateParams,SearchService) {
+    $scope.item = SearchService.getItem($stateParams.itemId);
+}])
+
 .controller('ChatsCtrl', function($scope, Chats, LoginService) {
-  /*var userData = LoginService.getUser();
-  var myDataPromise = Chats.getData();
-  myDataPromise.then(function(result) {  // this is only run after $http completes
-       $scope.chats = result;
-    });
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }*/
+ 
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
@@ -68,8 +68,8 @@ angular.module('starter.controllers', [])
   $scope.friend = Friends.get($stateParams.friendId);
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', ['$scope','$state','LoginService',function($scope, $state, LoginService){
   $scope.settings = {
     enableFriends: true
   };
-});
+}])

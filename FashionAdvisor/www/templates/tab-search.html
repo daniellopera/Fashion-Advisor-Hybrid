@@ -7,17 +7,22 @@
     <button class="button button-full button-clear button-dark" ng-click="search(searchTerm)">
     Search
     </button>
-    <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="item in items" type="item-text-wrap" href="#/tab/chats/{{0}}">
-        <img ng-src="{{item.image.url}}">
-        <h2>{{item.name}}</h2>
-        <p>{{item.description}}</p>
-        <p>{{item.price}}</p>
-        <i class="icon ion-chevron-right icon-accessory"></i>
-        <ion-option-button class="button-assertive" ng-click="add(item)">
-          Add To Wardrobe
-        </ion-option-button>
-      </ion-item>
+      <ion-list>
+        <ion-item class="item-remove-animate item-icon-right" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{0}}">
+        <div class="list card">
+          <div class="item item-avatar">
+            <img src="{{item.image_url}}">
+            <h2>{{item.name}}</h2>
+            <p>{{item.brand_name}}</p>
+          </div>
+          <div class="item item-body">
+            <img class="" ng-src="{{item.image_url}}">
+            <p>
+              {{item.description}}
+            </p>
+          </div>
+        </div>
+        </ion-item>
       </ion-list>
   </ion-content>
 </ion-view>
