@@ -35,14 +35,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     abstract: true,
     templateUrl: "templates/tabs.html"
   })
-  // Each tab has its own nav history stack:
 
+  //Signin state
   .state('signin', {
     url: '/signin',
     templateUrl: 'templates/signin.html',
     controller: 'SigninCtrl'
   })
 
+  //Register (Sign up) state
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/register.html',
+    controller: 'RegisterCtrl'
+  })  
+
+  //Tab dashboard state
   .state('tab.dash', {
     url: '/dash',
     views: {
@@ -53,15 +61,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  .state('tab.chats', {
-      url: '/chats',
+  //Tab search state
+  .state('tab.search', {
+      url: '/search',
       views: {
-        'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+        'tab-search': {
+          templateUrl: 'templates/tab-search.html',
+          controller: 'SearchCtrl'
         }
       }
     })
+  
     .state('tab.chat-detail', {
       url: '/chats/:chatId',
       views: {

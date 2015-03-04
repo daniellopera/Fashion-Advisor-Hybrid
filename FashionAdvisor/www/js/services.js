@@ -24,7 +24,7 @@ angular.module('starter.services', [])
 }])
 
 .factory('LoginService', ['$http',function($http) {
-    var user;
+    var currentUser;
     return { 
             login: function(email,password){
               return $http({
@@ -32,15 +32,53 @@ angular.module('starter.services', [])
                 url:"http://fashionadvisor.herokuapp.com/users/sign_in",
                 data:{"user":{"email":email,"password":password}}}).
                 then(function(result){
-                  user = result.data;
+                  currentUser = result.data;
                   return result.data;
                });
             },
-            getUser: function(){
-                return user;
+            getCurrentUser: function(){
+                return currentUser;
+            }
+           };
+}])
+
+.factory('RegisterService', ['$http',function($http) {
+    var registerInfo;
+    return { 
+            signup: function(email,password){
+              return $http({
+                method:"POST", 
+                url:"http://fashionadvisor.herokuapp.com/users/sign_up",
+                data:{"user":{"email":email,"password":password}}}).
+                then(function(result){
+                  registerInfo = result.data;
+                  return result.data;
+               });
+            },
+            getRegisterInfo: function(){
+                return registerInfo;
             } 
            };
+}])
 
+.factory('SearchService', ['$http',function($http) {
+  // Might use a resource here that returns a JSON array
+  var items;
+    return { 
+            search: function(user,searchTerm){
+              return $http({
+                method:"GET", 
+                url:"http://fashionadvisor.herokuapp.com/search/"+searchTerm+".json",
+                data:user}).
+                then(function(result){
+                  items = result.data.products;
+                  return result.data.products;
+               });
+            },
+            getItems: function(){
+                return items;
+            } 
+           };
 }])
 
 /**
