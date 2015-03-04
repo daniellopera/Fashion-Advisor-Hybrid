@@ -62,6 +62,9 @@ angular.module('starter.services', [])
             },
             getItem : function(id){
                 return items[id];
+            },
+            indexOfItem: function(item){
+                return items.indexOf(item);
             }
            };
 }])

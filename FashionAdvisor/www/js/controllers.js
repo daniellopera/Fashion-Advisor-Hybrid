@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('RegisterCtrl', ['$scope','$state','RegisterService',function($scope, $state, RegisterService) {
+.controller('RegisterCtrl', ['$scope','$state','RegisterService','LoginService',function($scope, $state, RegisterService, LoginService) {
     $scope.register = function(email,password1,password2){
       if(password1==password2){
         var registerPromise = RegisterService.signup(email,password1,password2);
@@ -10,6 +10,7 @@ angular.module('starter.controllers', [])
           alert(JSON.stringify(result));
           if(result.auth_token!=null){
             //Register succesful
+            LoginService.setCurrentUser(result);
             $state.go('tab.dash');
           }else{
             //Register unsuccesful
@@ -46,6 +47,10 @@ angular.module('starter.controllers', [])
           $scope.items = result;
       });
    }
+
+   $scope.detail = function(item){
+      return SearchService.indexOfItem(item);
+   }
 }])
 
 .controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','SearchService',function($scope, $state, $stateParams,SearchService) {
@@ -53,7 +58,7 @@ angular.module('starter.controllers', [])
 }])
 
 .controller('ChatsCtrl', function($scope, Chats, LoginService) {
- 
+    
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {

@@ -8,7 +8,7 @@
     Search
     </button>
       <ion-list>
-        <ion-item class="item-remove-animate item-icon-right" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{0}}">
+        <ion-item class="item-remove-animate item-icon-right" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{detail(item)}}">
         <div class="list card">
           <div class="item item-avatar">
             <img src="{{item.image_url}}">
