@@ -10,13 +10,12 @@
       <ion-list>
         <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
         <div class="list card">
-          <div class="item item-avatar">
-            <img ng-src="{{item.image_url}}">
-            <h2>{{item.name}}</h2>
-            <p>{{item.brand_name}}</p>
-          </div>
+          <div href="#" class="item item-icon-left">
+          <i class="icon ion-{{searchIcon(item)}}"></i>
+          {{item.name}}
+        </div>
           <div class="item item-body">
-            <img class="" ng-src="{{item.image_url}}">
+            <img class="" ng-src="{{item.images[2].url}}">
             <div href="#" class="item item-icon-left">
               <i class="icon ion-tshirt-outline"></i>
               {{item.brand_name}}
@@ -27,7 +26,7 @@
             </div>
             <div href="#" class="item item-icon-left">
               <i class="icon ion-cash"></i>
-              {{item.price}}
+              {{item.currency}} {{item.priceLabel}}
             </div>
           </div>
         </div>
