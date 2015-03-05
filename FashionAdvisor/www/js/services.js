@@ -10,9 +10,6 @@ angular.module('starter.services', [])
                 url:"http://fashionadvisor.herokuapp.com/users/sign_in",
                 data:{"user":{"email":email,"password":password}}}).
                 then(function(result){
-                  // no poner -- currentUser = result.data
-                  //servicio solo debe devolver datos
-                  currentUser = result.data;
                   return result.data;
                });
             },
@@ -83,7 +80,7 @@ angular.module('starter.services', [])
                   return result.data;
                });
             },
-            getWardrobe: function (){
+            getWardrobe: function (user){
               return $http({
                 method:"GET",
                 url:"http://fashionadvisor.herokuapp.com/user/products",
