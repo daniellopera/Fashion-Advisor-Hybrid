@@ -2,3 +2,12 @@
 .item-remove-animate.item-icon-right.searchitem > a.item-content{
 	padding: 0 0 0 0;
 }
+
+.list.card.wardrobe_item {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.item.item-icon-left{
+	
+}
