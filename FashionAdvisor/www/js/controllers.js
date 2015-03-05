@@ -5,16 +5,16 @@ WardrobeCtrl (Controlador de guardarropa): Controlador de vista tab-wardrobe.htm
 -> (Dependencias): $scope, User, Wardrobe
 */
 .controller('WardrobeCtrl',['$scope','User','Wardrobe', function($scope,User,Wardrobe) {
-  var currentUser = User.getCurrentUser(); //Obtención de usuario actual
-  var collectionPromise = Wardrobe.getWardrobe(currentUser); //Llamada a servicio de búsqueda de colección
-  collectionPromise.then(function(result){
+    var currentUser = User.getCurrentUser(); //Obtención de usuario actual
+    var collectionPromise = Wardrobe.getWardrobe(currentUser); //Llamada a servicio de búsqueda de colección
+    collectionPromise.then(function(result){
       if(result.status==0){
         alert("llegó bien la colección")
         $scope.items = result.data.wardrobe_products; //Asignación de resultados a items en vista
       }else{
         alert("problema con la colección")
       }
-  });
+    });
 }])
 
 /*
@@ -84,6 +84,7 @@ SearchCtrl (Controlador de búsqueda de prendas y outfits): Controlador de vista
       searchPromise.then(function(result){
           if(result.status==0){
             alert("búsqueda exitosa")
+            Clothing.setItems(result.data.products);
             $scope.items = result.data.products; //Asignación de resultados a productos en vista
           }else{
             alert("búsqueda sin exito")
@@ -91,11 +92,18 @@ SearchCtrl (Controlador de búsqueda de prendas y outfits): Controlador de vista
       });
    }
 
-   $scope.index = function(item){ //Obtención de índice de un item de la vista
-      alert(Clothing.indexOfProduct(item));
+   $scope.index = function(item){ //Obtención de índice de un producto de la vista
       return Clothing.indexOfProduct(item);
    }
 
+   $scope.searchIcon = function(item){
+     if(item.in_wardrobe==true){
+        $scope.addToWadrobeStyle = {'display':'none'};
+        return "star";
+     }else{
+        return "bag";
+     }
+   }
 }])
 
 /*
@@ -108,15 +116,22 @@ SearchClothingDetailsCtrl (Controlador de detalle de prendas y outfits buscados)
      $scope.item = item; //Asignación de item a variable en la vista
      $scope.description = "<p>"+item.description+"</p>"; //Parseo de la descripción del item específico
 
+     if(item.in_wardrobe==true){
+        $scope.addToWadrobeStyle = {'display':'none'};
+        $scope.producticon = "star";
+     }else{
+        $scope.producticon = "bag";
+     }
+
      $scope.addToWardrobe = function(item){ //Gestión de solicitud de adición de item (producto) a colección personal (closet)
        var currentUser = User.getCurrentUser(); //Obtención de usuario actual
        var addToWardrobePromise = Wardrobe.addToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
        addToWardrobePromise.then(function(result){
             if(result.status==0){ //Adición exitosa de producto a guardarropa
-              alert("adición exitosa")
+              alert("adición exitosa");
               $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
             }else{ //Adición de producto sin éxito
-              alert("adición sin éxito")
+              alert("adición sin éxito");
             }
        });
      }
