@@ -74,42 +74,49 @@ SiginCtrl (Controlador de login o ingreso): Controlador de vista signin.html
 
 /*
 SearchCtrl (Controlador de búsqueda de prendas y outfits): Controlador de vista tab-search.html
--> (Dependencias): $scope, $state, LoginService, SearchService
+-> (Dependencias): $scope, $state, User, Clothing
 */
-.controller('SearchCtrl', ['$scope','$state','LoginService','SearchService',function($scope, $state, LoginService, SearchService) {
+.controller('SearchCtrl', ['$scope','$state','User','Clothing',function($scope, $state, User, Clothing) {
    
    $scope.search = function(searchTerm){ //Gestión de solicitud de búsqueda de prendas
-      var currentUser = LoginService.getCurrentUser(); //Obtención de usuario actual
-      var searchPromise = SearchService.search(currentUser,searchTerm); //Llamada a servicio de búsqueda
+      var currentUser = User.getCurrentUser(); //Obtención de usuario actual
+      var searchPromise = Clothing.searchProducts(currentUser,searchTerm); //Llamada a servicio de búsqueda de prendas
       searchPromise.then(function(result){
-          $scope.items = result; //Asignación de resultados a items en vista
+          if(result.status==0){
+            alert("búsqueda exitosa")
+            $scope.items = result.data.products; //Asignación de resultados a productos en vista
+          }else{
+            alert("búsqueda sin exito")
+          }
       });
    }
 
    $scope.index = function(item){ //Obtención de índice de un item de la vista
-      return SearchService.indexOfItem(item);
+      alert(Clothing.indexOfProduct(item));
+      return Clothing.indexOfProduct(item);
    }
 
 }])
 
 /*
 SearchClothingDetailsCtrl (Controlador de detalle de prendas y outfits buscados): Controlador de vista tab-search-detail-clothing.html
--> (Dependencias): $scope, $state, $stateParams, LoginService, SearchService, WardrobeService
+-> (Dependencias): $scope, $state, $stateParams, User, Clothing, Wardrobe
 */
-.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','SearchService','LoginService','WardrobeService',function($scope, $state, $stateParams,SearchService, LoginService, WardrobeService) {
+.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','Clothing','User','Wardrobe',function($scope, $state, $stateParams,Clothing,User,Wardrobe) {
 
-     var item  = SearchService.getItem($stateParams.itemId); //Obtención de item específico
+     var item  = Clothing.getProductAtIndex($stateParams.itemId); //Obtención de item específico
      $scope.item = item; //Asignación de item a variable en la vista
      $scope.description = "<p>"+item.description+"</p>"; //Parseo de la descripción del item específico
 
      $scope.addToWardrobe = function(item){ //Gestión de solicitud de adición de item (producto) a colección personal (closet)
-       var currentUser = LoginService.getCurrentUser(); //Obtención de usuario actual
-       var addToWardrobePromise = WardrobeService.addToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
+       var currentUser = User.getCurrentUser(); //Obtención de usuario actual
+       var addToWardrobePromise = Wardrobe.addToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
        addToWardrobePromise.then(function(result){
-            if(result.product!=null){ //Adición exitosa de producto a guardarropa
+            if(result.status==0){ //Adición exitosa de producto a guardarropa
+              alert("adición exitosa")
               $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
             }else{ //Adición de producto sin éxito
-
+              alert("adición sin éxito")
             }
        });
      }

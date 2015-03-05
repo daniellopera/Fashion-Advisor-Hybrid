@@ -33,11 +33,11 @@ angular.module('starter.services', [])
            };
 }])
 
-//SearchService
-.factory('SearchService', ['$http',function($http) {
+//Clothing
+.factory('Clothing', ['$http',function($http) {
   var items;
     return {
-            search: function(user,searchTerm){
+            searchProducts: function(user,searchTerm){
               return $http({
                 method:"GET",
                 url:"http://fashionadvisor.herokuapp.com/search/"+searchTerm+".json",
@@ -47,13 +47,13 @@ angular.module('starter.services', [])
                   return result.data;
                });
             },
-            getItems: function(){
+            getProducts: function(){
                 return items;
             },
-            getItem : function(id){
+            getProductAtIndex: function(id){
                 return items[id];
             },
-            indexOfItem: function(item){
+            indexOfProduct: function(item){
                 return items.indexOf(item);
             }
            };
