@@ -2,33 +2,47 @@ angular.module('starter.controllers', [])
 
 /*
 WardrobeCtrl (Controlador de guardarropa): Controlador de vista tab-wardrobe.html
--> (Dependencias): $scope
+-> (Dependencias): $scope, User, Wardrobe
 */
-.controller('WardrobeCtrl',['$scope','LoginService','WardrobeService', function($scope,LoginService,WardrobeService) {
-  var currentUser = LoginService.getCurrentUser(); //Obtención de usuario actual
-  var collectionPromise = WardrobeService.getWardrobe(currentUser); //Llamada a servicio de búsqueda de colección
+.controller('WardrobeCtrl',['$scope','User','Wardrobe', function($scope,User,Wardrobe) {
+  var currentUser = User.getCurrentUser(); //Obtención de usuario actual
+  var collectionPromise = Wardrobe.getWardrobe(currentUser); //Llamada a servicio de búsqueda de colección
   collectionPromise.then(function(result){
-      $scope.items = result.wardrobe_products; //Asignación de resultados a items en vista
+      if(result.status==0){
+        alert("llegó bien la colección")
+        $scope.items = result.data.wardrobe_products; //Asignación de resultados a items en vista
+      }else{
+        alert("problema con la colección")
+      }
   });
 }])
 
 /*
 RegisterCtrl (Controlador de registro): Controlador de vista register.html
--> (Dependencias): $scope, $state, RegisterService, LoginService 
+-> (Dependencias): $scope, $state, User
 */
-.controller('RegisterCtrl', ['$scope','$state','RegisterService','LoginService',function($scope, $state, RegisterService, LoginService) {
+.controller('RegisterCtrl', ['$scope','$state','User',function($scope, $state, User) {
    
     $scope.register = function(email,password1,password2){ //Gestión de solicitud de registro
       if(password1==password2){
-        var registerPromise = RegisterService.signup(email,password1,password2); //Llamada a servicio de registro
-        registerPromise.then(function(result){
-          if(result.auth_token!=null){ //Registro exitoso
-            LoginService.setCurrentUser(result); //Ingreso automático
-            $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
-          }else{ //Registro sin éxito
-            
-          }
-        });
+        if(email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+          var registerPromise = User.signup(email,password1); //Llamada a servicio de registro
+          registerPromise.then(function(result){
+            if(result.status==0){ //Registro exitoso
+              User.setCurrentUser(result.data);
+              alert("registro exitoso")
+              $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal 
+            }else{ //Registro sin éxito
+              alert("registro sin exito")
+            }
+          });
+        }else{
+          //Email no cumple formato
+          alert("email no cumple formato")
+        }
+      }else{
+        //Contraseñas no coinciden
+        alert("contraseñas no coinciden")
       }
     }
 
@@ -36,28 +50,19 @@ RegisterCtrl (Controlador de registro): Controlador de vista register.html
 
 /*
 SiginCtrl (Controlador de login o ingreso): Controlador de vista signin.html
--> (Dependencias): $scope, $state, LoginService
+-> (Dependencias): $scope, $state, User
 */
-.controller('SigninCtrl', ['$scope','$state','LoginService',function($scope, $state, LoginService) {
+.controller('SigninCtrl', ['$scope','$state','User',function($scope, $state, User) {
     
     $scope.login = function(email,password) { //Gestión de solicitud de ingreso
-        var loginPromise = LoginService.login(email,password); //Llamada a servicio de ingreso
+        var loginPromise = User.login(email,password); //Llamada a servicio de ingreso
         loginPromise.then(function(result){
-            /*
-                  var status = result.status
-                  if(status==0){ //Operación exitosa
-                      currentUser = result.data.user;
-                      $state.go('tab.dash')
-                  }else if(status==1){
-                      mostrar error
-                  }else{
-                      mostrar error
-                  }
-            */
-             if(result.auth_token!=null){ //Ingreso exitoso
-                $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
+             if(result.status==0){ //Ingreso exitoso
+               User.setCurrentUser(result.data)
+               alert("ingreso exitoso")
+               $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal 
              }else{ //Ingreso sin éxito
-                
+               alert("ingreso sin exito")
              }
         });
     };

@@ -1,15 +1,26 @@
 angular.module('starter.services', [])
 
-//LoginService
-.factory('LoginService', ['$http',function($http) {
+//User
+.factory('User', ['$http',function($http) {
     var currentUser;
     return {
-            login: function(email,password){
+           login: function(email,password){
               return $http({
                 method:"POST",
                 url:"http://fashionadvisor.herokuapp.com/users/sign_in",
                 data:{"user":{"email":email,"password":password}}}).
+                then(function(result){          
+                  alert(JSON.stringify(result.data));
+                  return result.data;
+               });
+            },
+            signup: function(email,password){
+              return $http({
+                method:"POST",
+                url:"http://fashionadvisor.herokuapp.com/users",
+                data:{"user":{"email":email,"password":password}}}).
                 then(function(result){
+                  alert(JSON.stringify(result.data));
                   return result.data;
                });
             },
@@ -17,24 +28,7 @@ angular.module('starter.services', [])
                 return currentUser;
             },
             setCurrentUser: function(user){
-              currentUser = user;
-            }
-           };
-}])
-
-//RegisterService
-.factory('RegisterService', ['$http',function($http) {
-    var registerInfo;
-    return {
-            signup: function(email,password1,password2){
-              return $http({
-                method:"POST",
-                url:"http://fashionadvisor.herokuapp.com/users",
-                data:{"user":{"email":email,"password":password1,"password_confirmation":password2}}}).
-                then(function(result){
-                  registerInfo = result.data;
-                  return result.data;
-               });
+                currentUser = user;
             }
            };
 }])
@@ -49,8 +43,8 @@ angular.module('starter.services', [])
                 url:"http://fashionadvisor.herokuapp.com/search/"+searchTerm+".json",
                 headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
                 then(function(result){
-                  items = result.data.products;
-                  return result.data.products;
+                  alert(JSON.stringify(result.data));
+                  return result.data;
                });
             },
             getItems: function(){
@@ -66,7 +60,7 @@ angular.module('starter.services', [])
 }])
 
 //WardrobeService
-.factory('WardrobeService', ['$http',function($http) {
+.factory('Wardrobe', ['$http',function($http) {
   var wardrobe;
     return {
             addToWardrobe: function(item,user){
@@ -76,7 +70,8 @@ angular.module('starter.services', [])
                 headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
                 data:{"product_id":item.id}
                 }).
-                then(function(result){
+                then(function(result){        
+                  alert(JSON.stringify(result.data));
                   return result.data;
                });
             },
@@ -87,6 +82,7 @@ angular.module('starter.services', [])
                 headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
                 }).
                 then(function(result){
+                  alert(JSON.stringify(result.data));
                   return result.data;
                });
             }
