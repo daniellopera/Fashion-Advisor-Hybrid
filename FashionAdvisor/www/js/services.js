@@ -82,6 +82,16 @@ angular.module('starter.services', [])
                 then(function(result){
                   return result.data;
                });
+            },
+            getWardrobe: function (){
+              return $http({
+                method:"GET",
+                url:"http://fashionadvisor.herokuapp.com/user/products",
+                headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+                }).
+                then(function(result){
+                  return result.data;
+               });
             }
            };
 }])

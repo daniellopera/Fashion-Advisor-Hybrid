@@ -1,8 +1,16 @@
 angular.module('starter.controllers', [])
 
-.controller('WardrobeCtrl', function($scope) {
-
-})
+/*
+WardrobeCtrl (Controlador de guardarropa): Controlador de vista tab-wardrobe.html
+-> (Dependencias): $scope
+*/
+.controller('WardrobeCtrl'['$scope','LoginService', function($scope,LoginService) {
+  var currentUser = LoginService.getCurrentUser(); //Obtención de usuario actual
+      var collectionPromise = SearchService.search(currentUser,searchTerm); //Llamada a servicio de búsqueda de colección
+      collectionPromise.then(function(result){
+          $scope.items = result.wardrobe_products; //Asignación de resultados a items en vista
+      });
+}])
 
 /*
 RegisterCtrl (Controlador de registro): Controlador de vista register.html
