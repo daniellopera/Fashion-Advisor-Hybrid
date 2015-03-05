@@ -88,7 +88,5 @@ angular.module('starter.controllers', [])
 })
 
 .controller('AccountCtrl', ['$scope','$state','LoginService',function($scope, $state, LoginService){
-  $scope.settings = {
-    enableFriends: true
-  };
+
 }])
