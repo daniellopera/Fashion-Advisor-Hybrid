@@ -1,6 +1,6 @@
 angular.module('starter.services', [])
 
-//Login service
+//LoginService
 .factory('LoginService', ['$http',function($http) {
     var currentUser;
     return {
@@ -10,6 +10,8 @@ angular.module('starter.services', [])
                 url:"http://fashionadvisor.herokuapp.com/users/sign_in",
                 data:{"user":{"email":email,"password":password}}}).
                 then(function(result){
+                  // no poner -- currentUser = result.data
+                  //servicio solo debe devolver datos
                   currentUser = result.data;
                   return result.data;
                });
@@ -23,7 +25,7 @@ angular.module('starter.services', [])
            };
 }])
 
-//Register service
+//RegisterService
 .factory('RegisterService', ['$http',function($http) {
     var registerInfo;
     return {
@@ -36,14 +38,11 @@ angular.module('starter.services', [])
                   registerInfo = result.data;
                   return result.data;
                });
-            },
-            getRegisterInfo: function(){
-                return registerInfo;
             }
            };
 }])
 
-//Search service
+//SearchService
 .factory('SearchService', ['$http',function($http) {
   var items;
     return {
@@ -69,7 +68,7 @@ angular.module('starter.services', [])
            };
 }])
 
-//Wardrobe service
+//WardrobeService
 .factory('WardrobeService', ['$http',function($http) {
   var wardrobe;
     return {
@@ -87,13 +86,8 @@ angular.module('starter.services', [])
            };
 }])
 
-/**
- * A simple example service that returns some data.
- */
 .factory('Friends', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
+  
   var friends = [{
     id: 0,
     name: 'Ben Sparrow',

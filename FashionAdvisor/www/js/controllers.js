@@ -35,6 +35,17 @@ SiginCtrl (Controlador de login o ingreso): Controlador de vista signin.html
     $scope.login = function(email,password) { //Gestión de solicitud de ingreso
         var loginPromise = LoginService.login(email,password); //Llamada a servicio de ingreso
         loginPromise.then(function(result){
+            /*
+                  var status = result.status
+                  if(status==0){ //Operación exitosa
+                      currentUser = result.data.user;
+                      $state.go('tab.dash')
+                  }else if(status==1){
+                      mostrar error
+                  }else{
+                      mostrar error
+                  }
+            */
              if(result.auth_token!=null){ //Ingreso exitoso
                 $state.go('tab.dash'); //Navegar hacia estado de colección personal
              }else{ //Ingreso sin éxito
@@ -65,6 +76,7 @@ SearchCtrl (Controlador de búsqueda de prendas y outfits): Controlador de vista
    $scope.index = function(item){ //Obtención de índice de un item de la vista
       return SearchService.indexOfItem(item);
    }
+
 }])
 
 /*
@@ -84,7 +96,7 @@ SearchClothingDetailsCtrl (Controlador de detalle de prendas y outfits buscados)
             if(result.product!=null){ //Adición exitosa de producto a guardarropa
               $state.go('tab.dash'); //Navegar hacia estado de colección personal
             }else{ //Adición de producto sin éxito
-              
+
             }
        });
      }
