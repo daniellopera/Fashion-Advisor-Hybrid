@@ -55,11 +55,14 @@ angular.module('starter.services', [])
             },
             indexOfProduct: function(item){
                 return items.indexOf(item);
+            },
+            setItems: function(products){
+                items = products;
             }
            };
 }])
 
-//WardrobeService
+//Wardrobe
 .factory('Wardrobe', ['$http',function($http) {
   var wardrobe;
     return {
