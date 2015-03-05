@@ -1,0 +1,30 @@
+<ion-view view-title="Wardrobe">
+  <ion-content class="padding">
+    <div class="list card">
+      <div class="item item-divider">Clothing</div>
+        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
+	        <div class="list card">
+	          <div class="item item-avatar">
+	            <img ng-src="{{item.image_url}}">
+	            <h2>{{item.name}}</h2>
+	            <p>{{item.brand_name}}</p>
+	          </div>
+	          <div class="item item-body">
+	            <img class="" ng-src="{{item.image_url}}">
+	            <div href="#" class="item item-icon-left">
+	              <i class="icon ion-tshirt-outline"></i>
+	              {{item.brand_name}}
+	            </div>
+	            <div href="#" class="item item-icon-left">
+	              <i class="icon ion-card"></i>
+	              {{item.retailer}}
+	            </div>
+	            <div href="#" class="item item-icon-left">
+	              <i class="icon ion-cash"></i>
+	              {{item.price}}
+	            </div>
+	          </div>
+	        </div>
+    	</ion-item>
+  </ion-content>
+</ion-view>

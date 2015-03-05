@@ -37,12 +37,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   //Estado de colección o closet personal
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tab.wardrobe', {
+    url: '/wardrobe',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'tab-wardrobe': {
+        templateUrl: 'templates/tab-wardrobe.html',
+        controller: 'WardrobeCtrl'
       }
     }
   })

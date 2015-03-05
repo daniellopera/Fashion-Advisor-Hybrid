@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
+.controller('WardrobeCtrl', function($scope) {
 
 })
 
@@ -16,7 +16,7 @@ RegisterCtrl (Controlador de registro): Controlador de vista register.html
         registerPromise.then(function(result){
           if(result.auth_token!=null){ //Registro exitoso
             LoginService.setCurrentUser(result); //Ingreso automático
-            $state.go('tab.dash'); //Navegar hacia estado de colección personal
+            $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
           }else{ //Registro sin éxito
             
           }
@@ -47,7 +47,7 @@ SiginCtrl (Controlador de login o ingreso): Controlador de vista signin.html
                   }
             */
              if(result.auth_token!=null){ //Ingreso exitoso
-                $state.go('tab.dash'); //Navegar hacia estado de colección personal
+                $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
              }else{ //Ingreso sin éxito
                 
              }
@@ -94,7 +94,7 @@ SearchClothingDetailsCtrl (Controlador de detalle de prendas y outfits buscados)
        var addToWardrobePromise = WardrobeService.addToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
        addToWardrobePromise.then(function(result){
             if(result.product!=null){ //Adición exitosa de producto a guardarropa
-              $state.go('tab.dash'); //Navegar hacia estado de colección personal
+              $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal
             }else{ //Adición de producto sin éxito
 
             }
