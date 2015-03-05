@@ -4,13 +4,11 @@
         <div href="#" class="item item-icon-left">
           <i class="icon ion-bag"></i>
           {{item.name}}
-          <i class="icon ion-"></i>
         </div>
         <div href="#" class="item item-icon-left">
           <img src="{{item.image_url}}">
         </div>
-        <div class="item item-body">
-          {{item.description}}
+        <div class="item item-body" ng-bind-html="htmldescription">
         </div>
         <div href="#" class="item item-icon-left">
           <i class="icon ion-tshirt-outline"></i>
@@ -28,5 +26,8 @@
           <a href="{{item.retailer_url}}">Buy me now!</a>
         </div>
       </div>
+      <button class="button button-stable" ng-click="addToWardrobe(item)">
+          Add to Wardrobe
+      </button>
   </ion-content>
 </ion-view>

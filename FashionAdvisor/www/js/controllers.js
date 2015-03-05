@@ -53,12 +53,26 @@ angular.module('starter.controllers', [])
    }
 }])
 
-.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','SearchService',function($scope, $state, $stateParams,SearchService) {
-    $scope.item = SearchService.getItem($stateParams.itemId);
+.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','SearchService','LoginService','WardrobeService',function($scope, $state, $stateParams,SearchService, LoginService, WardrobeService) {
+
+     var item  = SearchService.getItem($stateParams.itemId);
+     $scope.item = item;
+     $scope.htmldescription = "<p>"+item.description+"</p>";
+
+     $scope.addToWardrobe = function(item){
+       var currentUser = LoginService.getCurrentUser();
+       var addToWardrobePromise = WardrobeService.addToWardrobe(item,currentUser);
+       addToWardrobePromise.then(function(result){
+            alert(JSON.stringify(result));
+            if(result.product!=null){
+              $state.go('tab.dash');
+            }
+       });
+     }
 }])
 
 .controller('ChatsCtrl', function($scope, Chats, LoginService) {
-    
+
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {

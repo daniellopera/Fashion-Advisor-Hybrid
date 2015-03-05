@@ -17,9 +17,18 @@
           </div>
           <div class="item item-body">
             <img class="" ng-src="{{item.image_url}}">
-            <p>
-              {{item.description}}
-            </p>
+            <div href="#" class="item item-icon-left">
+              <i class="icon ion-tshirt-outline"></i>
+              {{item.brand_name}}
+            </div>
+            <div href="#" class="item item-icon-left">
+              <i class="icon ion-card"></i>
+              {{item.retailer}}
+            </div>
+            <div href="#" class="item item-icon-left">
+              <i class="icon ion-cash"></i>
+              {{item.price}}
+            </div>
           </div>
         </div>
         </ion-item>

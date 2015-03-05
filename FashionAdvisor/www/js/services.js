@@ -3,10 +3,10 @@ angular.module('starter.services', [])
 //Login service
 .factory('LoginService', ['$http',function($http) {
     var currentUser;
-    return { 
+    return {
             login: function(email,password){
               return $http({
-                method:"POST", 
+                method:"POST",
                 url:"http://fashionadvisor.herokuapp.com/users/sign_in",
                 data:{"user":{"email":email,"password":password}}}).
                 then(function(result){
@@ -26,10 +26,10 @@ angular.module('starter.services', [])
 //Register service
 .factory('RegisterService', ['$http',function($http) {
     var registerInfo;
-    return { 
+    return {
             signup: function(email,password1,password2){
               return $http({
-                method:"POST", 
+                method:"POST",
                 url:"http://fashionadvisor.herokuapp.com/users",
                 data:{"user":{"email":email,"password":password1,"password_confirmation":password2}}}).
                 then(function(result){
@@ -39,17 +39,17 @@ angular.module('starter.services', [])
             },
             getRegisterInfo: function(){
                 return registerInfo;
-            } 
+            }
            };
 }])
 
 //Search service
 .factory('SearchService', ['$http',function($http) {
   var items;
-    return { 
+    return {
             search: function(user,searchTerm){
               return $http({
-                method:"GET", 
+                method:"GET",
                 url:"http://fashionadvisor.herokuapp.com/search/"+searchTerm+".json",
                 headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
                 then(function(result){
@@ -65,6 +65,24 @@ angular.module('starter.services', [])
             },
             indexOfItem: function(item){
                 return items.indexOf(item);
+            }
+           };
+}])
+
+//Wardrobe service
+.factory('WardrobeService', ['$http',function($http) {
+  var wardrobe;
+    return {
+            addToWardrobe: function(item,user){
+              return $http({
+                method:"POST",
+                url:"http://fashionadvisor.herokuapp.com/user/products",
+                headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+                data:{"product_id":item.id}
+                }).
+                then(function(result){
+                  return result.data;
+               });
             }
            };
 }])
