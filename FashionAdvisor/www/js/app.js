@@ -15,28 +15,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
   $stateProvider
 
-  //Tab abstract state (Estado abstracto Tab)
+  //Estado abstracto Tab
   .state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
   })
 
-  //Signin state (Estado de login)
+  //Estado de login
   .state('signin', {
     url: '/signin',
     templateUrl: 'templates/signin.html',
     controller: 'SigninCtrl'
   })
 
-  //Register state (Estado de registro)
+  //Estado de registro
   .state('register', {
     url: '/register',
     templateUrl: 'templates/register.html',
     controller: 'RegisterCtrl'
   })
 
-  //Tab dashboard state (Estado de colección personal)
+  //Estado de colección o closet personal
   .state('tab.dash', {
     url: '/dash',
     views: {
@@ -47,7 +47,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
-  //Tab search state (Estado de búsqueda)
+  //Estado de búsqueda de prendas y outfits
   .state('tab.search', {
       url: '/search',
       views: {
@@ -58,7 +58,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  //Tab search detail state (Estado de detalle de búsqueda)
+  //Estado de detalle de búsqueda
   .state('tab.search-clothing-detail', {
       url: '/search/clothing/:itemId',
       views: {
@@ -98,6 +98,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   });
 
-  //Initial state (Estado inicial)
+  //Estado inicial (por defecto)
   $urlRouterProvider.otherwise('signin');
 });
