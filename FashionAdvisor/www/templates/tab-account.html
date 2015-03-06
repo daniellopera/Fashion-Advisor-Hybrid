@@ -1,6 +1,27 @@
 <ion-view view-title="Account">
   <ion-content>
-    <ion-list>
-    </ion-list>
+	<ul class="list">
+	  <li class="item item-toggle">
+	     Fashion updates
+	     <label class="toggle toggle-assertive">
+	       <input type="checkbox">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>
+	  </li>
+	  <li class="item item-toggle">
+	     Notifications
+	     <label class="toggle toggle-positive">
+	       <input type="checkbox">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>
+	  </li>
+	</ul>
+	<button class="button button-full button-clear button-assertive" ng-click="logout()">
+  	Logout
+	</button>
   </ion-content>
 </ion-view>
