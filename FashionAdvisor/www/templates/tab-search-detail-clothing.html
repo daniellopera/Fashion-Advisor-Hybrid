@@ -2,7 +2,7 @@
   <ion-content class="padding">
       <div class="list card">
         <div href="#" class="item item-icon-left">
-          <i class="icon ion-{{producticon}}"></i>
+          <i class="icon ion-{{producticon(item)}}"></i>
           {{item.name}}
         </div>
         <div href="#" class="item item-icon-left">
@@ -11,23 +11,23 @@
         <div class="item item-body" ng-bind-html="description">
         </div>
         <div href="#" class="item item-icon-left">
-          <i class="icon ion-tshirt-outline"></i>
-          {{item.brand_name}}
+          <i class="icon ion-bowtie"></i>
+          {{item.brandName}}
         </div>
         <div href="#" class="item item-icon-left">
           <i class="icon ion-card"></i>
           {{item.retailer}}
         </div>
         <div href="#" class="item item-icon-left">
-          <i class="icon ion-cash"></i>
+          <i class="icon ion-paintbrush"></i>
           {{item.colors[0].name}}
         </div>
         <div href="#" class="item item-icon-left">
-          <i class="icon ion-cash"></i>
+          <i class="icon ion-pricetag"></i>
           {{item.categoryNames[0]}}
         </div>
         <div href="#" class="item item-icon-left">
-           <i class="icon ion-bag"></i>
+           <i class="icon ion-cash"></i>
            {{item.currency}} {{item.priceLabel}}
         </div>
         <div href="#" class="item item-icon-left">
@@ -38,7 +38,7 @@
           <a href="{{item.retailer_url}}">Buy me now!</a>
         </div>
       </div>
-      <button ng-style="addToWadrobeStyle" class="button button-full button-clear button-dark" ng-click="addToWardrobe(item)">
+      <button ng-style="addToWadrobeStyle" class="button button-full button-clear button-assertive" ng-click="addToWardrobe(item)">
       Add to Wardrobe
       </button>      
   </ion-content>
