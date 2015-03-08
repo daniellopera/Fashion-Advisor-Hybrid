@@ -88,6 +88,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
+  //Estado de cuenta de usuario
   .state('tab.account', {
     url: '/account',
     views: {
