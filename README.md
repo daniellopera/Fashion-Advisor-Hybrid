@@ -11,4 +11,6 @@ Fashion Advisor Front End - Developed with Angular.js and Apache Cordova in Ioni
 4. Daniel Klinkert Houfer
 5. Santiago Zubieta Ortíz
 
+Current .apk: CordovaApp-debug.apk
+
 Software Engineering - EAFIT UNIVERSITY
