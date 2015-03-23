@@ -1,0 +1,36 @@
+<ion-view view-title="Select products">
+  <ion-nav-buttons side="right">
+    <button class="button icon ion-checkmark-round" ng-click="completeOutfitCreation()">
+    </button>
+  </ion-nav-buttons>
+  <ion-content>
+  <div ng-repeat="product in products">
+        <div class="row" ng-if="$index%3==0">
+          <div class="col col-33" ng-click="select(products[$index])"
+          ng-style="selectedProductStyle">
+            <i class="icon ion-{{products[$index].selected}}"></i>
+            <center>
+              <img 
+              ng-src="{{products[$index].image.sizes.Medium.url}}">
+            </center>
+          </div>
+          <div class="col col-33" ng-click="select(products[$index+1])"
+          ng-style="selectedProductStyle">
+            <i class="icon ion-{{products[$index+1].selected}}"></i>
+            <center>
+            <img 
+            ng-src="{{products[$index+1].image.sizes.Medium.url}}">
+            </center>
+          </div>   
+          <div class="col col-33" ng-click="select(products[$index+2])"
+          ng-style="selectedProductStyle">
+            <i class="icon ion-{{products[$index+2].selected}}"></i>
+            <center>
+            <img 
+            ng-src="{{products[$index+2].image.sizes.Medium.url}}">
+            </center>
+          </div> 
+        </div>
+    </div>
+  </ion-content>
+</ion-view>

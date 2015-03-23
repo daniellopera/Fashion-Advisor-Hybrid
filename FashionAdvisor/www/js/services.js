@@ -1,139 +1,247 @@
 angular.module('starter.services', [])
 
-//User
-.factory('User', ['$http',function($http) {
-    var currentUser;
-    return {
-           login: function(email,password){ //Ingresar al sistema
-              return $http({
-                method:"POST",
-                url:"http://fashionadvisor.herokuapp.com/users/sign_in",
-                data:{"user":{"email":email,"password":password}}}).
-                then(function(result){          
-                  //alert(JSON.stringify(result.data));
-                  return result.data;
-               });
-            },
-            signup: function(email,password){ //Registrarse en el sistema
-              return $http({
-                method:"POST",
-                url:"http://fashionadvisor.herokuapp.com/users",
-                data:{"user":{"email":email,"password":password}}}).
-                then(function(result){
-                  //alert(JSON.stringify(result.data));
-                  return result.data;
-               });
-            },
-            getCurrentUser: function(){ //Obtener usuario actual
-                return currentUser;
-            },
-            setCurrentUser: function(user){ //Setear usuario actual
-                currentUser = user;
-            },
-            signout: function(){ //
-                currentUser = null;
-            }
-           };
-}])
-
-//Clothing
-.factory('Clothing', ['$http',function($http) {
-  var items;
-    return {
-            searchProducts: function(user,searchTerm){ //Buscar productos
-              return $http({
-                method:"GET",
-                url:"http://fashionadvisor.herokuapp.com/search/"+searchTerm+"?num_results=20",
-                headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
-                then(function(result){
-                  //alert(JSON.stringify(result.data));
-                  return result.data;
-               });
-            },
-            getProducts: function(){ //Obtener productos encontrados
-                return items;
-            },
-            getProductAtIndex: function(id){ //Obtener producto en un índice
-                return items[id];
-            },
-            indexOfProduct: function(item){ //Obtener el índice de un producto
-                return items.indexOf(item);
-            },
-            setItems: function(products){ //Asignar productos
-                items = products;
-            },
-           };
-}])
-
-//Wardrobe
-.factory('Wardrobe', ['$http',function($http) {
-  var wardrobe;
-    return {
-            addToWardrobe: function(item,user){ //Añadir prenda al guardaropa
-              return $http({
-                method:"POST",
-                url:"http://fashionadvisor.herokuapp.com/user/products",
-                headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
-                data:{"product_id":item.id}
-                }).
-                then(function(result){        
-                  //alert(JSON.stringify(result.data));
-                  return result.data;
-               });
-            },
-            updateWardrobe: function (user){ //Actualizar el guardaropa
-              return $http({
-                method:"GET",
-                url:"http://fashionadvisor.herokuapp.com/user/products",
-                headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
-                }).
-                then(function(result){
-                  //alert(JSON.stringify(result.data));
-                  return result.data;
-               });
-            }, 
-            getWardrobe: function(){ //Obtener guardaropa
-                return wardrobe;
-            }
-           };
-}])
-
-.factory('Friends', function() { 
-  
-  var friends = [{
-    id: 0,
-    name: 'Ben Sparrow',
-    notes: 'Enjoys drawing things',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: 'Max Lynx',
-    notes: 'Odd obsession with everything',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }, {
-    id: 2,
-    name: 'Andrew Jostlen',
-    notes: 'Wears a sweet leather Jacket. I\'m a bit jealous',
-    face: 'https://pbs.twimg.com/profile_images/491274378181488640/Tti0fFVJ.jpeg'
-  }, {
-    id: 3,
-    name: 'Adam Bradleyson',
-    notes: 'I think he needs to buy a boat',
-    face: 'https://pbs.twimg.com/profile_images/479090794058379264/84TKj_qa.jpeg'
-  }, {
-    id: 4,
-    name: 'Perry Governor',
-    notes: 'Just the nicest guy',
-    face: 'https://pbs.twimg.com/profile_images/491995398135767040/ie2Z_V6e.jpeg'
-  }];
-  
+.factory('UserManagement', ['$http',function($http) {
+  var currentUser;
   return {
-    all: function() {
-      return friends;
-    },
-    get: function(friendId) {
-      // Simple index lookup
-      return friends[friendId];
-    }
+   login: function(email,password){
+    return $http({
+      method:"POST",
+      url:"http://fashionadvisor.herokuapp.com/users/sign_in",
+      data:{"user":{"email":email,"password":password}}}).
+    then(function(result){          
+      return result.data;
+    });
+  },
+  signup: function(email,password){
+    return $http({
+      method:"POST",
+      url:"http://fashionadvisor.herokuapp.com/users",
+      data:{"user":{"email":email,"password":password}}}).
+    then(function(result){
+      return result.data;
+    });
+  },
+  getCurrentUser: function(){
+    return currentUser;
+  },
+  setCurrentUser: function(user){
+    currentUser = user;
+  },
+  signout: function(){ 
+    currentUser = null;
   }
-});
+};
+}])
+
+.factory('SearchManagement', ['$http',function($http) {
+  var searchedItems;
+  var selectedBrand;
+  var selectedColor;
+  return {
+    searchProducts: function(user,searchTerm){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisor.herokuapp.com/search/?search_text="+searchTerm,
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
+      then(function(result){
+        return result.data;
+      });
+    },
+    getProducts: function(){
+      return searchedItems;
+    },
+    getProductAtIndex: function(id){
+      return searchedItems[id];
+    },
+    indexOfProduct: function(item){
+      return searchedItems.indexOf(item);
+    },
+    setItems: function(products){
+      searchedItems = products;
+    },
+    getBrands: function(user,brand){
+     return $http({
+      method:"GET",
+      url:"http://fashionadvisor.herokuapp.com/brands/search/"+brand,
+      headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
+     then(function(result){
+      return result.data;
+    });
+   },
+   selectBrand: function(brand){
+    selectedBrand = brand;
+  },
+  getBrand: function(){
+    return selectedBrand;
+  },
+  getColors: function(user){
+    return $http({
+      method:"GET",
+      url:"http://fashionadvisor.herokuapp.com/colors",
+      headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
+    then(function(result){
+      return result.data;
+    });
+  },selectColor: function(color){
+    selectedColor = color;
+  },getColor: function(){
+    return selectedColor;
+  },
+  advancedSearch : function(user,color,brand,term){
+    var str = "?";
+    if(term!=undefined){
+      str+="search_text="+term;
+    }
+    if(angular.isString(color)){
+      str+="&color_id="+color;
+    }
+    if(brand.id!=undefined){
+      str+="&brand_id="+brand.id;
+    }
+    return $http({
+      method:"GET",
+      url:"http://fashionadvisor.herokuapp.com/search/"+str,
+      headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
+    then(function(result){
+      return result.data;
+    });
+  }
+};
+}])
+
+.factory('WardrobeManagement', ['$http',function($http) {
+  
+  var clothing = [];
+
+  var outfits = [];
+
+  return {
+    addClothingToWardrobe: function(item,user){
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisor.herokuapp.com/user/products",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data:{"product_id":item.id}
+      }).
+      then(function(result){        
+        return result.data;
+      });
+    },
+    addOutfitToWardrobe: function(name,description,products){
+      var outfit = {};
+      outfit.name = name;
+      outfit.description = description;
+      outfit.products = products;
+      outfits.push(outfit);
+    },
+    updateWardrobeClothing: function (user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisor.herokuapp.com/user/products",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+      }).
+      then(function(result){
+        return result.data;
+      });
+    },
+    updateWardrobeOutfits: function (user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisor.herokuapp.com/user/outfits",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+      }).
+      then(function(result){
+        return result.data;
+      });
+    },
+    getWardrobeClothing: function(){
+      return clothing;
+    },
+    getWardrobeOutfits:function(){
+      return outfits;
+    },
+    setWardrobeClothing:function(wardrobe){
+      clothing = wardrobe;
+    },
+    setWardrobeOutfits:function(wardrobe){
+      outfits = wardrobe;
+    },
+    getClothingAtIndex: function(id){
+      return clothing[id];
+    },
+    getOutfitAtIndex: function(id){
+      return outfits[id];
+    },
+    indexOfClothing: function(item){
+      for (i = 0; i < clothing.length; i++) {
+        if(item.id == clothing[i].id){
+          return i;
+        }
+      }
+    },
+    indexOfOutfit: function(item){
+      return outfits.indexOf(item);
+    },
+    addProductToClothing: function(item){
+      clothing.push(item);
+    },
+    unselectAll : function(){
+      for (i = 0; i < clothing.length; i++) {
+        clothing[i].selected = "";    
+      }
+    }
+  };
+}])
+
+.factory('OutfitManagement', ['$http',function($http) {
+
+  var clothing = [];
+
+  function getClothingIDs(){
+    var ids = [];
+    for (i = 0; i < clothing.length; i++) {
+      ids.push(clothing[i].id);
+    }
+    return ids;
+  }
+
+  return {
+    addClothingToNewOutfit: function(item){
+      clothing.push(item);
+    },
+    removeClothingFromNewOutfitAtIndex: function(index){
+      clothing.splice(index,1);
+    },
+    getClothingOfOutfit: function(){
+      return clothing;
+    },
+    getIndexOfClothing: function(item){
+      return clothing.indexOf(item);
+    },
+    setClothing: function(products){
+      clothing = products;
+    },
+    getClothingLength: function(){
+      return clothing.length;
+    }
+    ,
+    createOutfit: function(user,name,description){
+      var outfit = {}
+      outfit.fullname = name;
+      outfit.about = description;
+      outfit.products = getClothingIDs();
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisor.herokuapp.com/user/outfits",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data:outfit
+      }).
+      then(function(result){
+        return result.data;
+      });
+    }
+  };
+}])
+
+
+

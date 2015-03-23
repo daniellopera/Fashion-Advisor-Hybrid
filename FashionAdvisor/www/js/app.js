@@ -11,7 +11,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 
   $stateProvider
 
@@ -47,6 +47,62 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })
 
+  //Estado de colección o closet personal
+  .state('tab.wardrobe_products', {
+    url: '/wardrobe/outfits',
+    views: {
+      'tab-wardrobe': {
+        templateUrl: 'templates/tab-wardrobe-products.html',
+        controller: 'WardrobeProductsCtrl'
+      }
+    }
+  })
+
+  //Estado de detalle de outfit
+  .state('tab.wardrobe-outfit-detail', {
+    url: '/wardrobe/outfits/:itemId',
+    views: {
+      'tab-wardrobe': {
+        templateUrl: 'templates/tab-wardrobe-outfit-detail.html',
+        controller: 'OutfitDetailsCtrl'
+      }
+    }
+  })
+
+  //Estado de detalle de prenda en la colección
+  .state('tab.wardrobe-clothing-detail', {
+      url: '/wardrobe/clothing/:itemId',
+      views: {
+        'tab-wardrobe': {
+          templateUrl: 'templates/tab-wardrobe-clothing-detail.html',
+          controller: 'WardrobeClothingDetailsCtrl'
+        }
+      }
+    })
+
+  //Estado de seleccion de prendas de nuevo atuendo
+  .state('tab.wardrobe-select-outfits-clothing', {
+      url: '/wardrobe/outfits/selectclothing',
+      views: {
+        'tab-wardrobe': {
+          templateUrl: 'templates/tab-wardrobe-outfit-clothing-selection.html',
+          controller: 'OutfitsClothingSelectionCtrl'
+        }
+      }
+    })
+
+  //Estado de creación de atuendo
+  .state('tab.wardrobe-create-outfit', {
+      url: '/wardrobe/outfits/create',
+      cache: false,
+      views: {
+        'tab-wardrobe': {
+          templateUrl: 'templates/tab-wardrobe-outfit-creation.html',
+          controller: 'OutfitCreationCtrl'
+        }
+      }
+    })
+
   //Estado de búsqueda de prendas y outfits
   .state('tab.search', {
       url: '/search',
@@ -58,7 +114,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  //Estado de detalle de búsqueda
+  //Estado de búsqueda avanzada
+  .state('tab.advanced-search', {
+      url: '/search/advanced',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-advanced.html',
+          controller: 'AdvancedSearchCtrl'
+        }
+      }
+    })
+
+  //Estado de búsqueda por brand
+  .state('tab.advanced-search-brand', {
+      url: '/search/advanced/brand',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-advanced-brand.html',
+          controller: 'AdvancedSearchBrandCtrl'
+        }
+      }
+    })
+
+  //Estado de detalle de prenda buscada
   .state('tab.search-clothing-detail', {
       url: '/search/clothing/:itemId',
       views: {

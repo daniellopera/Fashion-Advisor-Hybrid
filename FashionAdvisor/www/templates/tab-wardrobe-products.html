@@ -1,23 +1,19 @@
 <ion-view view-title="Wardrobe" hide-back-button="true">
-  <ion-nav-buttons side="right">
-      <button class="button icon ion-plus-round" ng-click="redirectOutfitCreation()">
-      </button>
-  </ion-nav-buttons>
   <ion-content>
     <div class="button-bar">
-      <a class="button button-positive" ng-click="getOutfits()">Outfits</a>
-      <a class="button button-light" ng-click="getClothing()">Clothing</a>
+      <a class="button button-light" ng-click="getOutfits()">Outfits</a>
+      <a class="button button-positive" ng-click="getClothing()">Clothing</a>
     </div>
     <label class="item item-input">
       <i class="icon ion-search placeholder-icon"></i>
       <input type="text" ng-model="searchTerm" placeholder="Search">
     </label>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/outfits/{{index(item)}}">
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/clothing/{{index(item)}}">
         <div class="item item-avatar">
           <img ng-src="{{item.image.sizes.Large.url}}">
           <h2 class="">{{item.name}}</h2>
-          <p>{{item.description}}</p>
+          <p>{{item.brand.name}}</p>
         </div>
     	</ion-item>
     </ion-list>

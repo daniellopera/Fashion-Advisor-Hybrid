@@ -1,186 +1,500 @@
 angular.module('starter.controllers', [])
 
-/*
-WardrobeCtrl (Controlador de guardarropa): Controlador de vista tab-wardrobe.html
--> (Dependencias): $scope, User, Wardrobe, $ionicLoading
-*/
-.controller('WardrobeCtrl',['$scope','User','Wardrobe','$ionicLoading', function($scope,User,Wardrobe,$ionicLoading) {
-    
-    var currentUser = User.getCurrentUser(); //Obtención de usuario actual
-    $ionicLoading.show({animation: 'fade-in'}); //Mostrar loader
-    var collectionPromise = Wardrobe.updateWardrobe(currentUser); //Llamada a servicio de búsqueda de colección
-    collectionPromise.then(function(result){
-      $ionicLoading.hide(); //Ocultar loader
-      if(result.status==0){ 
-        //alert("llegó bien la colección")
-        $scope.items = result.data.wardrobe_products; //Asignación de resultados a items en vista
-      }else{
-        //alert("Problema con la colección")
-      }
-    });
+.controller('WardrobeCtrl',['$scope','$state','UserManagement','WardrobeManagement','$ionicLoading','$ionicHistory','OutfitManagement', function($scope,$state,UserManagement,WardrobeManagement,$ionicLoading,$ionicHistory,OutfitManagement) {
 
-    $scope.updateWardrobe = function(){
-      var currentUser = User.getCurrentUser(); //Obtención de usuario actual
-      $ionicLoading.show({animation: 'fade-in'}); //Mostrar loader
-      var updatePromise = Wardrobe.updateWardrobe(currentUser); //Llamada a servicio de búsqueda de colección
-      updatePromise.then(function(result){
-      $ionicLoading.hide(); //Ocultar loader
-      if(result.status==0){
-        //alert("Llegó bien la colección")
-        $scope.$broadcast('scroll.refreshComplete');//Ocultar loader 
-        $scope.items = result.data.wardrobe_products; //Asignación de resultados a items en vista
-      }else{
-        //alert("problema con la colección")
-      }
+  $scope.items = WardrobeManagement.getWardrobeOutfits();
+
+  $scope.getClothing = function(){
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
     });
-    }
+    $state.go('tab.wardrobe_products');
+  }
+
+  $scope.redirectOutfitCreation = function(){
+    WardrobeManagement.unselectAll();
+    OutfitManagement.setClothing([]);
+    $state.go('tab.wardrobe-select-outfits-clothing');
+  }
+
+  $scope.index = function(item){ //Obtención de índice de un producto de la vista
+    return WardrobeManagement.indexOfOutfit(item);
+  }
 }])
 
-/*
-RegisterCtrl (Controlador de registro): Controlador de vista register.html
--> (Dependencias): $scope, $state, User, $ionicLoading, $ionicHistory
-*/
-.controller('RegisterCtrl', ['$scope','$state','User','$ionicLoading','$ionicHistory',function($scope, $state, User,$ionicLoading,$ionicHistory) {
-   
-    $scope.register = function(email,password1,password2){ //Gestión de solicitud de registro
-      if(password1==password2){
-        if(email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){ //Valido email
-          $ionicLoading.show({animation: 'fade-in'}); //Mostrar loader
-          var registerPromise = User.signup(email,password1); //Llamada a servicio de registro
-          registerPromise.then(function(result){
-            $ionicLoading.hide(); //Ocultar loader
-            if(result.status==0){ //Registro exitoso
-              User.setCurrentUser(result.data); //Ingresar
-              //alert("registro exitoso")
-              $ionicHistory.clearCache(); //Limpiar cache
-              $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal 
-            }else{ //Registro sin éxito
-              alert("Registro sin éxito")
-            }
-          });
+.controller('WardrobeProductsCtrl',['$scope','$state','UserManagement','WardrobeManagement','$ionicLoading','$ionicHistory', function($scope,$state,UserManagement,WardrobeManagement,$ionicLoading,$ionicHistory) {
+
+  $scope.items = WardrobeManagement.getWardrobeClothing();
+
+  $scope.getOutfits = function(){
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+    });
+    $state.go('tab.wardrobe');   
+  }
+
+  $scope.index = function(item){ //Obtención de índice de un producto de la vista
+   return WardrobeManagement.indexOfClothing(item);
+  }
+ }])
+
+.controller('OutfitsClothingSelectionCtrl',['$scope','WardrobeManagement','OutfitManagement','$state','$ionicHistory','$ionicPopup','$timeout',function($scope,WardrobeManagement,OutfitManagement,$state,$ionicHistory,$ionicPopup,$timeout){
+
+  $scope.products = WardrobeManagement.getWardrobeClothing();
+
+  function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+  $scope.select = function(item){
+    
+    var index = OutfitManagement.getIndexOfClothing(item);
+    if(index==-1){
+      var length = OutfitManagement.getClothingLength();
+      if(length<10){
+        OutfitManagement.addClothingToNewOutfit(item);
+        item.selected = "close-round";
+      }else{
+        showAlert("Selection error","Can't select more than 10 products")
+      }
+    }else{
+      OutfitManagement.removeClothingFromNewOutfitAtIndex(index);
+      item.selected = "";
+    }
+  }
+
+  $scope.completeOutfitCreation = function(){
+    var length = OutfitManagement.getClothingLength();
+    if(length>1){
+      var outfitClothing = OutfitManagement.getClothingOfOutfit();
+      $state.go('tab.wardrobe-create-outfit');
+    }else{
+      showAlert("Selection error","You need at least two products to create an outfit")
+    }
+  }
+}])
+
+.controller('OutfitCreationCtrl',['$scope','WardrobeManagement','OutfitManagement','$state','$ionicHistory','UserManagement','$ionicLoading','$ionicPopup','$ionicPopup','$timeout',function($scope,WardrobeManagement,OutfitManagement,$state,$ionicHistory,UserManagement,$ionicLoading,$ionicPopup,$timeout){
+
+  var clothing = OutfitManagement.getClothingOfOutfit();
+  $scope.items = clothing;
+
+  function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+  $scope.createOutfit = function(name,description){
+    if(name!=undefined && description!=undefined){
+      $ionicLoading.show(); 
+      var currentUser = UserManagement.getCurrentUser(); 
+      var creationPromise = OutfitManagement.createOutfit(currentUser,name,description);
+      creationPromise.then(function(result){
+        $ionicLoading.hide();
+        if(result.status==0){
+          WardrobeManagement.addOutfitToWardrobe(name,description,OutfitManagement.getClothingOfOutfit());
+          OutfitManagement.setClothing([]);
+          $state.go('tab.wardrobe');
         }else{
-          //Email no cumple formato
-          alert("Email no cumple formato")
+          showAlert("Outfit Error","Couldn't create outfit")
         }
-      }else{
-        //Contraseñas no coinciden
-        alert("Contraseñas no coinciden")
-      }
-    }
-
-}])
-
-/*
-SiginCtrl (Controlador de login o ingreso): Controlador de vista signin.html
--> (Dependencias): $scope, $state, User, $ionicLoading, $ionicHistory
-*/
-.controller('SigninCtrl', ['$scope','$state','User','$ionicLoading','$ionicHistory',function($scope, $state, User,$ionicLoading,$ionicHistory) {
-    
-    $scope.login = function(email,password) { //Gestión de solicitud de ingreso
-        $ionicLoading.show({animation: 'fade-in'}); //Mostrar loader
-        var loginPromise = User.login(email,password); //Llamada a servicio de ingreso
-        loginPromise.then(function(result){
-             $ionicLoading.hide(); //Ocultar loader
-             if(result.status==0){ //Ingreso exitoso
-               User.setCurrentUser(result.data); //Ingresar
-               $ionicHistory.clearCache(); //Limpiar cache
-               //alert("ingreso exitoso")
-               $state.go('tab.wardrobe'); //Navegar hacia estado de colección personal 
-             }else{ //Ingreso sin éxito
-               alert("Ingreso sin éxito")
-             }
-        });
-    };
-
-    $scope.redirectSignup = function(){ //Redirección a estado de registro
-      $state.go('register'); //Navegar hacia estado de registro
-    }
-}])
-
-/*
-SearchCtrl (Controlador de búsqueda de prendas y outfits): Controlador de vista tab-search.html
--> (Dependencias): $scope, $state, User, Clothing, $ionicLoading
-*/
-.controller('SearchCtrl', ['$scope','$state','User','Clothing','$ionicLoading',function($scope, $state, User, Clothing, $ionicLoading) {
-   
-   $scope.search = function(searchTerm){ //Gestión de solicitud de búsqueda de prendas
-      var currentUser = User.getCurrentUser(); //Obtención de usuario actual
-      $ionicLoading.show({animation: 'fade-in'}); //Mostrar loader
-      var searchPromise = Clothing.searchProducts(currentUser,searchTerm); //Llamada a servicio de búsqueda de prendas
-      searchPromise.then(function(result){
-          $ionicLoading.hide(); //Ocultar loader
-          if(result.status==0){
-            //alert("búsqueda exitosa")
-            Clothing.setItems(result.data.products); //Guardar resultados
-            $scope.items = result.data.products; //Asignación de resultados a productos en vista
-          }else{
-            alert("Búsqueda sin éxito"); //Búsqueda sin éxito
-          }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
       });
-   }
-
-   $scope.index = function(item){ //Obtención de índice de un producto de la vista
-      return Clothing.indexOfProduct(item);
-   }
-
-   $scope.searchIcon = function(item){ //Cambio de estilo en caso de tener o no la prenda en el guardaropa
-     if(item.in_wardrobe==true){
-        $scope.addToWadrobeStyle = {'display':'none'};
-        return "heart";
-     }else{
-        return "bag";
-     }
-   }
+    }else{
+      showAlert("Check name and description","Check name and description to complete outfit creation")
+    }
+  }
 }])
 
-/*
-SearchClothingDetailsCtrl (Controlador de detalle de prendas y outfits buscados): Controlador de vista tab-search-detail-clothing.html
--> (Dependencias): $scope, $state, $stateParams, User, Clothing, Wardrobe,$ionicLoading
-*/
-.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','Clothing','User','Wardrobe','$ionicLoading',function($scope, $state, $stateParams,Clothing,User,Wardrobe,$ionicLoading) {
+.controller('RegisterCtrl', ['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout) {
 
-     var item  = Clothing.getProductAtIndex($stateParams.itemId); //Obtención de item específico
+  function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+  function processRegisterRequest(email,password){
+    $ionicLoading.show(); 
+    var registerPromise = UserManagement.signup(email,password); 
+    registerPromise.then(function(result){
+      $ionicLoading.hide(); 
+      if(result.status==0){ 
+        UserManagement.setCurrentUser(result.data); 
+        $ionicHistory.clearCache();
+        $ionicHistory.clearHistory(); 
+        $state.go('tab.wardrobe'); 
+      }else{ 
+        showAlert("Register Error","Register unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide();
+      showAlert("Fatal Server Error","Server error, try again later.")
+    });
+  }
+
+  $scope.register = function(email,password1,password2){
+    if(email!=undefined && email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+      if(password1!=undefined && password2!=undefined && password1==password2 && password1.length>=6){
+        processRegisterRequest(email,password1)
+      }else{
+        showAlert("Check passwords","Please check your passwords")
+      }
+    }else{
+      showAlert("Check email","Please check your email.")
+    }
+  };
+}])
+
+.controller('SigninCtrl',['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout) {
+
+  function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+  function getUsersWardrobeClothing(){
+    $ionicLoading.show(); 
+    var currentUser = UserManagement.getCurrentUser(); 
+    var updatePromise = WardrobeManagement.updateWardrobeClothing(currentUser); 
+    updatePromise.then(
+      function(result){
+        $ionicLoading.hide(); 
+        if(result.status==0){
+          WardrobeManagement.setWardrobeClothing(result.data.wardrobe_products);
+          getUsersWardrobeOutfits();
+        }else{
+          showAlert("Wardrobe Error","Couldn't get your clothing")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      });
+  }
+
+  function getUsersWardrobeOutfits(){
+    $ionicLoading.show(); 
+    var currentUser = UserManagement.getCurrentUser(); 
+    var updatePromise = WardrobeManagement.updateWardrobeOutfits(currentUser); 
+    updatePromise.then(
+      function(result){
+        $ionicLoading.hide(); 
+        if(result.status==0){
+          WardrobeManagement.setWardrobeOutfits(result.data.wardrobe_outfits);
+          $state.go('tab.wardrobe');
+        }else{
+          showAlert("Wardrobe Error","Couldn't get your outfits")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      });
+  }
+
+  function processLoginRequest(email, password){
+    $ionicLoading.show(); 
+    var loginPromise = UserManagement.login(email,password); 
+    loginPromise.then(function(result){
+     $ionicLoading.hide(); 
+     if(result.status==0){
+       UserManagement.setCurrentUser(result.data);
+       $ionicHistory.clearCache();
+       $ionicHistory.clearHistory();
+       getUsersWardrobeClothing();
+     }else{
+       showAlert("Login Error","Login unsuccessful.")
+     }
+   },function(error){
+    $ionicLoading.hide(); 
+    showAlert("Fatal Server Error","Server error, try again later.")
+  });
+  }
+
+  $scope.login = function(email,password) {
+    if(email!=undefined && email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+      if(password!=undefined && password.length>=6){
+        processLoginRequest(email,password);
+      }else{
+        showAlert("Check password","Please check your password.")
+      }
+    }else{
+      showAlert("Check email","Please check your email.")
+    }
+  };
+
+  $scope.redirectSignup = function(){
+    $state.go('register');
+  };
+}])
+
+.controller('SearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
+
+  function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+ $scope.search = function(searchTerm){ 
+  var currentUser = UserManagement.getCurrentUser();
+  $ionicLoading.show(); 
+  var searchPromise = SearchManagement.searchProducts(currentUser,searchTerm); 
+  searchPromise.then(function(result){
+    $ionicLoading.hide(); 
+    if(result.status==0){
+      SearchManagement.setItems(result.data.products); 
+      $scope.items = result.data.products; 
+    }else{
+      showAlert("Search Error","Search unsuccessful")
+    }
+  },function(error){
+    $ionicLoading.hide();
+    showAlert("Fatal Server Error","Server error, try again later.")
+  });
+}
+
+$scope.advancedSearch = function(){
+  SearchManagement.selectBrand({});
+  SearchManagement.selectColor({});
+  $state.go('tab.advanced-search');
+}
+
+$scope.index = function(item){ 
+  return SearchManagement.indexOfProduct(item);
+}
+
+$scope.searchIcon = function(item){ 
+ if(item.in_wardrobe==true){
+  $scope.addToWadrobeStyle = {'display':'none'};
+  return "heart";
+}else{
+  return "bag";
+}
+}
+}])
+
+.controller('AdvancedSearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
+
+ function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+ var currentUser = UserManagement.getCurrentUser();
+ $ionicLoading.show(); 
+ var colorPromise = SearchManagement.getColors(currentUser);
+ colorPromise.then(function(result){
+  $ionicLoading.hide(); 
+  if(result.status==0){
+    $scope.colors = result.data.colors; 
+  }else{
+    showAlert("Search Error","Search unsuccessful")
+  }
+},function(error){
+  $ionicLoading.hide();
+  showAlert("Fatal Server Error","Server error, try again later.")
+});
+
+ $scope.getSelectedBrand = function(){
+  return SearchManagement.getBrand();
+}  
+
+$scope.selectColor = function(color){
+  SearchManagement.selectColor(color);
+}
+
+$scope.advancedSearch = function(searchTerm){
+  $ionicLoading.show(); 
+  var currentUser = UserManagement.getCurrentUser();
+  var brand = SearchManagement.getBrand();
+  var color = SearchManagement.getColor();
+  var advsearchPromise = SearchManagement.advancedSearch(currentUser,color,brand,searchTerm);
+  advsearchPromise.then(function(result){
+    $ionicLoading.hide(); 
+    if(result.status==0){
+      SearchManagement.setItems(result.data.products); 
+      $scope.items = result.data.products; 
+    }else{
+      showAlert("Search Error","Search unsuccessful")
+    }
+  },function(error){
+    $ionicLoading.hide();
+    showAlert("Fatal Server Error","Server error, try again later.")
+  });
+}
+
+$scope.index = function(item){ 
+  return SearchManagement.indexOfProduct(item);
+}
+
+$scope.searchIcon = function(item){ 
+ if(item.in_wardrobe==true){
+  $scope.addToWadrobeStyle = {'display':'none'};
+  return "heart";
+}else{
+  return "bag";
+}
+}
+
+}])
+
+.controller('AdvancedSearchBrandCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
+
+  function showAlert(name,msg) {
+   var alertPopup = $ionicPopup.alert({
+     title: name,
+     template: msg
+   });
+   alertPopup.then(function(res) {
+   });
+   $timeout(function() {
+     alertPopup.close();
+   }, 3000);
+  };
+
+ $scope.searchBrand = function(searchTerm){
+  $ionicLoading.show(); 
+  var currentUser = UserManagement.getCurrentUser();
+  var searchPromise = SearchManagement.getBrands(currentUser,searchTerm);
+  searchPromise.then(function(result){
+    $ionicLoading.hide(); 
+    if(result.status==0){
+      $scope.brands = result.data.brands; 
+    }else{
+      showAlert("Search Error","Search unsuccessful")
+    }
+  },function(error){
+    $ionicLoading.hide();
+    showAlert("Fatal Server Error","Server error, try again later.")
+  });
+}
+
+$scope.selectBrand = function(brand){
+  SearchManagement.selectBrand(brand);
+  $state.go('tab.advanced-search');
+}
+
+}])
+
+.controller('SearchClothingDetailsCtrl', ['$scope','$state','$stateParams','SearchManagement','UserManagement','WardrobeManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, $stateParams,SearchManagement,UserManagement,WardrobeManagement,$ionicLoading,$ionicPopup,$timeout) {
+
+     var item  = SearchManagement.getProductAtIndex($stateParams.itemId); //Obtención de item específico
      $scope.item = item; //Asignación de item a variable en la vista
      $scope.description = "<p>"+item.description+"</p>"; //Parseo de la descripción del item específico
 
+     function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+      };
+
      $scope.producticon = function(item){ //Estilo en caso de tener la prenda en el guardaropa
        if(item.in_wardrobe==true){
-          $scope.addToWadrobeStyle = {'display':'none'};
-          return "heart";
-       }else{
-          return "bag";
-       }
-     }
-     
+        $scope.addToWadrobeStyle = {'display':'none'};
+        return "heart";
+      }else{
+        return "bag";
+      }
+    }
+
      $scope.addToWardrobe = function(item){ //Gestión de solicitud de adición de item (producto) a colección personal (closet)
-       var currentUser = User.getCurrentUser(); //Obtención de usuario actual
-       $ionicLoading.show({animation: 'fade-in'}); //Mostrar loader
-       var addToWardrobePromise = Wardrobe.addToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
+       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+       $ionicLoading.show(); //Mostrar loader
+       var addToWardrobePromise = WardrobeManagement.addClothingToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
        addToWardrobePromise.then(function(result){
             $ionicLoading.hide(); //Ocultar loader
             if(result.status==0){ //Adición exitosa de producto a guardarropa
-              //alert("adición exitosa");
               item.in_wardrobe = true;
               $scope.producticon(item); //Setear estilo de prenda en guardaropa
+              WardrobeManagement.addProductToClothing(item);
             }else{ //Adición de producto sin éxito
-              alert("Adición sin éxito");
+              showAlert("Adding Error","Clothing adding unsuccessful")
             }
-       });
+          },function(error){
+            showAlert("Fatal Server Error","Server error, try again later.")
+          });
      }
 
-}])
+   }])
 
-.controller('FriendsCtrl', function($scope, Friends) {
-  $scope.friends = Friends.all();
+.controller('WardrobeClothingDetailsCtrl', ['$scope','WardrobeManagement','$stateParams',function($scope,WardrobeManagement,$stateParams) {
+    var item  = WardrobeManagement.getClothingAtIndex($stateParams.itemId); //Obtención de item específico
+    $scope.item = item;
+    $scope.description = "<p>"+item.description+"</p>"; //Parseo de la descripción del item específico
+  }])
+
+.controller('OutfitDetailsCtrl', ['$scope','WardrobeManagement','$stateParams',function($scope,WardrobeManagement,$stateParams) {
+    var item  = WardrobeManagement.getOutfitAtIndex($stateParams.itemId); //Obtención de item específico
+    $scope.item = item;
+    $scope.products = item.products;
+    $scope.index = function(item){ //Obtención de índice de un producto de la vista
+     var index = WardrobeManagement.indexOfClothing(item);
+     return index;
+   }
+ }])
+
+.controller('FriendsCtrl', function($scope) {
+
 })
 
-.controller('FriendDetailCtrl', function($scope, $stateParams, Friends) {
-  $scope.friend = Friends.get($stateParams.friendId);
+.controller('FriendDetailCtrl', function($scope) {
 })
 
-.controller('AccountCtrl', ['$scope','$state', 'User',function($scope, $state, User){
+.controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){
   $scope.logout = function(){
-    User.signout();
+    UserManagement.signout();
+    OutfitManagement.setClothing([]);
+    SearchManagement.selectBrand({});
+    SearchManagement.selectColor({});
     $state.go('signin');
   }
 }])

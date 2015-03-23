@@ -8,6 +8,14 @@
 	margin-right: 20px;
 }
 
-.item.item-icon-left{
-	
+ion-view > ion-content.padding.scroll-content.ionic-scroll.has-header.has-tabs {
+	padding: 0 0 0 0;
+}
+
+label.texta {
+	height: 100px;
+}
+
+label.texta > textarea{
+	height: 50px;
 }

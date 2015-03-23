@@ -1,4 +1,4 @@
-<ion-view view-title="Search">
+<ion-view view-title="Advanced Search">
   <ion-content>
     <div class="button-bar">
       <a class="button button-light">Outfits</a>
@@ -9,13 +9,28 @@
       <i class="icon ion-ios7-search placeholder-icon"></i>
       <input type="search" ng-model="searchTerm" placeholder="Search">
     </label>
-    <button class="button button-clear button-royal" ng-click="search(searchTerm)">
+    <button class="button button-clear button-royal" ng-click="advancedSearch(searchTerm)">
       Search
     </button>
     </div>
-    <button class="button button-clear button-full button-dark" ng-click="advancedSearch()">
-    Advanced Search
-    </button>
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Colors
+      </div>
+      <select ng-change="selectColor(color)" ng-model="color">
+        <option class="" ng-repeat="color in colors" value ={{color.id}}>
+          {{color.name}}
+        </option>
+      </select>
+    </label>
+    <ion-item class="" href="#/tab/search/advanced/brand">
+      <div class="" href="#">
+          Select brand
+        <span class="item-note">
+          {{getSelectedBrand().name}}
+        </span>
+      </div>
+    </ion-item>
       <ion-list>
         <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
         <div class="list card">
