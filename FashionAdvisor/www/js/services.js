@@ -41,7 +41,7 @@ angular.module('starter.services', [])
     searchProducts: function(user,searchTerm){
       return $http({
         method:"GET",
-        url:"http://fashionadvisor.herokuapp.com/search/?search_text="+searchTerm,
+        url:"http://fashionadvisor.herokuapp.com/search/?search_text="+searchTerm.replace(/ /g, "_"),
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
       then(function(result){
         return result.data;
@@ -62,7 +62,7 @@ angular.module('starter.services', [])
     getBrands: function(user,brand){
      return $http({
       method:"GET",
-      url:"http://fashionadvisor.herokuapp.com/brands/search/"+brand,
+      url:"http://fashionadvisor.herokuapp.com/brands/search/"+brand.replace(/ /g, "_"),
       headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
      then(function(result){
       return result.data;
@@ -100,7 +100,7 @@ angular.module('starter.services', [])
     }
     return $http({
       method:"GET",
-      url:"http://fashionadvisor.herokuapp.com/search/"+str,
+      url:"http://fashionadvisor.herokuapp.com/search/"+str.replace(/ /g, "_"),
       headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
     then(function(result){
       return result.data;
