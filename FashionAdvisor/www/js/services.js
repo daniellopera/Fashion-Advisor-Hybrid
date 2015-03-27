@@ -6,7 +6,7 @@ angular.module('starter.services', [])
    login: function(email,password){
     return $http({
       method:"POST",
-      url:"http://fashionadvisor.herokuapp.com/users/sign_in",
+      url:"http://fashionadvisorservices.herokuapp.com/users/sign_in",
       data:{"user":{"email":email,"password":password}}}).
     then(function(result){          
       return result.data;
@@ -15,7 +15,7 @@ angular.module('starter.services', [])
   signup: function(email,password){
     return $http({
       method:"POST",
-      url:"http://fashionadvisor.herokuapp.com/users",
+      url:"http://fashionadvisorservices.herokuapp.com/users",
       data:{"user":{"email":email,"password":password}}}).
     then(function(result){
       return result.data;
@@ -41,7 +41,7 @@ angular.module('starter.services', [])
     searchProducts: function(user,searchTerm){
       return $http({
         method:"GET",
-        url:"http://fashionadvisor.herokuapp.com/search/?search_text="+searchTerm.replace(/ /g, "_"),
+        url:"http://fashionadvisorservices.herokuapp.com/search/?search_text="+searchTerm.replace(/ /g, "_"),
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
       then(function(result){
         return result.data;
@@ -62,7 +62,7 @@ angular.module('starter.services', [])
     getBrands: function(user,brand){
      return $http({
       method:"GET",
-      url:"http://fashionadvisor.herokuapp.com/brands/search/"+brand.replace(/ /g, "_"),
+      url:"http://fashionadvisorservices.herokuapp.com/brands/search/"+brand.replace(/ /g, "_"),
       headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
      then(function(result){
       return result.data;
@@ -77,7 +77,7 @@ angular.module('starter.services', [])
   getColors: function(user){
     return $http({
       method:"GET",
-      url:"http://fashionadvisor.herokuapp.com/colors",
+      url:"http://fashionadvisorservices.herokuapp.com/colors",
       headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
     then(function(result){
       return result.data;
@@ -100,7 +100,7 @@ angular.module('starter.services', [])
     }
     return $http({
       method:"GET",
-      url:"http://fashionadvisor.herokuapp.com/search/"+str.replace(/ /g, "_"),
+      url:"http://fashionadvisorservices.herokuapp.com/search/"+str.replace(/ /g, "_"),
       headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
     then(function(result){
       return result.data;
@@ -119,7 +119,7 @@ angular.module('starter.services', [])
     addClothingToWardrobe: function(item,user){
       return $http({
         method:"POST",
-        url:"http://fashionadvisor.herokuapp.com/user/products",
+        url:"http://fashionadvisorservices.herokuapp.com/user/products",
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
         data:{"product_id":item.id}
       }).
@@ -137,7 +137,7 @@ angular.module('starter.services', [])
     updateWardrobeClothing: function (user){
       return $http({
         method:"GET",
-        url:"http://fashionadvisor.herokuapp.com/user/products",
+        url:"http://fashionadvisorservices.herokuapp.com/user/products",
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
       }).
       then(function(result){
@@ -147,7 +147,7 @@ angular.module('starter.services', [])
     updateWardrobeOutfits: function (user){
       return $http({
         method:"GET",
-        url:"http://fashionadvisor.herokuapp.com/user/outfits",
+        url:"http://fashionadvisorservices.herokuapp.com/user/outfits",
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
       }).
       then(function(result){
@@ -232,7 +232,7 @@ angular.module('starter.services', [])
       outfit.products = getClothingIDs();
       return $http({
         method:"POST",
-        url:"http://fashionadvisor.herokuapp.com/user/outfits",
+        url:"http://fashionadvisorservices.herokuapp.com/user/outfits",
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
         data:outfit
       }).
