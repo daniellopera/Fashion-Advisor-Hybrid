@@ -1,9 +1,17 @@
 <ion-view view-title="Wardrobe" hide-back-button="true">
-  <ion-content>
-    <div class="button-bar">
-      <a class="button button-light" ng-click="getOutfits()">Outfits</a>
-      <a class="button button-positive" ng-click="getClothing()">Clothing</a>
+  <div class="bar bar-subheader">
+      <div class=" button-bar">
+        <button class="button button-light button-android" ng-click="getOutfits()">
+          Outfits
+        </button>
+        <button class="button button-stable button-android" ng-click="getClothing()">
+          Clothing
+        </button>
+      </div>
     </div>
+  <ion-content>
+    <br/>
+    <br/>
     <label class="item item-input">
       <i class="icon ion-search placeholder-icon"></i>
       <input type="text" ng-model="searchTerm" placeholder="Search">

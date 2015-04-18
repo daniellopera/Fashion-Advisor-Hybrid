@@ -156,15 +156,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+
   .state('tab.friend-detail', {
-    url: '/friend/:friendId',
+      url: '/friend/detail/:friendId',
+      views: {
+        'tab-friends': {
+          templateUrl: 'templates/tab-friend-detail.html',
+          controller: 'FriendDetailCtrl'
+        }
+      }
+    })
+
+  .state('tab.friend-search-detail', {
+    url: '/friends/search/:friendId',
     views: {
       'tab-friends': {
-        templateUrl: 'templates/friend-detail.html',
-        controller: 'FriendDetailCtrl'
+        templateUrl: 'templates/tab-search-detail-friend.html',
+        controller: 'FriendDetailSearchCtrl'
       }
     }
   })
+
+  .state('tab.friends-search', {
+      url: '/friends/search',
+      views: {
+        'tab-friends': {
+          templateUrl: 'templates/tab-friends-search.html',
+          controller: 'FriendsSearchCtrl'
+        }
+      }
+    })
 
   //Estado de cuenta de usuario
   .state('tab.account', {

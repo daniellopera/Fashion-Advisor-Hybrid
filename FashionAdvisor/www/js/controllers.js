@@ -169,7 +169,7 @@ angular.module('starter.controllers', [])
   };
 }])
 
-.controller('SigninCtrl',['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout) {
+.controller('SigninCtrl',['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout','FriendManagement',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout,FriendManagement) {
 
   function showAlert(name,msg) {
    var alertPopup = $ionicPopup.alert({
@@ -211,7 +211,7 @@ angular.module('starter.controllers', [])
         $ionicLoading.hide(); 
         if(result.status==0){
           WardrobeManagement.setWardrobeOutfits(result.data.wardrobe_outfits);
-          $state.go('tab.wardrobe');
+          getUsersFriends();
         }else{
           showAlert("Wardrobe Error","Couldn't get your outfits")
         }
@@ -219,6 +219,25 @@ angular.module('starter.controllers', [])
         $ionicLoading.hide();
         showAlert("Fatal Server Error","Server error, try again later.")
       });
+  }
+
+  function getUsersFriends(){
+    $ionicLoading.show(); 
+    var currentUser = UserManagement.getCurrentUser(); 
+    var getPromise = FriendManagement.getFollowingUsers(currentUser); 
+    getPromise.then(
+      function(result){
+        $ionicLoading.hide(); 
+         if(result.status==0){
+          FriendManagement.setFollowingUsers(result.data);
+          $state.go('tab.wardrobe');
+        }else{
+          showAlert("Friendship Error","Couldn't get your followers")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server -Friendship- Error","Server error, try again later.")
+      }); 
   }
 
   function processLoginRequest(email, password){
@@ -460,6 +479,7 @@ $scope.selectBrand = function(brand){
               showAlert("Adding Error","Clothing adding unsuccessful")
             }
           },function(error){
+            $ionicLoading.hide();
             showAlert("Fatal Server Error","Server error, try again later.")
           });
      }
@@ -475,19 +495,155 @@ $scope.selectBrand = function(brand){
 .controller('OutfitDetailsCtrl', ['$scope','WardrobeManagement','$stateParams',function($scope,WardrobeManagement,$stateParams) {
     var item  = WardrobeManagement.getOutfitAtIndex($stateParams.itemId); //Obtención de item específico
     $scope.item = item;
-    $scope.products = item.products;
+    var products = []
+    var clothing = WardrobeManagement.getWardrobeClothing();
+    for(i = 0; i < item.products.length; i++){
+      for(j = 0; j < clothing.length;j++){
+        if(item.products[i].id==clothing[j].id){
+          products.push(clothing[j])
+        }
+      }
+    }
+    $scope.products = products
+
     $scope.index = function(item){ //Obtención de índice de un producto de la vista
      var index = WardrobeManagement.indexOfClothing(item);
      return index;
-   }
+    }
  }])
 
-.controller('FriendsCtrl', function($scope) {
+.controller('FriendsCtrl', ['$scope','$state','FriendManagement',function($scope,$state,FriendManagement) {
+  
+  $scope.friends = FriendManagement.getFollowing();
 
-})
+  $scope.redirectUserSearch = function(){
+    $state.go('tab.friends-search');
+  }
 
-.controller('FriendDetailCtrl', function($scope) {
-})
+  $scope.index = function(friend){
+    return FriendManagement.getIndexOfFollowing(friend);
+  }
+
+}])
+
+.controller('FriendDetailSearchCtrl', ['$scope','FriendManagement','$stateParams','$ionicLoading','UserManagement','$ionicPopup','$timeout',function($scope,FriendManagement,$stateParams,$ionicLoading,UserManagement,$ionicPopup,$timeout) {
+    var user  = FriendManagement.getFriendAtIndex($stateParams.friendId); //Obtención de item específico
+    $scope.friend = user;
+    var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+    $ionicLoading.show()
+    var profilePromise = FriendManagement.getProfile(user.id,currentUser);
+    profilePromise.then(function(result){
+      $ionicLoading.hide()
+      alert(JSON.stringify(result))
+      if(result.status==0){
+        $scope.items = result.data
+      }else{
+        showAlert("Profile Error","Profile reading unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide();
+      showAlert("Fatal Server Error","Server error, try again later.")
+    });
+
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+    $scope.usericon = function(friend){ //Estilo en caso de tener la prenda en el guardaropa
+       if(friend.following==true){
+        $scope.followUserStyle = {'display':'none'};
+        return "person-stalker";
+      }else{
+        return "person";
+      }
+    }
+    
+    $scope.follow = function(friend){
+      $ionicLoading.show();
+      var currentUser = UserManagement.getCurrentUser();
+      var followPromise = FriendManagement.followFriend(friend,currentUser);
+      followPromise.then(function(result){
+        $ionicLoading.hide();
+        if(result.status==0){
+          friend.following = true 
+          $scope.usericon(friend)
+          FriendManagement.addFriend(friend);
+        }else{
+          showAlert("Follow Error","User following unsuccessful")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+    }
+}])
+
+.controller('FriendDetailCtrl', ['$scope','FriendManagement','$ionicLoading','UserManagement','$ionicPopup','$timeout','SearchManagement','$stateParams',function($scope,FriendManagement,$ionicLoading,UserManagement,$ionicPopup,$timeout,SearchManagement,$stateParams) {
+  var user  = FriendManagement.getFollowingFriendAtIndex($stateParams.friendId); //Obtención de item específico
+  $scope.friend = user;  
+
+  var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+    $ionicLoading.show()
+    var profilePromise = FriendManagement.getProfile(user.id,currentUser);
+    profilePromise.then(function(result){
+      $ionicLoading.hide()
+      alert(JSON.stringify(result))
+      if(result.status==0){
+        $scope.items = result.data
+      }else{
+        showAlert("Profile Error","Profile reading unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide();
+      showAlert("Fatal Server Error","Server error, try again later.")
+    });
+}])
+
+.controller('FriendsSearchCtrl', ['$scope','FriendManagement','$ionicLoading','UserManagement','$ionicPopup','$timeout','SearchManagement',function($scope,FriendManagement,$ionicLoading,UserManagement,$ionicPopup,$timeout,SearchManagement) {
+  
+  function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+  };
+
+  $scope.searchUser = function(searchTerm){
+    var currentUser = UserManagement.getCurrentUser();
+    $ionicLoading.show();
+    var searchPromise = SearchManagement.searchUsers(searchTerm,currentUser);
+    searchPromise.then(function(result){
+      $ionicLoading.hide();
+      if(result.status==0){
+        users = result.data.users;
+        $scope.friends = users
+        FriendManagement.setFriends(users)
+      }else{
+        showAlert("Search Error","Search unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide();
+      showAlert("Fatal Server Error","Server error, try again later.")
+    });
+  }
+
+  $scope.index = function(friend){
+    return FriendManagement.getIndexOfFriend(friend);
+  }
+}])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){
   $scope.logout = function(){

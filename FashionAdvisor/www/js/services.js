@@ -86,6 +86,15 @@ angular.module('starter.services', [])
     selectedColor = color;
   },getColor: function(){
     return selectedColor;
+  },searchUsers: function(searchTerm,user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/users/search/?user_name="+searchTerm,
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+      }).
+      then(function(result){
+        return result.data;
+      });
   },
   advancedSearch : function(user,color,brand,term){
     var str = "?";
@@ -223,8 +232,7 @@ angular.module('starter.services', [])
     },
     getClothingLength: function(){
       return clothing.length;
-    }
-    ,
+    },
     createOutfit: function(user,name,description){
       var outfit = {}
       outfit.fullname = name;
@@ -239,6 +247,71 @@ angular.module('starter.services', [])
       then(function(result){
         return result.data;
       });
+    }
+  };
+}])
+
+.factory('FriendManagement', ['$http',function($http) {
+  
+  var friends = [];
+
+  var followingUsers = [];
+
+  return {
+    setFriends: function(users){
+      friends = users
+    },
+    getIndexOfFriend: function(friend){
+      return friends.indexOf(friend);
+    },
+    getIndexOfFollowing:function(friend){
+      return followingUsers.indexOf(friend);
+    },
+    getFollowingFriendAtIndex:function(index){
+      return followingUsers[index];
+    },
+    getFriendAtIndex: function(index){
+      return friends[index];
+    },
+    addFriend:function(friend){
+      followingUsers.push(friend);
+    },
+    followFriend: function(friend,user){
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisorservices.herokuapp.com/users/follow",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data:{"user_id":friend.id}}).
+        then(function(result){
+        return result.data;
+      })
+    },
+    getFollowingUsers: function(user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/user/following",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        }).
+        then(function(result){
+        return result.data;
+      })
+    },
+    getFollowing: function(){
+      return followingUsers;
+    },
+    setFollowingUsers: function(followers){
+      followingUsers = followers;
+    },
+    getProfile: function(friend_id,user){
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisorservices.herokuapp.com/users/profile",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data:{"id":friend_id}
+        }).
+        then(function(result){
+        return result.data;
+      })
     }
   };
 }])

@@ -1,0 +1,20 @@
+<ion-view view-title="Search People">
+  <ion-content>
+    <div class="bar bar-header item-input-inset">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input type="search" ng-model="searchTerm" placeholder="Search">
+    </label>
+    <button class="button button-clear button-royal" ng-click="searchUser(searchTerm)">
+      Search
+    </button>
+    </div>
+    <ion-list>
+      <ion-item class="item-avatar" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/friends/search/{{index(friend)}}">
+        <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
+        <h2>{{friend.username}}</h2>
+        <p>{{friend.email}}</p>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

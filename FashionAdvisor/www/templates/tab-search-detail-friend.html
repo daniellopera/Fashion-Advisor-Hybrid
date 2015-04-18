@@ -1,0 +1,29 @@
+<ion-view view-title="{{friend.username}}">
+  <ion-content>
+    <div class="list card">
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-{{usericon(friend)}}"></i>
+          {{friend.username}}
+        </div>
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-at"></i>
+          {{friend.email}}
+        </div>
+      </div>
+      <button ng-style="followUserStyle" class="button button-full button-clear button-assertive" ng-click="follow(friend)">
+      Follow
+      </button> 
+      <div class="item item-divider">
+        User's outfits
+      </div>  
+      <ion-list>
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="">
+        <div class="item item-avatar">
+          <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/18128-200.png">
+          <h2 class="">{{item.name}}</h2>
+          <p>{{item.description}}</p>
+        </div>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
