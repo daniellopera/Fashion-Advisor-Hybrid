@@ -107,7 +107,7 @@ angular.module('starter.controllers', [])
       creationPromise.then(function(result){
         $ionicLoading.hide();
         if(result.status==0){
-          WardrobeManagement.addOutfitToWardrobe(name,description,OutfitManagement.getClothingOfOutfit());
+          WardrobeManagement.addOutfitToWardrobe(name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
           OutfitManagement.setClothing([]);
           $state.go('tab.wardrobe');
         }else{
@@ -492,7 +492,7 @@ $scope.selectBrand = function(brand){
     $scope.description = "<p>"+item.description+"</p>"; //Parseo de la descripción del item específico
   }])
 
-.controller('OutfitDetailsCtrl', ['$scope','WardrobeManagement','$stateParams',function($scope,WardrobeManagement,$stateParams) {
+.controller('OutfitDetailsCtrl', ['$scope','WardrobeManagement','$stateParams','OutfitManagement','$ionicLoading','$ionicPopup','$timeout','UserManagement',function($scope,WardrobeManagement,$stateParams,OutfitManagement,$ionicLoading,$ionicPopup,$timeout,UserManagement) {
     var item  = WardrobeManagement.getOutfitAtIndex($stateParams.itemId); //Obtención de item específico
     $scope.item = item;
     var products = []
@@ -510,6 +510,38 @@ $scope.selectBrand = function(brand){
      var index = WardrobeManagement.indexOfClothing(item);
      return index;
     }
+
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+    $scope.like = function(rating,outfit){
+      var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+      $ionicLoading.show(); //Mostrar loader
+      var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
+      likePromise.then(function(result){
+        $ionicLoading.hide()
+        alert("-"+rating+"-"+JSON.stringify(result))
+        if(result.status==0){
+          $scope.item.likes = result.data.likes
+          $scope.item.dislikes = result.data.dislikes
+        }else{
+          showAlert("Like Error","Outfit like unsuccessful")
+        }
+      },function(error){
+        $ionicLoading.hide()
+        showAlert("Fatal Server -Rating- Error","Server error, try again later.")
+      })
+    }
+
  }])
 
 .controller('FriendsCtrl', ['$scope','$state','FriendManagement',function($scope,$state,FriendManagement) {
@@ -534,7 +566,6 @@ $scope.selectBrand = function(brand){
     var profilePromise = FriendManagement.getProfile(user.id,currentUser);
     profilePromise.then(function(result){
       $ionicLoading.hide()
-      alert(JSON.stringify(result))
       if(result.status==0){
         $scope.items = result.data
       }else{
@@ -595,7 +626,6 @@ $scope.selectBrand = function(brand){
     var profilePromise = FriendManagement.getProfile(user.id,currentUser);
     profilePromise.then(function(result){
       $ionicLoading.hide()
-      alert(JSON.stringify(result))
       if(result.status==0){
         $scope.items = result.data
       }else{

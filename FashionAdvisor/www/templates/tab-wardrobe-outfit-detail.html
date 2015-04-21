@@ -6,11 +6,12 @@
           {{item.name}}
         </div>
         <div class="item item-body">
-          {{item.description}}
-          <p>
-            <a href="#" class="subdued">1 Like</a>
-            <a href="#" class="subdued">5 Comments</a>
-          </p>
+          {{item.description}}  
+        </div>
+        <div class="item item-body">
+          <a href="#" ng-click="like(1,item)" class="subdued">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
+          <a href="#" ng-click="like(0,item)" class="subdued">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
+          <a href="#" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
         </div>
       </div> 
       <div class="item item-divider">

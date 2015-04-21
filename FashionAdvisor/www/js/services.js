@@ -136,9 +136,12 @@ angular.module('starter.services', [])
         return result.data;
       });
     },
-    addOutfitToWardrobe: function(name,description,products){
+    addOutfitToWardrobe: function(name,likes,dislikes,comments,description,products){
       var outfit = {};
       outfit.name = name;
+      outfit.likes = likes;
+      outfit.dislikes = dislikes;
+      outfit.num_comments = comments;
       outfit.description = description;
       outfit.products = products;
       outfits.push(outfit);
@@ -232,6 +235,17 @@ angular.module('starter.services', [])
     },
     getClothingLength: function(){
       return clothing.length;
+    },
+    likeOutfit: function(rating,outfit,user){
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisorservices.herokuapp.com/rating/rate",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data:{"rate":rating,"outfit_id":outfit.id}
+      }).
+      then(function(result){
+        return result.data;
+      });
     },
     createOutfit: function(user,name,description){
       var outfit = {}
