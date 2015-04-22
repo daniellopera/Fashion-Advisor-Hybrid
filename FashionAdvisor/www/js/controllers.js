@@ -506,8 +506,13 @@ $scope.selectBrand = function(brand){
     }
     $scope.products = products
 
-    $scope.index = function(item){ //Obtención de índice de un producto de la vista
+    $scope.indexProduct = function(item){ //Obtención de índice de un producto de la vista
      var index = WardrobeManagement.indexOfClothing(item);
+     return index;
+    }
+
+    $scope.indexOutfit = function(item){ //Obtención de índice de un producto de la vista
+     var index = WardrobeManagement.indexOfOutfit(item);
      return index;
     }
 
@@ -529,7 +534,6 @@ $scope.selectBrand = function(brand){
       var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
       likePromise.then(function(result){
         $ionicLoading.hide()
-        alert("-"+rating+"-"+JSON.stringify(result))
         if(result.status==0){
           $scope.item.likes = result.data.likes
           $scope.item.dislikes = result.data.dislikes
@@ -541,7 +545,6 @@ $scope.selectBrand = function(brand){
         showAlert("Fatal Server -Rating- Error","Server error, try again later.")
       })
     }
-
  }])
 
 .controller('FriendsCtrl', ['$scope','$state','FriendManagement',function($scope,$state,FriendManagement) {
@@ -673,6 +676,40 @@ $scope.selectBrand = function(brand){
   $scope.index = function(friend){
     return FriendManagement.getIndexOfFriend(friend);
   }
+}])
+
+.controller('WardrobeCommentsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement){
+    //var messages = [{'content':'Hola','username':'Nicolás Múnera','date':'15 Julio 1:00pm'},{'content':'Cómo estas?','username':'Nicolás Múnera','date':'16 Julio 1:01 pm'}]
+    //$scope.messages = messages; 
+    
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+    var outfitId = WardrobeManagement.getOutfitAtIndex($stateParams.outfitId).id
+    var currentUser = UserManagement.getCurrentUser();
+    $ionicLoading.show();
+    var commentPromise = OutfitManagement.getOutfitComments(outfitId,currentUser)
+    commentPromise.then(function(result){
+      $ionicLoading.hide()
+      alert(JSON.stringify(result))
+      if(result.status==0){
+        $scope.messages = result.data.outfit_comments    
+      }else{
+        showAlert("Comment Error","Comment unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide()
+      showAlert("Fatal Server Error","Server error, try again later.")
+    })
 }])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){

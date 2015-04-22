@@ -19,3 +19,31 @@ label.texta {
 label.texta > textarea{
 	height: 50px;
 }
+
+.messages {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+
+.messages li {
+	display:block;
+	clear:both;
+	max-width:100%;
+	margin:0 0 0.1rem 0;
+	padding:0;
+}
+
+.messages div {
+	border-radius:.75rem;
+	background:#F1F0F5;
+	color:#383641;
+	padding:.6875rem;
+	margin:0;
+	font-size:.875rem;
+}
+
+.message_username span{
+	color: #4986D0;
+}
+

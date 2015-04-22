@@ -147,6 +147,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+  .state('tab.wadrobe-comments', {
+      url: '/outfit/comments/:outfitId',
+      views: {
+        'tab-wardrobe': {
+          templateUrl: 'templates/tab-wardrobe-comments.html',
+          controller: 'WardrobeCommentsCtrl'
+        }
+      }
+    })
+
   .state('tab.friends', {
       url: '/friends',
       views: {

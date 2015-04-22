@@ -247,6 +247,16 @@ angular.module('starter.services', [])
         return result.data;
       });
     },
+    getOutfitComments: function(outfitId,user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/user/outfits/"+outfitId+"/comments",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+      }).
+      then(function(result){
+        return result.data;
+      });
+    },
     createOutfit: function(user,name,description){
       var outfit = {}
       outfit.fullname = name;
