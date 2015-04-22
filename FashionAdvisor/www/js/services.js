@@ -37,6 +37,7 @@ angular.module('starter.services', [])
   var searchedItems;
   var selectedBrand;
   var selectedColor;
+  var outfits = []
   return {
     searchProducts: function(user,searchTerm){
       return $http({
@@ -50,8 +51,23 @@ angular.module('starter.services', [])
     getProducts: function(){
       return searchedItems;
     },
+    setOutfits: function(ofits){
+      outfits = ofits
+    },
+    getOutfits: function(){
+      return outfits
+    },
+    indexOfOutfit: function(outfit){
+      return outfits.indexOf(outfit)
+    },
+    getOutfitAtIndex: function(index){
+      return outfits[index]
+    },
     getProductAtIndex: function(id){
       return searchedItems[id];
+    },
+    addOutfit: function(outfit){
+      outfits.push(outfit)
     },
     indexOfProduct: function(item){
       return searchedItems.indexOf(item);
@@ -136,15 +152,16 @@ angular.module('starter.services', [])
         return result.data;
       });
     },
-    addOutfitToWardrobe: function(name,likes,dislikes,comments,description,products){
+    addOutfitToWardrobe: function(id,name,likes,dislikes,comments,description,products){
       var outfit = {};
+      outfit.id = id;
       outfit.name = name;
       outfit.likes = likes;
       outfit.dislikes = dislikes;
       outfit.num_comments = comments;
       outfit.description = description;
       outfit.products = products;
-      outfits.push(outfit);
+      outfits.unshift(outfit);
     },
     updateWardrobeClothing: function (user){
       return $http({
@@ -209,6 +226,8 @@ angular.module('starter.services', [])
 
   var clothing = [];
 
+  var comments = [];
+
   function getClothingIDs(){
     var ids = [];
     for (i = 0; i < clothing.length; i++) {
@@ -252,6 +271,36 @@ angular.module('starter.services', [])
         method:"GET",
         url:"http://fashionadvisorservices.herokuapp.com/user/outfits/"+outfitId+"/comments",
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+      }).
+      then(function(result){
+        return result.data;
+      });
+    },
+    getOutfitById: function(outfitId,user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/outfits/"+outfitId,
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+      }).
+      then(function(result){
+        return result.data;
+      });
+    },
+    setComments: function(comms){
+      comments = comms;
+    },
+    getComments: function(){
+      return comments;
+    },
+    addComment: function(comment){
+      comments.unshift(comment)
+    },
+    commentOutfit: function(outfitId,commentTerm,user){
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisorservices.herokuapp.com/comments/comment",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data: {"outfit_id":outfitId,"comment":commentTerm}
       }).
       then(function(result){
         return result.data;

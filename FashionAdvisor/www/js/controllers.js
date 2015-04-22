@@ -107,7 +107,7 @@ angular.module('starter.controllers', [])
       creationPromise.then(function(result){
         $ionicLoading.hide();
         if(result.status==0){
-          WardrobeManagement.addOutfitToWardrobe(name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
+          WardrobeManagement.addOutfitToWardrobe(result.data.id,name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
           OutfitManagement.setClothing([]);
           $state.go('tab.wardrobe');
         }else{
@@ -497,6 +497,7 @@ $scope.selectBrand = function(brand){
     $scope.item = item;
     var products = []
     var clothing = WardrobeManagement.getWardrobeClothing();
+    alert(JSON.stringify(item))
     for(i = 0; i < item.products.length; i++){
       for(j = 0; j < clothing.length;j++){
         if(item.products[i].id==clothing[j].id){
@@ -531,6 +532,7 @@ $scope.selectBrand = function(brand){
     $scope.like = function(rating,outfit){
       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
       $ionicLoading.show(); //Mostrar loader
+      alert("LIKE += "+rating+" , "+JSON.stringify(outfit))
       var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
       likePromise.then(function(result){
         $ionicLoading.hide()
@@ -631,6 +633,7 @@ $scope.selectBrand = function(brand){
       $ionicLoading.hide()
       if(result.status==0){
         $scope.items = result.data
+        alert(JSON.stringify(result.data))
       }else{
         showAlert("Profile Error","Profile reading unsuccessful")
       }
@@ -679,8 +682,6 @@ $scope.selectBrand = function(brand){
 }])
 
 .controller('WardrobeCommentsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement){
-    //var messages = [{'content':'Hola','username':'Nicolás Múnera','date':'15 Julio 1:00pm'},{'content':'Cómo estas?','username':'Nicolás Múnera','date':'16 Julio 1:01 pm'}]
-    //$scope.messages = messages; 
     
     function showAlert(name,msg) {
        var alertPopup = $ionicPopup.alert({
@@ -694,15 +695,19 @@ $scope.selectBrand = function(brand){
        }, 3000);
     };
 
-    var outfitId = WardrobeManagement.getOutfitAtIndex($stateParams.outfitId).id
+    var outfitId = WardrobeManagement.getOutfitAtIndex($stateParams.outfitId)
+    if(outfitId==-1){
+      outfitId = SearchManagement.getOutfitAtIndex($stateParams.outfitId)
+    }
+    outfitId = outfitId.id
     var currentUser = UserManagement.getCurrentUser();
     $ionicLoading.show();
     var commentPromise = OutfitManagement.getOutfitComments(outfitId,currentUser)
     commentPromise.then(function(result){
       $ionicLoading.hide()
-      alert(JSON.stringify(result))
       if(result.status==0){
-        $scope.messages = result.data.outfit_comments    
+        OutfitManagement.setComments(result.data.outfit_comments);
+        $scope.messages = OutfitManagement.getComments()
       }else{
         showAlert("Comment Error","Comment unsuccessful")
       }
@@ -710,6 +715,131 @@ $scope.selectBrand = function(brand){
       $ionicLoading.hide()
       showAlert("Fatal Server Error","Server error, try again later.")
     })
+
+    $scope.comment = function(commentTerm){
+      var currentUser = UserManagement.getCurrentUser();
+      var commentPromise = OutfitManagement.commentOutfit(outfitId,commentTerm,currentUser)
+      $ionicLoading.show();
+      commentPromise.then(function(result){
+        $ionicLoading.hide();
+        if(result.status==0){
+          OutfitManagement.addComment(result.data[0])
+        }else{
+          showAlert("Comment Error","Comment unsuccessful")   
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+    }
+}])
+
+.controller('FriendOutfitDetailCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$ionicPopup','$timeout','$stateParams','$ionicLoading',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$ionicPopup,$timeout,$stateParams,$ionicLoading){
+  
+  function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+  var outfitId = $stateParams.outfitId
+  var currentUser = UserManagement.getCurrentUser();    
+  var outfitPromise = OutfitManagement.getOutfitById(outfitId,currentUser)
+
+  $ionicLoading.show();
+  outfitPromise.then(function(result){
+    $ionicLoading.hide();
+    alert(JSON.stringify(result))
+    if(result.status==0){
+      $scope.item = result.data.outfit
+      $scope.products = result.data.outfit_products
+      SearchManagement.addOutfit(result.data.outfit)
+    }else{
+      showAlert("Outfit Error","Outfit unsuccessful")   
+    }
+  },function(error){
+    $ionicLoading.hide();
+    showAlert("Fatal Server Error","Server error, try again later.")    
+  })
+
+  $scope.like = function(rating,outfit){
+      var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+      $ionicLoading.show(); //Mostrar loader
+      alert("LIKE += "+rating+" , "+JSON.stringify(outfit))
+      var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
+      likePromise.then(function(result){
+        $ionicLoading.hide()
+        if(result.status==0){
+          $scope.item.likes = result.data.likes
+          $scope.item.dislikes = result.data.dislikes
+        }else{
+          showAlert("Like Error","Outfit like unsuccessful")
+        }
+      },function(error){
+        $ionicLoading.hide()
+        showAlert("Fatal Server -Rating- Error","Server error, try again later.")
+      })
+    }
+
+    $scope.indexOutfit = function(item){ //Obtención de índice de un producto de la vista
+      var index = SearchManagement.indexOfOutfit(item);
+      return index;
+    }
+}])
+
+.controller('FriendsOutfitsCommentsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$ionicPopup','$timeout','$stateParams','$ionicLoading',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$ionicPopup,$timeout,$stateParams,$ionicLoading){
+  
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+    var outfitId = SearchManagement.getOutfitAtIndex($stateParams.outfitId).id
+    var currentUser = UserManagement.getCurrentUser();
+    $ionicLoading.show();
+    var commentPromise = OutfitManagement.getOutfitComments(outfitId,currentUser)
+    commentPromise.then(function(result){
+      $ionicLoading.hide()
+      if(result.status==0){
+        OutfitManagement.setComments(result.data.outfit_comments);
+        $scope.messages = OutfitManagement.getComments()
+      }else{
+        showAlert("Comment Error","Comment unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide()
+      showAlert("Fatal Server Error","Server error, try again later.")
+    })
+
+    $scope.comment = function(commentTerm){
+      var currentUser = UserManagement.getCurrentUser();
+      var commentPromise = OutfitManagement.commentOutfit(outfitId,commentTerm,currentUser)
+      $ionicLoading.show();
+      commentPromise.then(function(result){
+        $ionicLoading.hide();
+        if(result.status==0){
+          OutfitManagement.addComment(result.data[0])
+        }else{
+          showAlert("Comment Error","Comment unsuccessful")   
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+    }
 }])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){

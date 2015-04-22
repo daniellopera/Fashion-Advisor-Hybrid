@@ -157,6 +157,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+  .state('tab.friends-outfit-comments', {
+      url: '/friend/outfit/comments/:outfitId',
+      views: {
+        'tab-friends': {
+          templateUrl: 'templates/tab-friend-search-outfit-comments.html',
+          controller: 'FriendsOutfitsCommentsCtrl'
+        }
+      }
+    })
+
   .state('tab.friends', {
       url: '/friends',
       views: {
@@ -173,6 +183,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         'tab-friends': {
           templateUrl: 'templates/tab-friend-detail.html',
           controller: 'FriendDetailCtrl'
+        }
+      }
+    })
+
+  .state('tab.friend-outfit-detail', {
+      url: '/friend/detail/outfits/:outfitId',
+      views: {
+        'tab-friends': {
+          templateUrl: 'templates/tab-friend-outfit-detail.html',
+          controller: 'FriendOutfitDetailCtrl'
         }
       }
     })
