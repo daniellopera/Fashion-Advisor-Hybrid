@@ -1,3 +1,5 @@
+//App services
+
 angular.module('starter.services', [])
 
 .factory('UserManagement', ['$http',function($http) {

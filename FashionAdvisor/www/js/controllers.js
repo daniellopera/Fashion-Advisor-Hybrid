@@ -1,3 +1,5 @@
+//App controllers
+
 angular.module('starter.controllers', [])
 
 .controller('WardrobeCtrl',['$scope','$state','UserManagement','WardrobeManagement','$ionicLoading','$ionicHistory','OutfitManagement', function($scope,$state,UserManagement,WardrobeManagement,$ionicLoading,$ionicHistory,OutfitManagement) {
@@ -450,7 +452,6 @@ $scope.selectBrand = function(brand){
     $scope.item = item;
     var products = []
     var clothing = WardrobeManagement.getWardrobeClothing();
-    alert(JSON.stringify(item))
     for(i = 0; i < item.products.length; i++){
       for(j = 0; j < clothing.length;j++){
         if(item.products[i].id==clothing[j].id){
@@ -485,7 +486,6 @@ $scope.selectBrand = function(brand){
     $scope.like = function(rating,outfit){
       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
       $ionicLoading.show(); //Mostrar loader
-      alert("LIKE += "+rating+" , "+JSON.stringify(outfit))
       var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
       likePromise.then(function(result){
         $ionicLoading.hide()
@@ -586,7 +586,6 @@ $scope.selectBrand = function(brand){
       $ionicLoading.hide()
       if(result.status==0){
         $scope.items = result.data
-        alert(JSON.stringify(result.data))
       }else{
         showAlert("Profile Error","Profile reading unsuccessful")
       }
@@ -708,7 +707,6 @@ $scope.selectBrand = function(brand){
   $ionicLoading.show();
   outfitPromise.then(function(result){
     $ionicLoading.hide();
-    alert(JSON.stringify(result))
     if(result.status==0){
       $scope.item = result.data.outfit
       $scope.products = result.data.outfit_products
@@ -724,7 +722,6 @@ $scope.selectBrand = function(brand){
   $scope.like = function(rating,outfit){
       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
       $ionicLoading.show(); //Mostrar loader
-      alert("LIKE += "+rating+" , "+JSON.stringify(outfit))
       var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
       likePromise.then(function(result){
         $ionicLoading.hide()
