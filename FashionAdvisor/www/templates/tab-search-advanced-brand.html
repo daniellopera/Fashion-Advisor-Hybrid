@@ -10,6 +10,11 @@
     </button>
   </div>
   <ion-list>
+    <ion-item class="item item-remove-animate item-icon-right searchitem" type="item-text-wrap" href="">
+      <div class="item" ng-click="selectBrand(null)">
+        Blank
+      </div>
+    </ion-item>
     <ion-item class="item item-remove-animate item-icon-right searchitem" ng-repeat="brand in brands" type="item-text-wrap" href="">
       <div class="item" ng-click="selectBrand(brand)">
       {{brand.name}}

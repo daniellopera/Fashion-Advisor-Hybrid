@@ -114,17 +114,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  //Estado de búsqueda avanzada
-  .state('tab.advanced-search', {
-      url: '/search/advanced',
-      views: {
-        'tab-search': {
-          templateUrl: 'templates/tab-search-advanced.html',
-          controller: 'AdvancedSearchCtrl'
-        }
-      }
-    })
-
   //Estado de búsqueda por brand
   .state('tab.advanced-search-brand', {
       url: '/search/advanced/brand',

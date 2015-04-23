@@ -278,58 +278,7 @@ angular.module('starter.controllers', [])
 
 .controller('SearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
 
-  function showAlert(name,msg) {
-   var alertPopup = $ionicPopup.alert({
-     title: name,
-     template: msg
-   });
-   alertPopup.then(function(res) {
-   });
-   $timeout(function() {
-     alertPopup.close();
-   }, 3000);
-  };
-
- $scope.search = function(searchTerm){ 
-  var currentUser = UserManagement.getCurrentUser();
-  $ionicLoading.show(); 
-  var searchPromise = SearchManagement.searchProducts(currentUser,searchTerm); 
-  searchPromise.then(function(result){
-    $ionicLoading.hide(); 
-    if(result.status==0){
-      SearchManagement.setItems(result.data.products); 
-      $scope.items = result.data.products; 
-    }else{
-      showAlert("Search Error","Search unsuccessful")
-    }
-  },function(error){
-    $ionicLoading.hide();
-    showAlert("Fatal Server Error","Server error, try again later.")
-  });
-}
-
-$scope.advancedSearch = function(){
-  SearchManagement.selectBrand({});
-  SearchManagement.selectColor({});
-  $state.go('tab.advanced-search');
-}
-
-$scope.index = function(item){ 
-  return SearchManagement.indexOfProduct(item);
-}
-
-$scope.searchIcon = function(item){ 
- if(item.in_wardrobe==true){
-  $scope.addToWadrobeStyle = {'display':'none'};
-  return "heart";
-}else{
-  return "bag";
-}
-}
-}])
-
-.controller('AdvancedSearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
-
+ 
  function showAlert(name,msg) {
    var alertPopup = $ionicPopup.alert({
      title: name,
@@ -400,6 +349,10 @@ $scope.searchIcon = function(item){
 
 }])
 
+.controller('AdvancedSearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
+
+}])
+
 .controller('AdvancedSearchBrandCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
 
   function showAlert(name,msg) {
@@ -433,7 +386,7 @@ $scope.searchIcon = function(item){
 
 $scope.selectBrand = function(brand){
   SearchManagement.selectBrand(brand);
-  $state.go('tab.advanced-search');
+  $state.go('tab.search');
 }
 
 }])

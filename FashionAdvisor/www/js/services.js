@@ -120,7 +120,7 @@ angular.module('starter.services', [])
     if(angular.isString(color)){
       str+="&color_id="+color;
     }
-    if(brand.id!=undefined){
+    if(brand!=undefined){
       str+="&brand_id="+brand.id;
     }
     return $http({
@@ -212,7 +212,7 @@ angular.module('starter.services', [])
       return outfits.indexOf(item);
     },
     addProductToClothing: function(item){
-      clothing.push(item);
+      clothing.unshift(item);
     },
     unselectAll : function(){
       for (i = 0; i < clothing.length; i++) {
@@ -238,7 +238,7 @@ angular.module('starter.services', [])
 
   return {
     addClothingToNewOutfit: function(item){
-      clothing.push(item);
+      clothing.unshift(item);
     },
     removeClothingFromNewOutfitAtIndex: function(index){
       clothing.splice(index,1);
@@ -347,7 +347,7 @@ angular.module('starter.services', [])
       return friends[index];
     },
     addFriend:function(friend){
-      followingUsers.push(friend);
+      followingUsers.unshift(friend);
     },
     followFriend: function(friend,user){
       return $http({
