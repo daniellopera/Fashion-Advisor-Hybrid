@@ -1,3 +1,5 @@
+//App configuration and routes
+
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .run(function($ionicPlatform) {
@@ -110,6 +112,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         'tab-search': {
           templateUrl: 'templates/tab-search.html',
           controller: 'SearchCtrl'
+        }
+      }
+    })
+
+  //Estado de búsqueda de prendas y outfits
+  .state('tab.search-outfits', {
+      url: '/search/outfits',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-outfits.html',
+          controller: 'SearchOutfitsCtrl'
         }
       }
     })

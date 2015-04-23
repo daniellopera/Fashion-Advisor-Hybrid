@@ -278,9 +278,8 @@ angular.module('starter.controllers', [])
   };
 }])
 
-.controller('SearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
+.controller('SearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout','$ionicHistory', function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout,$ionicHistory) {
 
- 
  function showAlert(name,msg) {
    var alertPopup = $ionicPopup.alert({
      title: name,
@@ -341,12 +340,19 @@ $scope.index = function(item){
 }
 
 $scope.searchIcon = function(item){ 
- if(item.in_wardrobe==true){
-  $scope.addToWadrobeStyle = {'display':'none'};
-  return "heart";
-}else{
-  return "bag";
+   if(item.in_wardrobe==true){
+    $scope.addToWadrobeStyle = {'display':'none'};
+    return "heart";
+  }else{
+    return "bag";
+  }
 }
+
+$scope.getOutfits = function(){
+  $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+    });
+  $state.go('tab.search-outfits');
 }
 
 }])
@@ -790,6 +796,17 @@ $scope.selectBrand = function(brand){
         showAlert("Fatal Server Error","Server error, try again later.")
       })
     }
+}])
+
+.controller('SearchOutfitsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$ionicPopup','$timeout','$stateParams','$ionicLoading','$ionicHistory',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$ionicPopup,$timeout,$stateParams,$ionicLoading,$ionicHistory){
+  
+  $scope.getClothing = function(){
+    $ionicHistory.nextViewOptions({
+      disableAnimate: true,
+    });
+    $state.go('tab.search');
+  }
+
 }])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){

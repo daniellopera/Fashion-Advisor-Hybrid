@@ -1,0 +1,35 @@
+<ion-view view-title="Search" hide-back-button="true">
+  <div class="bar bar-subheader">
+    <div class="button-bar">
+      <button class="button button-stable button-android" ng-click="">
+        Outfits
+      </button>
+      <button class="button button-light button-android" ng-click="
+      getClothing()">
+        Clothing
+      </button>
+    </div>
+  </div>
+  <ion-content>
+    <br/>
+    <br/>
+    <div class="bar bar-header item-input-inset">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input type="search" ng-model="searchTerm" placeholder="Search">
+    </label>
+    <button class="button button-clear button-royal" ng-click="advancedSearch(searchTerm)">
+      Search
+    </button>
+    </div>
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/outfits/{{index(item)}}">
+        <div class="item item-avatar">
+          <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/18128-200.png">
+          <h2 class="">{{item.name}}</h2>
+          <p>{{item.description}}</p>
+        </div>
+    	</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
