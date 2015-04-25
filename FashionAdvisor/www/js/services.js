@@ -107,7 +107,7 @@ angular.module('starter.services', [])
   },searchUsers: function(searchTerm,user){
       return $http({
         method:"GET",
-        url:"http://fashionadvisorservices.herokuapp.com/users/search/?user_name="+searchTerm,
+        url:"http://fashionadvisorservices.herokuapp.com/users/search/"+searchTerm,
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
       }).
       then(function(result){
