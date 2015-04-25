@@ -816,7 +816,6 @@ $scope.selectBrand = function(brand){
     $ionicLoading.show();
     recommendPromise.then(function(result){
       $ionicLoading.hide()
-      alert(JSON.stringify(result))
       if(result.status==0){
         $scope.items = result.data
       }else{
