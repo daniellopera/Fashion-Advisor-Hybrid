@@ -16,14 +16,32 @@
     <div class="bar bar-header item-input-inset">
     <label class="item-input-wrapper">
       <i class="icon ion-ios7-search placeholder-icon"></i>
-      <input type="search" ng-model="searchTerm" placeholder="Search">
+      <input type="search" ng-model="searchTerm" placeholder="Search outfits by tag">
     </label>
-    <button class="button button-clear button-royal" ng-click="advancedSearch(searchTerm)">
+    <button class="button button-clear button-royal" ng-click="recommend(searchTerm)">
       Search
     </button>
     </div>
+    <ion-item class="" href="#/tab/search/advanced/select/clothing">
+      <div class="" href="#">
+          Select clothing
+      </div>
+    </ion-item>
+    <div class="item item-divider">
+        Selected clothing to search outfit
+    </div>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/outfits/{{index(item)}}">
+      <ion-item class="item-remove-animate item-icon-right searchitem item-avatar" ng-repeat="product in products" type="item-text-wrap">
+          <img ng-src="{{product.image.sizes.Large.url}}">
+          <h2 class="">{{product.name}}</h2>
+          <p>{{product.brand.name}}</p>
+      </ion-item>
+    </ion-list>
+    <div class="item item-divider">
+        Outfit search results
+    </div>
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/detail/outfits/{{item.id}}">
         <div class="item item-avatar">
           <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/18128-200.png">
           <h2 class="">{{item.name}}</h2>

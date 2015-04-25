@@ -1,0 +1,30 @@
+<ion-view view-title="Outfit details">
+  <ion-content>
+      <div class="list card">
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-bowtie"></i>
+          {{item.name}}
+        </div>
+        <div class="item item-body">
+          {{item.description}}  
+        </div>
+        <div class="item item-body">
+          <a href="#" ng-click="like(1,item)" class="subdued">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
+          <a href="#" ng-click="like(0,item)" class="subdued">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
+          <a href="#/tab/search/outfits/comments/{{indexOutfit(item)}}" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
+        </div>
+      </div> 
+      <div class="item item-divider">
+        Clothing
+      </div>
+      <ion-list>
+        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="product in products" type="item-text-wrap" href="">
+          <div class="item item-avatar">
+          <img ng-src="{{product.image.sizes.Large.url}}">
+          <h2 class="">{{product.name}}</h2>
+          <p>{{product.brand.name}}</p>
+        </div>
+        </ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

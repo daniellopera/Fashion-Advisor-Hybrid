@@ -322,6 +322,18 @@ angular.module('starter.services', [])
       then(function(result){
         return result.data;
       });
+    },
+    recommendOutfits: function(tag,user){
+      var productids = getClothingIDs();
+      return $http({
+        method:"POST",
+        url:"http://fashionadvisorservices.herokuapp.com/outfits/recommend",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token},
+        data:{"tags":[tag],"products":productids}
+      }).
+      then(function(result){
+        return result.data;
+      });
     }
   };
 }])

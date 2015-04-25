@@ -127,6 +127,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+  //Estado de búsqueda de prendas y outfits
+  .state('tab.search-select-clothing', {
+      url: '/search/advanced/select/clothing',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-select-clothing.html',
+          controller: 'SearchSelectClothingCtrl'
+        }
+      }
+    })
+
   //Estado de búsqueda por brand
   .state('tab.advanced-search-brand', {
       url: '/search/advanced/brand',
@@ -145,6 +156,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         'tab-search': {
           templateUrl: 'templates/tab-search-detail-clothing.html',
           controller: 'SearchClothingDetailsCtrl'
+        }
+      }
+    })
+
+  .state('tab.search-outfit-detail', {
+      url: '/search/detail/outfits/:outfitId',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-outfit-detail.html',
+          controller: 'SearchOutfitDetailCtrl'
+        }
+      }
+    })
+
+  .state('tab.search-outfit-comments', {
+      url: '/search/outfits/comments/:outfitId',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-outfit-comments.html',
+          controller: 'SearchCommentsCtrl'
         }
       }
     })
