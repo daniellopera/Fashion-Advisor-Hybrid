@@ -33,38 +33,33 @@
       </select>
     </label>
     <ion-item class="" href="#/tab/search/advanced/brand">
-      <div class="" href="#">
-          Select brand
+      <div class="item-icon-right" href="#">
+        Select brand
         <span class="item-note">
           {{getSelectedBrand().name}}
         </span>
+        <i class="icon ion-ios-arrow-right"></i>
       </div>
     </ion-item>
       <ion-list>
-        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
-        <div class="list card">
+        <ion-item class="item-remove-animate item-icon-right searchitem card" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
           <div href="#" class="item item-icon-left">
           <i class="icon ion-{{searchIcon(item)}}"></i>
           {{item.name}}
-        </div>
+          </div>
           <div class="item item-body">
             <center>
             <img class="" ng-src="{{item.image.sizes.Large.url}}">
             </center>
           </div>
-          <div href="#" class="item item-icon-left">
-            <i class="icon ion-bowtie"></i>
+          <div href="#" class="item">
+            <strong>Brand</strong></br>
             {{item.brand.name}}
           </div>
-          <div href="#" class="item item-icon-left">
-            <i class="icon ion-card"></i>
+          <div href="#" class="item Retailer">
+            <strong>Retailer</strong></br>
             {{item.retailer.name}}
           </div>
-          <div href="#" class="item item-icon-left">
-            <i class="icon ion-cash"></i>
-            {{item.currency}} {{item.priceLabel}}
-          </div>
-        </div>
         </ion-item>
       </ion-list>
   </ion-content>

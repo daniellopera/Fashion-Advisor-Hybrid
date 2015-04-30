@@ -9,8 +9,10 @@
           {{item.description}}  
         </div>
         <div class="item item-body">
-          <a href="#" ng-click="like(1,item)" class="subdued">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
-          <a href="#" ng-click="like(0,item)" class="subdued">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
+          <a href="#" ng-click="like(1,item)" class="subdued ">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
+          <a href="#" ng-click="like(0,item)" class="subdued ">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
+        </div>
+        <div class="item item-body">
           <a href="#/tab/outfit/comments/{{indexOutfit(item)}}" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
         </div>
       </div> 

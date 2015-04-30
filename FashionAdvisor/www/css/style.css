@@ -30,7 +30,7 @@ label.texta > textarea{
 	display:block;
 	clear:both;
 	max-width:100%;
-	margin:0 0 0.1rem 0;
+	margin:0 0 0 0;
 	padding:0;
 }
 
@@ -44,5 +44,34 @@ label.texta > textarea{
 
 .message_username span{
 	color: #4986D0;
+}
+
+.scroll-content {
+    background: url("../pics/concrete_wall_2.png") 
+}
+
+.item-stacked-label input, .item-stacked-label textarea{
+	background-color:transparent;
+}
+
+.button.button-full.button-clear.button-dark {
+	margin: 0;
+}
+
+.bar.bar-calm{
+	border-color: rgba(199, 165, 139, 0.63);
+	background-color: #f3a8b9;
+	background-image: linear-gradient(0deg, #c78981, #c79891 50%, transparent 50%);
+	color: #fff; 
+}
+
+.bar-calm .button{
+	border-color: rgba(199, 165, 139, 0.63);
+	background-color: #f3a8b9;
+	color: #fff;	
+}
+
+.policies{
+	font-size: 12px;
 }
 

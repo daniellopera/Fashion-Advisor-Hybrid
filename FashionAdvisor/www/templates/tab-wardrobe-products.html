@@ -1,4 +1,4 @@
-<ion-view view-title="Wardrobe" hide-back-button="true">
+<ion-view view-title="My Wardrobe" hide-back-button="true">
   <div class="bar bar-subheader">
       <div class=" button-bar">
         <button class="button button-light button-android" ng-click="getOutfits()">
@@ -18,10 +18,11 @@
     </label>
     <ion-list>
       <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/clothing/{{index(item)}}">
-        <div class="item item-avatar">
+        <div class="item item-avatar item-icon-right">
           <img ng-src="{{item.image.sizes.Large.url}}">
           <h2 class="">{{item.name}}</h2>
           <p>{{item.brand.name}}</p>
+          <i class="icon ion-ios-arrow-right"></i>
         </div>
     	</ion-item>
     </ion-list>

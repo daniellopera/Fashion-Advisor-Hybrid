@@ -10,36 +10,31 @@
             <img ng-src="{{item.image.sizes.Large.url}}">
           </center>
         </div>
-        <div class="item item-body" ng-bind-html="description">
-        </div>
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-bowtie"></i>
+        <div href="#" class="item">          
+          <strong>Brand</strong><br/>
           {{item.brand.name}}
         </div>
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-card"></i>
+        <div href="#" class="item">
+          <strong>Retailer</strong><br/>
           {{item.retailer.name}}
         </div>
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-paintbrush"></i>
+        <div href="#" class="item">
+          <strong>Color</strong><br/>
           {{item.colors[0].name}}
         </div>
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-pricetag"></i>
+        <div href="#" class="item">
+          <strong>Categories</strong><br/>
           {{item.categories[0].name}}
         </div>
-        <div href="#" class="item item-icon-left">
-           <i class="icon ion-cash"></i>
-           {{item.currency}} {{item.priceLabel}}
+        <div href="#" class="item">
+          <strong>Price</strong><br/>
+          {{item.currency}} {{item.priceLabel}}
         </div>
-        <div href="#" class="item item-icon-left">
-           <i class="icon ion-tshirt-outline"></i>
-           {{item.sizes[0].name}}
+        <div href="#" class="item">
+          <strong>Sizes</strong><br/>
+          {{item.sizes[0].name}}
         </div>
-        <div href="#" class="item item-body">
-          <a href="{{item.retailer_url}}">Buy me now!</a>
-        </div>
-      </div>
+      </div> 
       <button ng-style="addToWadrobeStyle" class="button button-full button-clear button-assertive" ng-click="addToWardrobe(item)">
       Add to Wardrobe
       </button>      
