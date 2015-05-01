@@ -31,6 +31,7 @@ label.texta > textarea{
 	clear:both;
 	max-width:100%;
 	margin:0 0 0 0;
+	border: 1px solid rgba(245, 149, 172, 0.52);
 	padding:0;
 }
 
@@ -74,4 +75,3 @@ label.texta > textarea{
 .policies{
 	font-size: 12px;
 }
-
