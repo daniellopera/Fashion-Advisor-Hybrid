@@ -32,33 +32,33 @@
         </option>
       </select>
     </label>
-    <ion-item class="" href="#/tab/search/advanced/brand">
-      <div class="item-icon-right" href="#">
-        Select brand
-        <span class="item-note">
-          {{getSelectedBrand().name}}
-        </span>
-        <i class="icon ion-ios-arrow-right"></i>
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Categories
       </div>
-    </ion-item>
-      <ion-list>
+      <select ng-change="selectCategory(color)" ng-model="category">
+        <option class="" value={{-1}}></option>
+        <option class="" value="Tops">Tops</option>
+        <option class="" value="Bottoms">Bottoms</option>
+        <option class="" value="Skirts">Skirts</option>
+        <option class="" value="Dresses">Dresses</option>
+        <option class="" value="Outwear">Outwear</option>
+        <option class="" value="Bags">Bags</option>
+        <option class="" value="Shoes">Shoes</option>
+        <option class="" value="Accessories">Acessories</option>
+      </select>
+    </label>
+    <ion-list>
         <ion-item class="item-remove-animate item-icon-right searchitem card" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
           <div href="#" class="item item-icon-left">
           <i class="icon ion-{{searchIcon(item)}}"></i>
-          {{item.name}}
+          {{item.name}} <br/>
+          <span class="subs">{{item.brand.name}}</span>
           </div>
           <div class="item item-body">
             <center>
             <img class="" ng-src="{{item.image.sizes.Large.url}}">
             </center>
-          </div>
-          <div href="#" class="item">
-            <strong>Brand</strong></br>
-            {{item.brand.name}}
-          </div>
-          <div href="#" class="item Retailer">
-            <strong>Retailer</strong></br>
-            {{item.retailer.name}}
           </div>
         </ion-item>
       </ion-list>

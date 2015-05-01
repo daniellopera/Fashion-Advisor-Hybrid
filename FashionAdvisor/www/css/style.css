@@ -75,3 +75,28 @@ label.texta > textarea{
 .policies{
 	font-size: 12px;
 }
+
+.subs{
+	font-size: 14px;
+	color: #A09999;
+}
+
+.button.login_button{
+	background-color: #f5be9a;
+	border-color: #e0bb8d;
+	width: 75%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	font-weight: bold;
+}
+
+.button.login_button.activated{
+	background-color: #f5be9a;
+	border-color: #e0bb8d;
+	width: 75%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); 
+	font-weight: bold;
+}
+
+.item-remove-animate.item-icon-right.searchitem{
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
