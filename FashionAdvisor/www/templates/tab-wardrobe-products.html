@@ -1,19 +1,7 @@
-<ion-view view-title="My Wardrobe" hide-back-button="true">
-  <div class="bar bar-subheader">
-      <div class=" button-bar">
-        <button class="button button-light button-android" ng-click="getOutfits()">
-          Outfits
-        </button>
-        <button class="button button-stable button-android" ng-click="getClothing()">
-          Clothing
-        </button>
-      </div>
-    </div>
+<ion-view view-title="My Clothing">
   <ion-content>
-    <br/>
-    <br/>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/clothing/{{index(item)}}">
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/account/wardrobe/clothing/{{index(item)}}">
         <div class="item item-avatar item-icon-right">
           <img ng-src="{{item.image.sizes.Large.url}}">
           <h2 class="">{{item.name}}</h2>

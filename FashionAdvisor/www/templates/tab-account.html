@@ -1,27 +1,50 @@
-<ion-view view-title="Account">
+<ion-view view-title="Me">
+  <ion-nav-buttons side="right">
+      <button class="button icon ion-ios-gear" ng-click="">
+      </button>
+  </ion-nav-buttons>
   <ion-content>
-	<ul class="list">
-	  <li class="item item-toggle">
-	     Fashion updates
-	     <label class="toggle toggle-assertive">
-	       <input type="checkbox">
-	       <div class="track">
-	         <div class="handle"></div>
-	       </div>
-	     </label>
-	  </li>
-	  <li class="item item-toggle">
-	     Notifications
-	     <label class="toggle toggle-positive">
-	       <input type="checkbox">
-	       <div class="track">
-	         <div class="handle"></div>
-	       </div>
-	     </label>
-	  </li>
-	</ul>
-	<button class="button button-full button-clear button-assertive" ng-click="logout()">
-  	Log out
-	</button>
+  	<ion-item class="item-avatar item-remove-animate item-icon-right searchitem">
+  		<img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
+        <h2>David Romero</h2>
+        <p>davidromeromillan@gmail.com</p>
+	  </ion-item>
+    <div class="list white-background">
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">What's on your mind?</span>
+        <input type="text" ng-model="email" placeholder="Share some thoughts ...">
+      </label>
+    </div>
+    <div class="item item-divider"></div>  
+    <ion-list>
+    	<ion-item class="item-remove-animate item-icon-right searchitem" type="item-text-wrap" ng-click="redirectToMyClothing()">
+          <h2>My Clothing</h2>
+          <p>20 items</p>
+          <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-icon-right searchitem"
+       type="item-text-wrap" ng-click="redirectToMyOutfits()">
+          <h2>My Outfits</h2>
+          <p>3 outfits</p>
+          <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-icon-right searchitem"
+      type="item-text-wrap" ng-click="redirectToFollowing()">
+          <h2>Following</h2>
+          <p>4 Following</p>
+          <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-icon-right searchitem"type="item-text-wrap" ng-click="redirectToFollowers()">
+          <h2>Followers</h2>
+          <p>6 Followers</p>
+          <i class="icon ion-ios-arrow-right"></i>
+      </ion-item>
+    </ion-list>
+    </br>
+    <center>
+      <button class="button logout_button button-assertive" ng-click="logout()">
+        Log out
+      </button>
+    </center>
   </ion-content>
 </ion-view>

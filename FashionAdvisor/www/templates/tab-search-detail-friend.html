@@ -1,27 +1,36 @@
 <ion-view view-title="{{friend.username}}">
   <ion-content>
-    <div class="list card">
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-{{usericon(friend)}}"></i>
+      <div class="list card">
+        <div href="#" class="item">
+          <strong>Username</strong><br/>
           {{friend.username}}
         </div>
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-at"></i>
+        <div href="#" class="item">
+          <strong>Email</strong><br/>
           {{friend.email}}
+        </div>
+        <div href="#" class="item">
+          <strong>Followers</strong><br/>
+          11
+        </div>
+        <div href="#" class="item">
+          <strong>Following</strong><br/>
+          30
         </div>
       </div>
       <button ng-style="followUserStyle" class="button button-full button-clear button-assertive" ng-click="follow(friend)">
-      Follow
+        Follow
       </button> 
       <div class="item item-divider">
         User's outfits
       </div>  
       <ion-list>
-      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/friend/detail/outfits/{{item.id}}">
-        <div class="item item-avatar">
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/detail/outfits/{{item.id}}">
+        <div class="item item-avatar item-icon-right">
           <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/18128-200.png">
           <h2 class="">{{item.name}}</h2>
           <p>{{item.description}}</p>
+          <i class="icon ion-ios-arrow-right"></i>
         </div>
       </ion-item>
     </ion-list>

@@ -8,6 +8,10 @@
       getClothing()">
         Clothing
       </button>
+      <button class="button button-light button-android" ng-click="
+      getPeople()">
+        People
+      </button>
     </div>
   </div>
   <ion-content>
@@ -18,25 +22,31 @@
       <i class="icon ion-ios7-search placeholder-icon"></i>
       <input type="search" ng-model="searchTerm" placeholder="Search outfits by tag">
     </label>
-    <button class="button button-clear button-royal" ng-click="recommend(searchTerm)">
+    <button class="button button-clear button-dark" ng-click="recommend(searchTerm)">
       Search
     </button>
     </div>
-    <ion-item class="" href="#/tab/search/advanced/select/clothing">
-      <div class="" href="#">
-          Select clothing
-      </div>
-    </ion-item>
     <div class="item item-divider">
-        Selected clothing to search outfit
+        Select clothing to search outfit
     </div>
-    <ion-list>
-      <ion-item class="item-remove-animate item-icon-right searchitem item-avatar" ng-repeat="product in products" type="item-text-wrap">
-          <img ng-src="{{product.image.sizes.Large.url}}">
-          <h2 class="">{{product.name}}</h2>
-          <p>{{product.brand.name}}</p>
-      </ion-item>
-    </ion-list>
+
+    <div class="row item">
+      <div class="col col-33">
+        <center>
+          <img class="clothing-selector" ng-src="{{selectedClothing(0)}}" ng-click="select()">
+        </center>
+      </div>
+      <div class="col col-33">
+        <center>
+          <img class="clothing-selector" ng-src="{{selectedClothing(1)}}" ng-click="select()">
+        </center>
+      </div>
+      <div class="col col-33">
+        <center>
+          <img class="clothing-selector" ng-src="{{selectedClothing(2)}}" ng-click="select()">
+        </center>
+      </div>     
+    </div>
     <div class="item item-divider">
         Outfit search results
     </div>

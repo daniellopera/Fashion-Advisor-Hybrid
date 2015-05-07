@@ -1,23 +1,11 @@
-<ion-view view-title="My Wardrobe" hide-back-button="true">
+<ion-view view-title="My Outfits">
   <ion-nav-buttons side="right">
       <button class="button icon ion-plus-round" ng-click="redirectOutfitCreation()">
       </button>
   </ion-nav-buttons>
- <div class="bar bar-subheader">
-    <div class="button-bar">
-      <button class="button button-stable button-android" ng-click="getOutfits()">
-        Outfits
-      </button>
-      <button class="button button-light button-android" ng-click="getClothing()">
-        Clothing
-      </button>
-    </div>
-  </div>
   <ion-content>
-    <br/>
-    <br/>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/wardrobe/outfits/{{index(item)}}">
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/account/wardrobe/outfits/{{index(item)}}">
         <div class="item item-avatar item-icon-right">
           <img ng-src="http://cdn.flaticon.com/png/256/26819.png">
           <h2 class="">{{item.name}}</h2>

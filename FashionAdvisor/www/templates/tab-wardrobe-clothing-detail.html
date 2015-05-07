@@ -1,14 +1,19 @@
-<ion-view view-title="{{item.name}}">
+<ion-view view-title="{{item.unbrandedName}}">
   <ion-content>
       <div class="list card">
         <div href="#" class="item item-icon-left">
           <i class="icon ion-heart"></i>
-          {{item.name}}
+          {{item.unbrandedName}}
         </div>
-        <div href="#" class="item">
-          <center>
-            <img ng-src="{{item.image.sizes.Large.url}}">
-          </center>
+        <div href="#" class="item" ng-click="openModal()">
+          <ion-slide-box on-slide-changed="slideChanged(index)" 
+                             show-pager="true">
+                <ion-slide ng-repeat="image in images">
+                  <center>
+                    <img class="slide_image" ng-src="{{image.url}}" />
+                  </center>
+                </ion-slide>
+              </ion-slide-box>
         </div>
         <div href="#" class="item">          
           <strong>Brand</strong><br/>
@@ -18,21 +23,21 @@
           <strong>Retailer</strong><br/>
           {{item.retailer.name}}
         </div>
-        <div href="#" class="item">
-          <strong>Color</strong><br/>
-          {{item.colors[0].name}}
+        <div href="#" class="item item-text-wrap">
+          <strong>Colors</strong><br/>
+          {{getColors(item)}}
         </div>
-        <div href="#" class="item">
+        <div href="#" class="item item-text-wrap">
           <strong>Categories</strong><br/>
-          {{item.categories[0].name}}
+          {{getCategories(item)}}
         </div>
         <div href="#" class="item">
           <strong>Price</strong><br/>
           {{item.currency}} {{item.priceLabel}}
         </div>
-        <div href="#" class="item">
+        <div href="#" class="item item-text-wrap">
           <strong>Sizes</strong><br/>
-          {{item.sizes[0].name}}
+          {{getSizes(item)}}
         </div>
       </div> 
   </ion-content>

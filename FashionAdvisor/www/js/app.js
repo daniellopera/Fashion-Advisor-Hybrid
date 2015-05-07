@@ -15,97 +15,50 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 
-  $stateProvider
-
-  //Estado abstracto Tab
-  .state('tab', {
+  //Abstract state
+  $stateProvider.state('tab', {
     url: "/tab",
     abstract: true,
     templateUrl: "templates/tabs.html"
   })
 
-  //Estado de login
+  //Signin
   .state('signin', {
     url: '/signin',
     templateUrl: 'templates/signin.html',
     controller: 'SigninCtrl'
   })
 
-  //Estado de registro
+  //Register
   .state('register', {
     url: '/register',
     templateUrl: 'templates/register.html',
     controller: 'RegisterCtrl'
   })
 
-  //Estado de colección o closet personal
-  .state('tab.wardrobe', {
-    url: '/wardrobe',
+  //Feed
+  .state('tab.feed', {
+    url: '/feed',
     views: {
-      'tab-wardrobe': {
-        templateUrl: 'templates/tab-wardrobe.html',
-        controller: 'WardrobeCtrl'
+      'tab-feed': {
+        templateUrl: 'templates/tab-feed.html',
+        controller: 'FeedCtrl'
+      }
+    }
+  })  
+
+  //Inspiration
+  .state('tab.inspiration', {
+    url: '/inspiration',
+    views: {
+      'tab-inspiration': {
+        templateUrl: 'templates/tab-inspiration.html',
+        controller: 'InspirationCtrl'
       }
     }
   })
 
-  //Estado de colección o closet personal
-  .state('tab.wardrobe_products', {
-    url: '/wardrobe/outfits',
-    views: {
-      'tab-wardrobe': {
-        templateUrl: 'templates/tab-wardrobe-products.html',
-        controller: 'WardrobeProductsCtrl'
-      }
-    }
-  })
-
-  //Estado de detalle de outfit
-  .state('tab.wardrobe-outfit-detail', {
-    url: '/wardrobe/outfits/:itemId',
-    views: {
-      'tab-wardrobe': {
-        templateUrl: 'templates/tab-wardrobe-outfit-detail.html',
-        controller: 'OutfitDetailsCtrl'
-      }
-    }
-  })
-
-  //Estado de detalle de prenda en la colección
-  .state('tab.wardrobe-clothing-detail', {
-      url: '/wardrobe/clothing/:itemId',
-      views: {
-        'tab-wardrobe': {
-          templateUrl: 'templates/tab-wardrobe-clothing-detail.html',
-          controller: 'WardrobeClothingDetailsCtrl'
-        }
-      }
-    })
-
-  //Estado de seleccion de prendas de nuevo atuendo
-  .state('tab.wardrobe-select-outfits-clothing', {
-      url: '/wardrobe/outfits/selectclothing',
-      views: {
-        'tab-wardrobe': {
-          templateUrl: 'templates/tab-wardrobe-outfit-clothing-selection.html',
-          controller: 'OutfitsClothingSelectionCtrl'
-        }
-      }
-    })
-
-  //Estado de creación de atuendo
-  .state('tab.wardrobe-create-outfit', {
-      url: '/wardrobe/outfits/create',
-      cache: false,
-      views: {
-        'tab-wardrobe': {
-          templateUrl: 'templates/tab-wardrobe-outfit-creation.html',
-          controller: 'OutfitCreationCtrl'
-        }
-      }
-    })
-
-  //Estado de búsqueda de prendas y outfits
+  //Search
   .state('tab.search', {
       url: '/search',
       views: {
@@ -116,7 +69,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  //Estado de búsqueda de prendas y outfits
   .state('tab.search-outfits', {
       url: '/search/outfits',
       views: {
@@ -127,7 +79,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  //Estado de búsqueda de prendas y outfits
   .state('tab.search-select-clothing', {
       url: '/search/advanced/select/clothing',
       views: {
@@ -138,18 +89,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  //Estado de búsqueda por brand
-  .state('tab.advanced-search-brand', {
-      url: '/search/advanced/brand',
-      views: {
-        'tab-search': {
-          templateUrl: 'templates/tab-search-advanced-brand.html',
-          controller: 'AdvancedSearchBrandCtrl'
-        }
-      }
-    })
-
-  //Estado de detalle de prenda buscada
   .state('tab.search-clothing-detail', {
       url: '/search/clothing/:itemId',
       views: {
@@ -180,16 +119,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  .state('tab.wadrobe-comments', {
-      url: '/outfit/comments/:outfitId',
-      views: {
-        'tab-wardrobe': {
-          templateUrl: 'templates/tab-wardrobe-comments.html',
-          controller: 'WardrobeCommentsCtrl'
-        }
-      }
-    })
-
   .state('tab.friends-outfit-comments', {
       url: '/friend/outfit/comments/:outfitId',
       views: {
@@ -200,30 +129,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-  .state('tab.friends', {
-      url: '/friends',
-      views: {
-        'tab-friends': {
-          templateUrl: 'templates/tab-friends.html',
-          controller: 'FriendsCtrl'
-        }
-      }
-    })
-
   .state('tab.friend-detail', {
       url: '/friend/detail/:friendId',
       views: {
-        'tab-friends': {
+        'tab-search': {
           templateUrl: 'templates/tab-friend-detail.html',
           controller: 'FriendDetailCtrl'
         }
       }
-    })
+  })
 
   .state('tab.friend-outfit-detail', {
-      url: '/friend/detail/outfits/:outfitId',
+      url: '/search/detail/outfits/:outfitId',
       views: {
-        'tab-friends': {
+        'tab-search': {
           templateUrl: 'templates/tab-friend-outfit-detail.html',
           controller: 'FriendOutfitDetailCtrl'
         }
@@ -231,9 +150,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
   .state('tab.friend-search-detail', {
-    url: '/friends/search/:friendId',
+    url: '/search/people/:friendId',
     views: {
-      'tab-friends': {
+      'tab-search': {
         templateUrl: 'templates/tab-search-detail-friend.html',
         controller: 'FriendDetailSearchCtrl'
       }
@@ -241,16 +160,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   })
 
   .state('tab.friends-search', {
-      url: '/friends/search',
+      url: '/search/people',
       views: {
-        'tab-friends': {
+        'tab-search': {
           templateUrl: 'templates/tab-friends-search.html',
           controller: 'FriendsSearchCtrl'
         }
       }
     })
 
-  //Estado de cuenta de usuario
+  //Personal info (Account)
   .state('tab.account', {
     url: '/account',
     views: {
@@ -259,8 +178,117 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
 
-  //Estado inicial (por defecto)
+  .state('tab.account-wardrobe', {
+    url: '/account/wardrobe',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/tab-wardrobe.html',
+        controller: 'WardrobeCtrl'
+      }
+    }
+  })
+
+  .state('tab.account-clothing', {
+      url: '/account/clothing',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-wardrobe-products.html',
+          controller: 'WardrobeProductsCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-wardrobe-clothing-detail', {
+      url: '/account/wardrobe/clothing/:itemId',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-wardrobe-clothing-detail.html',
+          controller: 'WardrobeClothingDetailsCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-wardrobe-outfit-detail', {
+    url: '/account/wardrobe/outfits/:itemId',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/tab-wardrobe-outfit-detail.html',
+        controller: 'OutfitDetailsCtrl'
+      }
+    }
+  })
+
+  .state('tab.account-wardrobe-select-outfits-clothing', {
+      url: '/account/wardrobe/outfits/selectclothing',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-wardrobe-outfit-clothing-selection.html',
+          controller: 'OutfitsClothingSelectionCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-wardrobe-create-outfit', {
+      url: '/account/wardrobe/outfits/create',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-wardrobe-outfit-creation.html',
+          controller: 'OutfitCreationCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-wadrobe-comments', {
+      url: '/account/outfit/comments/:outfitId',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-wardrobe-comments.html',
+          controller: 'WardrobeCommentsCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-friends', {
+      url: '/account/friends',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-friends.html',
+          controller: 'FriendsCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-friend-detail', {
+      url: '/account/friend/detail/:friendId',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-friend-detail.html',
+          controller: 'FriendDetailCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-friend-outfit-detail', {
+      url: '/account/detail/outfits/:outfitId',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-friend-outfit-detail.html',
+          controller: 'FriendOutfitDetailCtrl'
+        }
+      }
+  })
+
+  .state('tab.account-friends-outfit-comments', {
+      url: '/account/friend/outfit/comments/:outfitId',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-friend-search-outfit-comments.html',
+          controller: 'FriendsOutfitsCommentsCtrl'
+        }
+      }
+    })
+  
   $urlRouterProvider.otherwise('signin');
 });

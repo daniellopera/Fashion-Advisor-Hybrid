@@ -1,6 +1,6 @@
 <ion-view view-title="Select products">
-  <ion-content>
-  <div ng-repeat="product in products">
+  <ion-content class="">
+  <div ng-repeat="product in products" class="full-white-background">
         <div class="row" ng-if="$index%3==0">
           <div class="col col-33" ng-click="select(products[$index])"
           ng-style="selectedProductStyle">

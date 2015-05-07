@@ -1,5 +1,5 @@
-# Fashion Advisor Hybrid App
-Fashion Advisor - Hybrid App
+# Fashion Advisor App
+Fashion Advisor - App
 
 Fashion Advisor Front End - Developed with Angular.js and Apache Cordova in Ionic Framework.
 

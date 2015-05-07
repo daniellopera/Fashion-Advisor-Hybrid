@@ -13,14 +13,14 @@
           <a href="#" ng-click="like(0,item)" class="subdued ">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
         </div>
         <div class="item item-body">
-          <a href="#/tab/outfit/comments/{{indexOutfit(item)}}" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
+          <a href="#/tab/account/outfit/comments/{{indexOutfit(item)}}" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
         </div>
       </div> 
       <div class="item item-divider">
         Clothing
       </div>
       <ion-list>
-        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="product in products" type="item-text-wrap" href="#/tab/wardrobe/clothing/{{indexProduct(product)}}">
+        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="product in products" type="item-text-wrap" href="#/tab/account/wardrobe/clothing/{{indexProduct(product)}}">
           <div class="item item-avatar">
           <img ng-src="{{product.image.sizes.Large.url}}">
           <h2 class="">{{product.name}}</h2>

@@ -1,27 +1,13 @@
-<ion-view view-title="People">
-  <ion-nav-buttons side="right">
-      <button class="button icon ion-search" ng-click="redirectUserSearch()">
-      </button>
-  </ion-nav-buttons>
-  <div class="bar bar-subheader">
-    <div class="button-bar">
-      <button class="button button-stable" ng-click="">
-        Following
-      </button>
-      <button class="button button-light" ng-click="">
-        Followers
-      </button>
-    </div>
-  </div>
+<ion-view view-title="Following">
   <ion-content>
-    <br/>
-    <br/>
   	<ion-list>
-      <ion-item class="item-avatar item-icon-right" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/friend/detail/{{index(friend)}}">
-        <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
-        <h2>{{friend.username}}</h2>
-        <p>{{friend.email}}</p>
-        <i class="icon ion-ios-arrow-right"></i>
+      <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/account/friend/detail/{{index(friend)}}">
+        <div class="item item-avatar item-icon-right">
+          <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
+          <h2>{{friend.username}}</h2>
+          <p>{{friend.email}}</p>
+          <i class="icon ion-ios-arrow-right"></i>
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>

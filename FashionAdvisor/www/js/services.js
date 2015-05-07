@@ -154,6 +154,14 @@ angular.module('starter.services', [])
         return result.data;
       });
     },
+    putClothingOnFront: function(item){
+      if(clothing.indexOf(item)!=-1){
+        var index = clothing.indexOf(item)
+        var temp = clothing[index]
+        clothing.splice(index, 1);
+        clothing.unshift(temp)
+      }
+    },
     addOutfitToWardrobe: function(id,name,likes,dislikes,comments,description,products){
       var outfit = {};
       outfit.id = id;

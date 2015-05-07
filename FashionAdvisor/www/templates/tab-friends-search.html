@@ -1,19 +1,39 @@
-<ion-view view-title="Search People">
+<ion-view view-title="Search" hide-back-button="true">
+  <div class="bar bar-subheader">
+    <div class="button-bar">
+      <button class="button button-light button-android" ng-click="
+      getOutfits()">
+        Outfits
+      </button>
+      <button class="button button-light button-android" ng-click="
+      getClothing()">
+        Clothing
+      </button>
+      <button class="button button-stable button-android" ng-click="">
+        People
+      </button>
+    </div>
+  </div>
   <ion-content>
+    </br>
+    </br>
     <div class="bar bar-header item-input-inset">
     <label class="item-input-wrapper">
-      <i class="icon ion-plus-round placeholder-icon"></i>
-      <input type="search" ng-model="searchTerm" placeholder="Search">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input type="search" ng-model="searchTerm" placeholder="Search people by username">
     </label>
-    <button class="button button-clear button-royal" ng-click="searchUser(searchTerm)">
+    <button class="button button-clear button-dark" ng-click="searchUser(searchTerm)">
       Search
     </button>
     </div>
     <ion-list>
-      <ion-item class="item-avatar" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/friends/search/{{index(friend)}}">
-        <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
-        <h2>{{friend.username}}</h2>
-        <p>{{friend.email}}</p>
+      <ion-item class="item-avatar item-remove-animate item-icon-right searchitem" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/search/people/{{index(friend)}}">
+        <div class="item item-avatar item-icon-right">
+          <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
+          <h2>{{friend.username}}</h2>
+          <p>{{friend.email}}</p>
+          <i class="icon ion-ios-arrow-right"></i>
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>

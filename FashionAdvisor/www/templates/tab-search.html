@@ -7,6 +7,9 @@
       <button class="button button-stable button-android" ng-click="">
         Clothing
       </button>
+      <button class="button button-light button-android" ng-click="getPeople()">
+        People
+      </button>
     </div>
   </div>
   <ion-content>
@@ -17,7 +20,7 @@
       <i class="icon ion-ios7-search placeholder-icon"></i>
       <input type="search" ng-model="searchTerm" placeholder="Search clothing by name">
     </label>
-    <button class="button button-clear button-royal" ng-click="advancedSearch(searchTerm)">
+    <button class="button button-clear button-dark" ng-click="advancedSearch(searchTerm)">
       Search
     </button>
     </div>
@@ -26,7 +29,7 @@
         Colors
       </div>
       <select ng-change="selectColor(color)" ng-model="color">
-        <option class="" value={{-1}}></option>
+        <option class="" value=""></option>
         <option class="" ng-repeat="color in colors" value ={{color.id}}>
           {{color.name}}
         </option>
@@ -37,14 +40,14 @@
         Categories
       </div>
       <select ng-change="selectCategory(color)" ng-model="category">
-        <option class="" value={{-1}}></option>
-        <option class="" value="Tops">Tops</option>
-        <option class="" value="Bottoms">Bottoms</option>
-        <option class="" value="Skirts">Skirts</option>
-        <option class="" value="Dresses">Dresses</option>
+        <option class="" value=""></option>
+        <option class="" value="Top">Tops</option>
+        <option class="" value="Bottom">Bottoms</option>
+        <option class="" value="Skirt">Skirts</option>
+        <option class="" value="Dress">Dresses</option>
         <option class="" value="Outwear">Outwear</option>
-        <option class="" value="Bags">Bags</option>
-        <option class="" value="Shoes">Shoes</option>
+        <option class="" value="Bag">Bags</option>
+        <option class="" value="Shoe">Shoes</option>
         <option class="" value="Accessories">Acessories</option>
       </select>
     </label>
@@ -52,7 +55,7 @@
         <ion-item class="item-remove-animate item-icon-right searchitem card" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
           <div href="#" class="item item-icon-left">
           <i class="icon ion-{{searchIcon(item)}}"></i>
-          {{item.name}} <br/>
+          {{item.unbrandedName}} <br/>
           <span class="subs">{{item.brand.name}}</span>
           </div>
           <div class="item item-body">
