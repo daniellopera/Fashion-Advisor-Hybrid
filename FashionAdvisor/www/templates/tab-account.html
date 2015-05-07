@@ -1,4 +1,4 @@
-<ion-view view-title="Me">
+<ion-view view-title="Me" hide-back-button="true">
   <ion-nav-buttons side="right">
       <button class="button icon ion-ios-gear" ng-click="">
       </button>
@@ -7,7 +7,7 @@
   	<ion-item class="item-avatar item-remove-animate item-icon-right searchitem">
   		<img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
         <h2>David Romero</h2>
-        <p>davidromeromillan@gmail.com</p>
+        <p>{{user.email}}</p>
 	  </ion-item>
     <div class="list white-background">
       <label class="item item-input item-stacked-label">

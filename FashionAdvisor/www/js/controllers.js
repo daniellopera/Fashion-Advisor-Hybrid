@@ -111,7 +111,10 @@ angular.module('starter.controllers', [])
         if(result.status==0){
           WardrobeManagement.addOutfitToWardrobe(result.data.id,name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
           OutfitManagement.setClothing([]);
-          $state.go('tab.wardrobe');
+          $ionicHistory.nextViewOptions({
+            disableAnimate: true,
+          });
+          $state.go('tab.account');
         }else{
           showAlert("Outfit Error","Couldn't create outfit")
         }
@@ -1122,6 +1125,10 @@ $scope.getPeople = function(){
 }])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){
+  
+  var currentUser = UserManagement.getCurrentUser();
+  $scope.user = currentUser;
+
   $scope.logout = function(){
     UserManagement.signout();
     OutfitManagement.setClothing([]);
