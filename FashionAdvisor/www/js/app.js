@@ -47,6 +47,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   })  
 
+  .state('tab.feed-outfit', {
+    url: '/feed/outfit/:outfit_id',
+    views: {
+      'tab-feed': {
+        templateUrl: 'templates/tab-feed-outfit.html',
+        controller: 'FeedOutfitCtrl'
+      }
+    }
+  }) 
+
+  .state('tab.feed-outfit-comments', {
+    url: '/feed/outfit/comments/:outfit_id',
+    views: {
+      'tab-feed': {
+        templateUrl: 'templates/tab-feed-outfit-comments.html',
+        controller: 'FeedOutfitCommentsCtrl'
+      }
+    }
+  }) 
+
   //Inspiration
   .state('tab.inspiration', {
     url: '/inspiration',

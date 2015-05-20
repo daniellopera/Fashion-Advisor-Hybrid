@@ -109,7 +109,7 @@ angular.module('starter.controllers', [])
       creationPromise.then(function(result){
         $ionicLoading.hide();
         if(result.status==0){
-          WardrobeManagement.addOutfitToWardrobe(result.data.id,name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
+          WardrobeManagement.addOutfitToWardrobe(result.data.outfitid,name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
           OutfitManagement.setClothing([]);
           $ionicHistory.nextViewOptions({
             disableAnimate: true,
@@ -142,16 +142,16 @@ angular.module('starter.controllers', [])
    }, 3000);
   };
 
-  function processRegisterRequest(email,password){
+  function processRegisterRequest(username,email,password){
     $ionicLoading.show(); 
-    var registerPromise = UserManagement.signup(email,password); 
+    var registerPromise = UserManagement.signup(username,email,password); 
     registerPromise.then(function(result){
       $ionicLoading.hide(); 
       if(result.status==0){ 
         UserManagement.setCurrentUser(result.data); 
         $ionicHistory.clearCache();
         $ionicHistory.clearHistory(); 
-        $state.go('tab.wardrobe'); 
+        $state.go('tab.feed'); 
       }else{ 
         showAlert("Register Error","Register unsuccessful")
       }
@@ -161,15 +161,19 @@ angular.module('starter.controllers', [])
     });
   }
 
-  $scope.register = function(email,password1,password2){
-    if(email!=undefined && email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
-      if(password1!=undefined && password2!=undefined && password1==password2 && password1.length>=6){
-        processRegisterRequest(email,password1)
+  $scope.register = function(username,email,password1,password2){
+    if(username!=undefined){
+      if(email!=undefined && email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)){
+        if(password1!=undefined && password2!=undefined && password1==password2 && password1.length>=6){
+          processRegisterRequest(username,email,password1)
+        }else{
+          showAlert("Check passwords","Please check your passwords")
+        }
       }else{
-        showAlert("Check passwords","Please check your passwords")
+        showAlert("Check email","Please check your email.")
       }
     }else{
-      showAlert("Check email","Please check your email.")
+      showAlert("Check username","Please check your username.")
     }
   };
 }])
@@ -1092,7 +1096,7 @@ $scope.getPeople = function(){
 }])
 
 
-.controller('FeedCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement){
+.controller('FeedCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
     
     function showAlert(name,msg) {
        var alertPopup = $ionicPopup.alert({
@@ -1105,6 +1109,131 @@ $scope.getPeople = function(){
          alertPopup.close();
        }, 3000);
     };
+
+    function processFeedUpdate(){
+      var currentUser = UserManagement.getCurrentUser();
+      var feedPromise = FriendManagement.getUserFeed(currentUser);
+      $ionicLoading.show();
+      feedPromise.then(function(result){
+        $ionicLoading.hide();
+        $scope.$broadcast('scroll.refreshComplete');
+        if(result.status==0){
+          $scope.news = result.data;
+        }else{
+          showAlert("Feed Error","Feed unsuccessful")   
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+    }
+
+    processFeedUpdate();
+
+    $scope.updateFeed = function(){
+      processFeedUpdate();
+    }
+}])
+
+.controller('FeedOutfitCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
+    
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+  var outfitId = $stateParams.outfit_id
+  var currentUser = UserManagement.getCurrentUser();    
+  var outfitPromise = OutfitManagement.getOutfitById(outfitId,currentUser)
+
+  $ionicLoading.show();
+  outfitPromise.then(function(result){
+    $ionicLoading.hide();
+    if(result.status==0){
+      $scope.item = result.data.outfit
+      $scope.products = result.data.outfit_products
+    }else{
+      showAlert("Outfit Error","Outfit unsuccessful")   
+    }
+  },function(error){
+    $ionicLoading.hide();
+    showAlert("Fatal Server Error","Server error, try again later.")    
+  })
+
+  $scope.like = function(rating,outfit){
+      var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+      $ionicLoading.show(); //Mostrar loader
+      var likePromise = OutfitManagement.likeOutfit(rating,outfit,currentUser)
+      likePromise.then(function(result){
+        $ionicLoading.hide()
+        if(result.status==0){
+          $scope.item.likes = result.data.likes
+          $scope.item.dislikes = result.data.dislikes
+        }else{
+          showAlert("Like Error","Outfit like unsuccessful")
+        }
+      },function(error){
+        $ionicLoading.hide()
+        showAlert("Fatal Server -Rating- Error","Server error, try again later.")
+      })
+    }
+}])
+
+.controller('FeedOutfitCommentsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
+    
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+ 
+
+    var outfitId = $stateParams.outfit_id;
+    var currentUser = UserManagement.getCurrentUser();
+    $ionicLoading.show();
+    var commentPromise = OutfitManagement.getOutfitComments(outfitId,currentUser)
+    commentPromise.then(function(result){
+      $ionicLoading.hide()
+      if(result.status==0){
+        OutfitManagement.setComments(result.data.outfit_comments);
+        $scope.messages = OutfitManagement.getComments()
+      }else{
+        showAlert("Comment Error","Comment unsuccessful")
+      }
+    },function(error){
+      $ionicLoading.hide()
+      showAlert("Fatal Server Error","Server error, try again later.")
+    })
+
+    $scope.comment = function(commentTerm){
+      var currentUser = UserManagement.getCurrentUser();
+      var commentPromise = OutfitManagement.commentOutfit(outfitId,commentTerm,currentUser)
+      $ionicLoading.show();
+      commentPromise.then(function(result){
+        $ionicLoading.hide();
+        if(result.status==0){
+          OutfitManagement.addComment(result.data[0])
+        }else{
+          showAlert("Comment Error","Comment unsuccessful")   
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+    }
 }])
 
 .controller('InspirationCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement){
@@ -1121,7 +1250,7 @@ $scope.getPeople = function(){
        }, 3000);
     };
 
-    !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    
 }])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){

@@ -14,11 +14,11 @@ angular.module('starter.services', [])
       return result.data;
     });
   },
-  signup: function(email,password){
+  signup: function(username,email,password){
     return $http({
       method:"POST",
       url:"http://fashionadvisorservices.herokuapp.com/users",
-      data:{"user":{"email":email,"password":password}}}).
+      data:{"user":{"email":email,"password":password,"username":username}}}).
     then(function(result){
       return result.data;
     });
@@ -355,6 +355,15 @@ angular.module('starter.services', [])
   return {
     setFriends: function(users){
       friends = users
+    },
+    getUserFeed: function(user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/user/feed",
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
+        then(function(result){
+          return result.data;
+        })
     },
     getIndexOfFriend: function(friend){
       return friends.indexOf(friend);

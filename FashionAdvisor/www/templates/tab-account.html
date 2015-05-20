@@ -5,8 +5,8 @@
   </ion-nav-buttons>
   <ion-content>
   	<ion-item class="item-avatar item-remove-animate item-icon-right searchitem">
-  		<img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
-        <h2>David Romero</h2>
+  		<img ng-src="{{user.image}}">
+        <h2>{{user.username}}</h2>
         <p>{{user.email}}</p>
 	  </ion-item>
     <div class="list white-background">
@@ -19,24 +19,24 @@
     <ion-list>
     	<ion-item class="item-remove-animate item-icon-right searchitem" type="item-text-wrap" ng-click="redirectToMyClothing()">
           <h2>My Clothing</h2>
-          <p>20 items</p>
+          <p>{{user.clothing}} items</p>
           <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
       <ion-item class="item-remove-animate item-icon-right searchitem"
        type="item-text-wrap" ng-click="redirectToMyOutfits()">
           <h2>My Outfits</h2>
-          <p>3 outfits</p>
+          <p>{{user.outfits}} outfits</p>
           <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
       <ion-item class="item-remove-animate item-icon-right searchitem"
       type="item-text-wrap" ng-click="redirectToFollowing()">
           <h2>Following</h2>
-          <p>4 Following</p>
+          <p>{{user.following}} Following</p>
           <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
       <ion-item class="item-remove-animate item-icon-right searchitem"type="item-text-wrap" ng-click="redirectToFollowers()">
           <h2>Followers</h2>
-          <p>6 Followers</p>
+          <p>{{user.followers}} Followers</p>
           <i class="icon ion-ios-arrow-right"></i>
       </ion-item>
     </ion-list>

@@ -1,5 +1,14 @@
 <ion-view view-title="Inspiration">
   <ion-content>
-  	<a class="twitter-timeline" href="https://twitter.com/fashionAdvisor_/lists/fashion-advisor" data-widget-id="573511076735750144"></a>
+  	<ion-list>
+        <ion-item class="item-remove-animate item-icon-right searchitem card" ng-repeat="update in updates" type="item-text-wrap" href="">
+          {{update.name}}
+          <div class="item item-body">
+            <center>
+            <img class="" ng-src="{{update.image_url}}">
+            </center>
+          </div>
+        </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>
