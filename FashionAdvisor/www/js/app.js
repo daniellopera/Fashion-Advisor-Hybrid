@@ -67,6 +67,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   }) 
 
+  .state('tab.feed-clothing', {
+    url: '/feed/clothing/:itemId',
+    views: {
+      'tab-feed': {
+        templateUrl: 'templates/tab-feed-clothing.html',
+        controller: 'FeedClothingCtrl'
+      }
+    }
+  })
+
   //Inspiration
   .state('tab.inspiration', {
     url: '/inspiration',
@@ -115,6 +125,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         'tab-search': {
           templateUrl: 'templates/tab-search-detail-clothing.html',
           controller: 'SearchClothingDetailsCtrl'
+        }
+      }
+    })
+
+  .state('tab.search-clothing-detail-simple', {
+      url: '/search/clothing/simple/:itemId',
+      views: {
+        'tab-search': {
+          templateUrl: 'templates/tab-search-detail-clothing-simple.html',
+          controller: 'SearchClothingSimpleDetailsCtrl'
         }
       }
     })

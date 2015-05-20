@@ -18,7 +18,7 @@
         Clothing
       </div>
       <ion-list>
-        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="product in products" type="item-text-wrap" href="">
+        <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="product in products" type="item-text-wrap" href="#/tab/feed/clothing/{{product.id}}">
           <div class="item item-avatar">
           <img ng-src="{{product.image.sizes.Large.url}}">
           <h2 class="">{{product.name}}</h2>

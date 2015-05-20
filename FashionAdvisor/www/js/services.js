@@ -237,6 +237,16 @@ angular.module('starter.services', [])
     addProductToClothing: function(item){
       clothing.unshift(item);
     },
+    getProductById: function(item_id,user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/search/"+item_id,
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}
+      }).
+      then(function(result){
+        return result.data;
+      });
+    },
     unselectAll : function(){
       for (i = 0; i < clothing.length; i++) {
         clothing[i].selected = "";    

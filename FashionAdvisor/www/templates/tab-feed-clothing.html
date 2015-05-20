@@ -1,0 +1,39 @@
+<ion-view view-title="{{item.unbrandedName}}">
+  <ion-content>
+      <div class="list card">
+        <div href="#" class="item item-icon-left">
+          <i class="icon ion-heart"></i>
+          {{item.unbrandedName}}
+        </div>
+        <div href="#" class="item" ng-click="">
+          <center>
+            <img class="" ng-src="{{item.image.sizes.Large.url}}" />
+          </center>
+        </div>
+        <div href="#" class="item">          
+          <strong>Brand</strong><br/>
+          {{item.brand.name}}
+        </div>
+        <div href="#" class="item">
+          <strong>Retailer</strong><br/>
+          {{item.retailer.name}}
+        </div>
+        <div href="#" class="item item-text-wrap">
+          <strong>Colors</strong><br/>
+          {{item.colors}}
+        </div>
+        <div href="#" class="item item-text-wrap">
+          <strong>Categories</strong><br/>
+          {{item.categories}}
+        </div>
+        <div href="#" class="item">
+          <strong>Price</strong><br/>
+          {{item.currency}} {{item.priceLabel}}
+        </div>
+        <div href="#" class="item item-text-wrap">
+          <strong>Sizes</strong><br/>
+          {{item.sizes}}
+        </div>
+      </div> 
+  </ion-content>
+</ion-view>

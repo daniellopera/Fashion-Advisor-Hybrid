@@ -539,8 +539,7 @@ $scope.getPeople = function(){
         }
         return string;
      }
-
-  }])
+}])
 
 .controller('OutfitDetailsCtrl', ['$scope','WardrobeManagement','$stateParams','OutfitManagement','$ionicLoading','$ionicPopup','$timeout','UserManagement',function($scope,WardrobeManagement,$stateParams,OutfitManagement,$ionicLoading,$ionicPopup,$timeout,UserManagement) {
     var item  = WardrobeManagement.getOutfitAtIndex($stateParams.itemId); //Obtención de item específico
@@ -1186,6 +1185,134 @@ $scope.getPeople = function(){
     }
 }])
 
+.controller('FeedClothingCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
+    
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+    var item_id  = $stateParams.itemId;
+    var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+      $ionicLoading.show(); //Mostrar loader
+      var productPromise = WardrobeManagement.getProductById(item_id,currentUser);
+      productPromise.then(function(result){
+        $ionicLoading.hide()
+        if(result.status==0){
+          $scope.item = result.data
+          $scope.images = getImages(result.data);
+          $scope.item.colors = getColors(result.data);
+          $scope.item.sizes = getSizes(result.data);
+          $scope.item.categories = getCategories(result.data);
+        }else{
+          showAlert("Product Error","Product unsuccessful")
+        }
+      },function(error){
+        $ionicLoading.hide()
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+
+     function getColors(item){
+        var string = "";
+        var colors = item.colors
+        if(colors.length>0){
+          string += colors[0].name
+        }
+        for(i = 1; i < colors.length;i++){
+          string += ", "
+          string += colors[i].name
+        }
+        return string;
+     }
+
+     function getSizes(item){
+        var string = "";
+        var sizes = item.sizes
+        if(sizes.length>0){
+          string += sizes[0].name
+        }
+        for(i = 1; i < sizes.length;i++){
+          string += ", "
+          string += sizes[i].name
+        }
+        return string;
+     }
+
+     function getCategories(item){
+        var string = "";
+        var categories = item.categories
+        if(categories.length>0){
+          string += categories[0].name
+        }
+        for(i = 1; i < categories.length;i++){
+          string += ", "
+          string += categories[i].name
+        }
+        return string;
+     }
+
+     function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+      };
+
+     $scope.producticon = function(item){ //Estilo en caso de tener la prenda en el guardaropa
+       if(item.in_wardrobe==true){
+        $scope.addToWadrobeStyle = {'display':'none'};
+        return "heart";
+      }else{
+        return "bag";
+      }
+    }
+
+     $scope.addToWardrobe = function(item){ //Gestión de solicitud de adición de item (producto) a colección personal (closet)
+       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+       $ionicLoading.show(); //Mostrar loader
+       var addToWardrobePromise = WardrobeManagement.addClothingToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
+       addToWardrobePromise.then(function(result){
+            $ionicLoading.hide(); //Ocultar loader
+            if(result.status==0){ //Adición exitosa de producto a guardarropa
+              item.in_wardrobe = true;
+              $scope.producticon(item); //Setear estilo de prenda en guardaropa
+              WardrobeManagement.addProductToClothing(item);
+            }else{ //Adición de producto sin éxito
+              showAlert("Adding Error","Clothing adding unsuccessful")
+            }
+          },function(error){
+            $ionicLoading.hide();
+            showAlert("Fatal Server Error","Server error, try again later.")
+          });
+     }
+
+    function getImages(item){
+      var images = []
+      var alternateImages = item.alternateImages
+      for(i = 1; i < alternateImages.length && i<8;i++){
+        images.push(alternateImages[i].sizes.Large)
+      }
+      images.push(item.image.sizes.Large)
+      return images;
+    }
+    // Called each time the slide changes
+    $scope.slideChanged = function(index) {
+      $scope.slideIndex = index;
+    };
+}])
+
 .controller('FeedOutfitCommentsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
     
     function showAlert(name,msg) {
@@ -1274,6 +1401,135 @@ $scope.getPeople = function(){
       processFashionUpdates();
     }    
 }])
+
+.controller('SearchClothingSimpleDetailsCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
+    
+    function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    };
+
+    var item_id  = $stateParams.itemId;
+    var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+      $ionicLoading.show(); //Mostrar loader
+      var productPromise = WardrobeManagement.getProductById(item_id,currentUser);
+      productPromise.then(function(result){
+        $ionicLoading.hide()
+        if(result.status==0){
+          $scope.item = result.data
+          $scope.images = getImages(result.data);
+          $scope.item.colors = getColors(result.data);
+          $scope.item.sizes = getSizes(result.data);
+          $scope.item.categories = getCategories(result.data);
+        }else{
+          showAlert("Product Error","Product unsuccessful")
+        }
+      },function(error){
+        $ionicLoading.hide()
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+
+     function getColors(item){
+        var string = "";
+        var colors = item.colors
+        if(colors.length>0){
+          string += colors[0].name
+        }
+        for(i = 1; i < colors.length;i++){
+          string += ", "
+          string += colors[i].name
+        }
+        return string;
+     }
+
+     function getSizes(item){
+        var string = "";
+        var sizes = item.sizes
+        if(sizes.length>0){
+          string += sizes[0].name
+        }
+        for(i = 1; i < sizes.length;i++){
+          string += ", "
+          string += sizes[i].name
+        }
+        return string;
+     }
+
+     function getCategories(item){
+        var string = "";
+        var categories = item.categories
+        if(categories.length>0){
+          string += categories[0].name
+        }
+        for(i = 1; i < categories.length;i++){
+          string += ", "
+          string += categories[i].name
+        }
+        return string;
+     }
+
+     function showAlert(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+      };
+
+     $scope.producticon = function(item){ //Estilo en caso de tener la prenda en el guardaropa
+       if(item.in_wardrobe==true){
+        $scope.addToWadrobeStyle = {'display':'none'};
+        return "heart";
+      }else{
+        return "bag";
+      }
+    }
+
+     $scope.addToWardrobe = function(item){ //Gestión de solicitud de adición de item (producto) a colección personal (closet)
+       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
+       $ionicLoading.show(); //Mostrar loader
+       var addToWardrobePromise = WardrobeManagement.addClothingToWardrobe(item,currentUser); //Llamada a servicio de adición a guardarropa
+       addToWardrobePromise.then(function(result){
+            $ionicLoading.hide(); //Ocultar loader
+            if(result.status==0){ //Adición exitosa de producto a guardarropa
+              item.in_wardrobe = true;
+              $scope.producticon(item); //Setear estilo de prenda en guardaropa
+              WardrobeManagement.addProductToClothing(item);
+            }else{ //Adición de producto sin éxito
+              showAlert("Adding Error","Clothing adding unsuccessful")
+            }
+          },function(error){
+            $ionicLoading.hide();
+            showAlert("Fatal Server Error","Server error, try again later.")
+          });
+     }
+
+    function getImages(item){
+      var images = []
+      var alternateImages = item.alternateImages
+      for(i = 1; i < alternateImages.length && i<8;i++){
+        images.push(alternateImages[i].sizes.Large)
+      }
+      images.push(item.image.sizes.Large)
+      return images;
+    }
+    // Called each time the slide changes
+    $scope.slideChanged = function(index) {
+      $scope.slideIndex = index;
+    };
+}])
+
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){
   
