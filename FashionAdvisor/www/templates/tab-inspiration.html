@@ -1,14 +1,24 @@
 <ion-view view-title="Inspiration">
   <ion-content>
+    <ion-refresher 
+    pulling-text="" 
+    on-refresh="updateFashion()">
+    </ion-refresher>
   	<ion-list>
         <ion-item class="item-remove-animate item-icon-right searchitem card" ng-repeat="update in updates" type="item-text-wrap" href="">
-          {{update.name}}
+          <div href="#" class="item">
+          <strong>{{update.name}}</strong> <br/>
+          <span class="subs">{{update.created_at}}</span>
+          </div>
           <div class="item item-body">
             <center>
             <img class="" ng-src="{{update.image_url}}">
             </center>
           </div>
+          <div class="item item-body">
+            {{update.description}}
+          </div>
         </ion-item>
-    </ion-list>
+      </ion-list>
   </ion-content>
 </ion-view>

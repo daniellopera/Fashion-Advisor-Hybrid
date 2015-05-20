@@ -101,11 +101,11 @@ angular.module('starter.controllers', [])
    }, 3000);
   };
 
-  $scope.createOutfit = function(name,description){
-    if(name!=undefined && description!=undefined){
+  $scope.createOutfit = function(name,description,tags){
+    if(name!=undefined && description!=undefined && tags!=undefined && tags.match(/^(#([A-z|0-9])+( )*)+/)){
       $ionicLoading.show(); 
       var currentUser = UserManagement.getCurrentUser(); 
-      var creationPromise = OutfitManagement.createOutfit(currentUser,name,description);
+      var creationPromise = OutfitManagement.createOutfit(currentUser,name,description,tags);
       creationPromise.then(function(result){
         $ionicLoading.hide();
         if(result.status==0){
@@ -237,7 +237,7 @@ angular.module('starter.controllers', [])
     getPromise.then(
       function(result){
         $ionicLoading.hide(); 
-         if(result.status==0){
+        if(result.status==0){
           FriendManagement.setFollowingUsers(result.data);
           $state.go('tab.feed');
         }else{
@@ -314,20 +314,24 @@ angular.module('starter.controllers', [])
   showAlert("Fatal Server Error","Server error, try again later.")
 });
 
- $scope.getSelectedBrand = function(){
-  return SearchManagement.getBrand();
- }  
-
 $scope.selectColor = function(color){
   SearchManagement.selectColor(color);
+}
+
+$scope.selectCategory = function(category){
+  SearchManagement.selectCategory(category);
 }
 
 $scope.advancedSearch = function(searchTerm){
   $ionicLoading.show(); 
   var currentUser = UserManagement.getCurrentUser();
-  var brand = SearchManagement.getBrand();
+  var category = SearchManagement.getSelectedCategory();
+  if(searchTerm==undefined){
+    searchTerm = "";
+  }
+  searchTerm = category + " " + searchTerm;
   var color = SearchManagement.getColor();
-  var advsearchPromise = SearchManagement.advancedSearch(currentUser,color,brand,searchTerm);
+  var advsearchPromise = SearchManagement.advancedSearch(currentUser,color,searchTerm);
   advsearchPromise.then(function(result){
     $ionicLoading.hide(); 
     if(result.status==0){
@@ -368,10 +372,6 @@ $scope.getPeople = function(){
     });
   $state.go('tab.friends-search');
 }
-
-}])
-
-.controller('AdvancedSearchCtrl', ['$scope','$state','UserManagement','SearchManagement','$ionicLoading','$ionicPopup','$timeout',function($scope, $state, UserManagement, SearchManagement, $ionicLoading,$ionicPopup,$timeout) {
 
 }])
 
@@ -614,7 +614,7 @@ $scope.getPeople = function(){
 .controller('FriendDetailSearchCtrl', ['$scope','FriendManagement','$stateParams','$ionicLoading','UserManagement','$ionicPopup','$timeout',function($scope,FriendManagement,$stateParams,$ionicLoading,UserManagement,$ionicPopup,$timeout) {
     
     function usericon(friend){ //Estilo en caso de tener la prenda en el guardaropa
-       if(friend.following==true){
+       if(friend.is_following==true){
           $scope.followUserStyle = {'display':'none'};
        }
     }
@@ -656,7 +656,7 @@ $scope.getPeople = function(){
       followPromise.then(function(result){
         $ionicLoading.hide();
         if(result.status==0){
-          friend.following = true 
+          friend.is_following = true 
           usericon(friend)
           FriendManagement.addFriend(friend);
         }else{
@@ -1250,7 +1250,29 @@ $scope.getPeople = function(){
        }, 3000);
     };
 
-    
+    function processFashionUpdates(){
+      var currentUser = UserManagement.getCurrentUser();
+      var fashionPromise = SearchManagement.getFashionUpdates(currentUser);
+      $ionicLoading.show();
+      fashionPromise.then(function(result){
+        $ionicLoading.hide();
+        $scope.$broadcast('scroll.refreshComplete');
+        if(result.status==0){
+          $scope.updates = result.data;
+        }else{
+          showAlert("Fashion Error","Fashion unsuccessful")   
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      })
+    }
+
+    processFashionUpdates();
+
+    $scope.updateFashion = function(){
+      processFashionUpdates();
+    }    
 }])
 
 .controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){

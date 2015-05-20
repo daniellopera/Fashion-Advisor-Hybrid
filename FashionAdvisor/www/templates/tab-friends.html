@@ -3,7 +3,7 @@
   	<ion-list>
       <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/account/friend/detail/{{index(friend)}}">
         <div class="item item-avatar item-icon-right">
-          <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/17239-200.png">
+          <img ng-src="{{friend.image}}">
           <h2>{{friend.username}}</h2>
           <p>{{friend.email}}</p>
           <i class="icon ion-ios-arrow-right"></i>

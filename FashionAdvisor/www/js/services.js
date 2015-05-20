@@ -38,6 +38,7 @@ angular.module('starter.services', [])
 .factory('SearchManagement', ['$http',function($http) {
   var searchedItems;
   var selectedBrand;
+  var selectedCategory;
   var selectedColor;
   var outfits = []
   return {
@@ -45,6 +46,15 @@ angular.module('starter.services', [])
       return $http({
         method:"GET",
         url:"http://fashionadvisorservices.herokuapp.com/search/?search_text="+searchTerm.replace(/ /g, "_"),
+        headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
+      then(function(result){
+        return result.data;
+      });
+    },
+    getFashionUpdates: function(user){
+      return $http({
+        method:"GET",
+        url:"http://fashionadvisorservices.herokuapp.com/fashion/updates",
         headers:{"X-User-Email":user.email,"X-User-Token":user.auth_token}}).
       then(function(result){
         return result.data;
@@ -114,16 +124,19 @@ angular.module('starter.services', [])
         return result.data;
       });
   },
-  advancedSearch : function(user,color,brand,term){
+  selectCategory : function(category){
+    selectedCategory = category;
+  },
+  getSelectedCategory : function(){
+    return selectedCategory;
+  },
+  advancedSearch : function(user,color,term){
     var str = "?";
     if(term!=undefined){
       str+="search_text="+term;
     }
     if(angular.isString(color)){
       str+="&color_id="+color;
-    }
-    if(brand!=undefined){
-      str+="&brand_id="+brand.id;
     }
     return $http({
       method:"GET",
@@ -316,11 +329,12 @@ angular.module('starter.services', [])
         return result.data;
       });
     },
-    createOutfit: function(user,name,description){
+    createOutfit: function(user,name,description,tags){
       var outfit = {}
       outfit.fullname = name;
       outfit.about = description;
       outfit.products = getClothingIDs();
+      outfit.tags = tags;
       return $http({
         method:"POST",
         url:"http://fashionadvisorservices.herokuapp.com/user/outfits",
