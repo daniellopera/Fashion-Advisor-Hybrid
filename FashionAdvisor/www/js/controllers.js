@@ -1545,6 +1545,8 @@ $scope.getPeople = function(){
   $scope.logout = function(){
     UserManagement.signout();
     OutfitManagement.setClothing([]);
+    WardrobeManagement.setWardrobeClothing([]);
+    WardrobeManagement.setWardrobeOutfits([]);
     SearchManagement.selectBrand({});
     SearchManagement.selectColor({});
     $state.go('signin');
