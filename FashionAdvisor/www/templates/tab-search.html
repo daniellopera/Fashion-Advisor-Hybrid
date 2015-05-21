@@ -15,14 +15,11 @@
   <ion-content>
     <br/>
     <br/>
-    <div class="bar bar-header item-input-inset">
-    <label class="item-input-wrapper">
-      <i class="icon ion-ios7-search placeholder-icon"></i>
-      <input type="search" ng-model="searchTerm" placeholder="Search clothing by name">
+    <div class="white-background">
+    <label class="item item-input item-stacked-label">
+        <span class="input-label">Clothing search term</span>
+        <input type="text" ng-model="searchTerm" placeholder="">
     </label>
-    <button class="button button-clear button-dark" ng-click="advancedSearch(searchTerm)">
-      Search
-    </button>
     </div>
     <label class="item item-input item-select">
       <div class="input-label">
@@ -50,6 +47,11 @@
         <option class="" value="Accessories">Acessories</option>
       </select>
     </label>
+    <center>
+      <button class="button find_button button-assertive" ng-click="advancedSearch(searchTerm)">
+        Find
+      </button>
+    </center>
     <ion-list>
         <ion-item class="item-remove-animate item-icon-right searchitem card" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/clothing/{{index(item)}}">
           <div href="#" class="item item-icon-left">

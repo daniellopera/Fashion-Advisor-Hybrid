@@ -444,5 +444,22 @@ angular.module('starter.services', [])
   };
 }])
 
+.factory('AlertingSystem', ['$http','$ionicPopup','$timeout',function($http,$ionicPopup,$timeout) {
+
+  return {
+    showAlert: function(name,msg) {
+       var alertPopup = $ionicPopup.alert({
+         title: name,
+         template: msg
+       });
+       alertPopup.then(function(res) {
+       });
+       $timeout(function() {
+         alertPopup.close();
+       }, 3000);
+    }
+  };
+}])
+
 
 

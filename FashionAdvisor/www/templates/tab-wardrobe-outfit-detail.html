@@ -1,18 +1,25 @@
 <ion-view view-title="{{item.name}}">
   <ion-content>
       <div class="list card">
-        <div href="#" class="item item-icon-left">
-          <i class="icon ion-bowtie"></i>
+        <div href="#" class="item">
+          <strong>Name</strong><br/>
           {{item.name}}
         </div>
-        <div class="item item-body">
+        <div class="item">
+          <strong>Description</strong><br/>
           {{item.description}}  
         </div>
+        <div class="item">
+            <strong>Creator</strong><br/>
+            {{item.username}}  
+          </div>
+          <div class="item">
+            <strong>Tags</strong><br/>
+            {{item.tags_line}}
+          </div>
         <div class="item item-body">
-          <a href="#" ng-click="like(1,item)" class="subdued ">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
-          <a href="#" ng-click="like(0,item)" class="subdued ">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
-        </div>
-        <div class="item item-body">
+          <a href="#" ng-click="like(1,item)" class="subdued">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
+          <a href="#" ng-click="like(0,item)" class="subdued">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
           <a href="#/tab/account/outfit/comments/{{indexOutfit(item)}}" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
         </div>
       </div> 

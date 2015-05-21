@@ -1,19 +1,23 @@
 <ion-view view-title="Feed">
   <ion-content>
   	<ion-refresher 
-  	pulling-text="" 
+  	pulling-text="Update" 
   	on-refresh="updateFeed()">
   	</ion-refresher>
-  <ion-list>
+    <ion-list>
       <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="update in news" type="item-text-wrap" href="#/tab/feed/outfit/{{update.outfit_id}}">
         <div class="item item-avatar item-icon-right">
           <img ng-src="{{update.image}}">
           <p>{{update.date}}</p>
-          <h2 class="">{{update.username}} {{update.feed_type}} 
-           {{update.outfit_name}}</h2>
+          <div class="">{{update.username}} <span class="feed_action">{{update.feed_type}}</span> 
+           <span class="feed_outfit">{{update.outfit_name}}</span></div>
           <i class="icon ion-ios-arrow-right"></i>
         </div>
        </ion-item>
     </ion-list>
+    <ion-infinite-scroll
+    on-infinite="loadMoreFeed()"
+    distance="1%">
+    </ion-infinite-scroll>
   </ion-content>
 </ion-view>

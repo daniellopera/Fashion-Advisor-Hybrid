@@ -17,15 +17,18 @@
   <ion-content>
     </br>
     </br>
-    <div class="bar bar-header item-input-inset">
-    <label class="item-input-wrapper">
-      <i class="icon ion-ios7-search placeholder-icon"></i>
-      <input type="search" ng-model="searchTerm" placeholder="Search people by username">
+    <div class="white-background">
+    <label class="item item-input item-stacked-label">
+        <span class="input-label">People search term</span>
+        <input type="text" ng-model="searchTerm" placeholder="">
     </label>
-    <button class="button button-clear button-dark" ng-click="searchUser(searchTerm)">
-      Search
-    </button>
     </div>
+    <center>
+      <button class="button find_button button-assertive" ng-click=" searchUser(searchTerm)">
+        Find
+      </button>
+    </center>
+    <br/>
     <ion-list>
       <ion-item class="item-avatar item-remove-animate item-icon-right searchitem" ng-repeat="friend in friends" type="item-text-wrap" href="#/tab/search/people/{{index(friend)}}">
         <div class="item item-avatar item-icon-right">

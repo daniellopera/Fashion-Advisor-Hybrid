@@ -184,3 +184,27 @@ p.info {
 .slide_image{
 	vertical-align: middle;
 }
+
+.feed_action{
+	color: #f5312f;
+}
+
+.feed_outfit{
+	font-style: italic;
+}
+
+.button.find_button{
+	background-color: #f5be9a;
+	border-color: #e0bb8d;
+	width: 60%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); 
+	font-weight: bold;
+}
+
+.button.find_button.activated{
+	background-color: #f5be9a;
+	border-color: #e0bb8d;
+	width: 60%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); 
+	font-weight: bold;
+}

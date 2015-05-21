@@ -4,7 +4,26 @@ angular.module('starter.controllers', [])
 
 .controller('WardrobeCtrl',['$scope','$state','UserManagement','WardrobeManagement','$ionicLoading','$ionicHistory','OutfitManagement', function($scope,$state,UserManagement,WardrobeManagement,$ionicLoading,$ionicHistory,OutfitManagement) {
 
-  $scope.items = WardrobeManagement.getWardrobeOutfits();
+  function getUsersWardrobeOutfits(){
+    $ionicLoading.show(); 
+    var currentUser = UserManagement.getCurrentUser(); 
+    var updatePromise = WardrobeManagement.updateWardrobeOutfits(currentUser); 
+    updatePromise.then(
+      function(result){
+        $ionicLoading.hide(); 
+        if(result.status==0){
+          WardrobeManagement.setWardrobeOutfits(result.data.wardrobe_outfits);
+          $scope.items = WardrobeManagement.getWardrobeOutfits();
+        }else{
+          showAlert("Wardrobe Error","Couldn't get your outfits")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server Error","Server error, try again later.")
+      });
+  }
+
+  getUsersWardrobeOutfits();
 
   $scope.getClothing = function(){
     $ionicHistory.nextViewOptions({
@@ -27,7 +46,7 @@ angular.module('starter.controllers', [])
 .controller('WardrobeProductsCtrl',['$scope','$state','UserManagement','WardrobeManagement','$ionicLoading','$ionicHistory', function($scope,$state,UserManagement,WardrobeManagement,$ionicLoading,$ionicHistory) {
 
   $scope.items = WardrobeManagement.getWardrobeClothing();
-
+  
   $scope.getOutfits = function(){
     $ionicHistory.nextViewOptions({
       disableAnimate: true,
@@ -128,19 +147,8 @@ angular.module('starter.controllers', [])
   }
 }])
 
-.controller('RegisterCtrl', ['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout) {
-
-  function showAlert(name,msg) {
-   var alertPopup = $ionicPopup.alert({
-     title: name,
-     template: msg
-   });
-   alertPopup.then(function(res) {
-   });
-   $timeout(function() {
-     alertPopup.close();
-   }, 3000);
-  };
+//RegisterCtrl ready
+.controller('RegisterCtrl', ['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout','AlertingSystem',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout,AlertingSystem) {
 
   function processRegisterRequest(username,email,password){
     $ionicLoading.show(); 
@@ -153,11 +161,11 @@ angular.module('starter.controllers', [])
         $ionicHistory.clearHistory(); 
         $state.go('tab.feed'); 
       }else{ 
-        showAlert("Register Error","Register unsuccessful")
+        AlertingSystem.showAlert("Register Error","Register unsuccessful")
       }
     },function(error){
       $ionicLoading.hide();
-      showAlert("Fatal Server Error","Server error, try again later.")
+      AlertingSystem.showAlert("Fatal Server Error","Server error, try again later.")
     });
   }
 
@@ -167,87 +175,19 @@ angular.module('starter.controllers', [])
         if(password1!=undefined && password2!=undefined && password1==password2 && password1.length>=6){
           processRegisterRequest(username,email,password1)
         }else{
-          showAlert("Check passwords","Please check your passwords")
+          AlertingSystem.showAlert("Check passwords","Please check your passwords")
         }
       }else{
-        showAlert("Check email","Please check your email.")
+        AlertingSystem.showAlert("Check email","Please check your email.")
       }
     }else{
-      showAlert("Check username","Please check your username.")
+      AlertingSystem.showAlert("Check username","Please check your username.")
     }
   };
 }])
 
-.controller('SigninCtrl',['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout','FriendManagement',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout,FriendManagement) {
 
-  function showAlert(name,msg) {
-   var alertPopup = $ionicPopup.alert({
-     title: name,
-     template: msg
-   });
-   alertPopup.then(function(res) {
-   });
-   $timeout(function() {
-     alertPopup.close();
-   }, 3000);
-  };
-
-  function getUsersWardrobeClothing(){
-    $ionicLoading.show(); 
-    var currentUser = UserManagement.getCurrentUser(); 
-    var updatePromise = WardrobeManagement.updateWardrobeClothing(currentUser); 
-    updatePromise.then(
-      function(result){
-        $ionicLoading.hide(); 
-        if(result.status==0){
-          WardrobeManagement.setWardrobeClothing(result.data.wardrobe_products);
-          getUsersWardrobeOutfits();
-        }else{
-          showAlert("Wardrobe Error","Couldn't get your clothing")
-        }
-      },function(error){
-        $ionicLoading.hide();
-        showAlert("Fatal Server Error","Server error, try again later.")
-      });
-  }
-
-  function getUsersWardrobeOutfits(){
-    $ionicLoading.show(); 
-    var currentUser = UserManagement.getCurrentUser(); 
-    var updatePromise = WardrobeManagement.updateWardrobeOutfits(currentUser); 
-    updatePromise.then(
-      function(result){
-        $ionicLoading.hide(); 
-        if(result.status==0){
-          WardrobeManagement.setWardrobeOutfits(result.data.wardrobe_outfits);
-          getUsersFriends();
-        }else{
-          showAlert("Wardrobe Error","Couldn't get your outfits")
-        }
-      },function(error){
-        $ionicLoading.hide();
-        showAlert("Fatal Server Error","Server error, try again later.")
-      });
-  }
-
-  function getUsersFriends(){
-    $ionicLoading.show(); 
-    var currentUser = UserManagement.getCurrentUser(); 
-    var getPromise = FriendManagement.getFollowingUsers(currentUser); 
-    getPromise.then(
-      function(result){
-        $ionicLoading.hide(); 
-        if(result.status==0){
-          FriendManagement.setFollowingUsers(result.data);
-          $state.go('tab.feed');
-        }else{
-          showAlert("Friendship Error","Couldn't get your followers")
-        }
-      },function(error){
-        $ionicLoading.hide();
-        showAlert("Fatal Server -Friendship- Error","Server error, try again later.")
-      }); 
-  }
+.controller('SigninCtrl',['$scope','$state','UserManagement','$ionicLoading','$ionicHistory','WardrobeManagement','$ionicPopup','$timeout','FriendManagement','AlertingSystem',function($scope, $state, UserManagement,$ionicLoading,$ionicHistory,WardrobeManagement,$ionicPopup,$timeout,FriendManagement,AlertingSystem) {
 
   function processLoginRequest(email, password){
     $ionicLoading.show(); 
@@ -258,7 +198,7 @@ angular.module('starter.controllers', [])
        UserManagement.setCurrentUser(result.data);
        $ionicHistory.clearCache();
        $ionicHistory.clearHistory();
-       getUsersWardrobeClothing();
+       $state.go('tab.feed');
      }else{
        showAlert("Login Error","Login unsuccessful.")
      }
@@ -596,10 +536,29 @@ $scope.getPeople = function(){
     }
  }])
 
-.controller('FriendsCtrl', ['$scope','$state','FriendManagement',function($scope,$state,FriendManagement) {
+.controller('FriendsCtrl', ['$scope','$state','FriendManagement','$ionicLoading','UserManagement',function($scope,$state,FriendManagement,$ionicLoading,UserManagement) {
   
-  $scope.friends = FriendManagement.getFollowing();
-
+  function getUsersFriends(){
+    $ionicLoading.show(); 
+    var currentUser = UserManagement.getCurrentUser(); 
+    var getPromise = FriendManagement.getFollowingUsers(currentUser); 
+    getPromise.then(
+      function(result){
+        $ionicLoading.hide(); 
+        if(result.status==0){
+          FriendManagement.setFollowingUsers(result.data);
+          $scope.friends = FriendManagement.getFollowing();
+        }else{
+          showAlert("Friendship Error","Couldn't get your followers")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        showAlert("Fatal Server -Friendship- Error","Server error, try again later.")
+      }); 
+  }
+   
+  getUsersFriends();
+  
   $scope.redirectUserSearch = function(){
     $state.go('tab.friends-search');
   }
@@ -1132,6 +1091,11 @@ $scope.getPeople = function(){
     $scope.updateFeed = function(){
       processFeedUpdate();
     }
+
+    $scope.loadMoreFeed = function(){
+
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    }
 }])
 
 .controller('FeedOutfitCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
@@ -1149,22 +1113,39 @@ $scope.getPeople = function(){
     };
 
   var outfitId = $stateParams.outfit_id
-  var currentUser = UserManagement.getCurrentUser();    
-  var outfitPromise = OutfitManagement.getOutfitById(outfitId,currentUser)
 
-  $ionicLoading.show();
-  outfitPromise.then(function(result){
-    $ionicLoading.hide();
-    if(result.status==0){
-      $scope.item = result.data.outfit
-      $scope.products = result.data.outfit_products
-    }else{
-      showAlert("Outfit Error","Outfit unsuccessful")   
+  getOutfitById(outfitId);
+  
+  function getOutfitById(id){
+    var currentUser = UserManagement.getCurrentUser();    
+    var outfitPromise = OutfitManagement.getOutfitById(outfitId,currentUser)
+    $ionicLoading.show();
+    outfitPromise.then(function(result){
+      $ionicLoading.hide();
+      if(result.status==0){
+        $scope.item = result.data.outfit
+        $scope.item.tags_line = getTags($scope.item.tags)
+        $scope.products = result.data.outfit_products
+      }else{
+        showAlert("Outfit Error","Outfit unsuccessful")   
+      }
+    },function(error){
+      $ionicLoading.hide();
+      showAlert("Fatal Server Error","Server error, try again later.")    
+    })
+  }
+
+  function getTags(tags){
+    var string = "";
+    if(tags.length>0){
+      string += tags[0].tag
     }
-  },function(error){
-    $ionicLoading.hide();
-    showAlert("Fatal Server Error","Server error, try again later.")    
-  })
+    for(i = 1; i < tags.length;i++){
+      string += " "
+      string += tags[i].tag
+    }
+    return string;
+  }
 
   $scope.like = function(rating,outfit){
       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
@@ -1183,7 +1164,12 @@ $scope.getPeople = function(){
         showAlert("Fatal Server -Rating- Error","Server error, try again later.")
       })
     }
-}])
+
+    $scope.updateOutfitInfo = function(){
+      getOutfitById(outfitId);
+      $scope.$broadcast('scroll.refreshComplete');
+    }
+}]) 
 
 .controller('FeedClothingCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$stateParams','$ionicLoading','$ionicPopup','$timeout', 'WardrobeManagement','FriendManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$stateParams,$ionicLoading,$ionicPopup,$timeout,WardrobeManagement,FriendManagement){
     
@@ -1531,10 +1517,30 @@ $scope.getPeople = function(){
 }])
 
 
-.controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement){
+.controller('AccountCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$ionicLoading','WardrobeManagement',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$ionicLoading,WardrobeManagement){
   
   var currentUser = UserManagement.getCurrentUser();
   $scope.user = currentUser;
+
+  function getUsersWardrobeClothing(){
+    $ionicLoading.show(); 
+    var currentUser = UserManagement.getCurrentUser(); 
+    var updatePromise = WardrobeManagement.updateWardrobeClothing(currentUser); 
+    updatePromise.then(
+      function(result){
+        $ionicLoading.hide(); 
+        if(result.status==0){
+          WardrobeManagement.setWardrobeClothing(result.data.wardrobe_products);       
+        }else{
+          AlertingSystem.showAlert("Wardrobe Error","Couldn't get your clothing")
+        }
+      },function(error){
+        $ionicLoading.hide();
+        AlertingSystem.showAlert("Fatal Server Error","Server error, try again later.")
+      });
+  }
+
+  getUsersWardrobeClothing();
 
   $scope.logout = function(){
     UserManagement.signout();
@@ -1547,7 +1553,6 @@ $scope.getPeople = function(){
   $scope.redirectToMyOutfits = function(){
     $state.go('tab.account-wardrobe');  
   }
-
 
   $scope.redirectToMyClothing = function(){
     $state.go('tab.account-clothing');  
