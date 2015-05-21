@@ -17,12 +17,12 @@
             <strong>Tags</strong><br/>
             {{item.tags_line}}
           </div>
-        <div class="item item-body">
-          <a href="#" ng-click="like(1,item)" class="subdued">{{item.likes}} <i class="icon ion-thumbsup"></i></a>
-          <a href="#" ng-click="like(0,item)" class="subdued">{{item.dislikes}} <i class="icon ion-thumbsdown"></i></a>
-          <a href="#/tab/search/outfits/comments/{{indexOutfit(item)}}" class="subdued">{{item.num_comments}} <i class="icon ion-chatbox-working"></i></a>
-        </div>
       </div> 
+      <div class="button-bar">
+          <a class="button outfit_actions" ng-click="like(1,item)">{{item.likes}} Likes</a>
+          <a class="button outfit_actions" ng-click="like(0,item)">{{item.dislikes}} Dislikes</a>
+          <a class="button outfit_actions" href="#/tab/search/outfits/comments/{{indexOutfit(item)}}">{{item.num_comments}} Comments</a>
+        </div>
       <div class="item item-divider">
         Clothing
       </div>

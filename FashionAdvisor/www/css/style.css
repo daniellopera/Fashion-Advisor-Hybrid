@@ -102,7 +102,7 @@ label.texta > textarea{
 }
 
 .white-background{
-	background-color: rgba(255,255,255,0.75);;
+	background-color: rgba(255,255,255,0.75);
 }
 
 .full-white-background{
@@ -207,4 +207,26 @@ p.info {
 	width: 60%;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); 
 	font-weight: bold;
+}
+
+.button-bar > .button.outfit_actions{
+	background-color: rgba(248, 248, 248, 1);
+border-color: rgba(85, 71, 54, 0.3);
+color:rgba(55, 46, 35, 0.8);
+width: 60%;
+box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3); 
+border-right-width: 0px; 
+   border-radius: 0px 0px 0px 0px;
+   border-left-width: 0px;
+}
+
+.button-bar > .button.outfit_actions.activated{
+	background-color: rgba(248, 248, 248, 1);
+border-color: rgba(85, 71, 54, 0.3);
+color:rgba(55, 46, 35, 0.8);
+width: 60%;
+box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3); 
+border-right-width: 0px; 
+   border-radius: 0px 0px 0px 0px;
+   border-left-width: 0px;
 }
