@@ -5,22 +5,18 @@
       on-refresh="updateOutfitInfo()">
       <br/>
       </ion-refresher>
-        <div class="list card">
+        <div class="list">
           <div href="#" class="item">
-            <strong class="shaded">Name</strong><br/>
-            {{item.name}}
+            <strong class="outfitname">{{item.name}}</strong>
+            <br/>
+            {{item.description}}
           </div>
-          <div class="item">
-            <strong class="shaded">Description</strong><br/>
-            {{item.description}}  
-          </div>
-          <div class="item">
-            <strong class="shaded">Creator</strong><br/>
-            {{item.username}}  
-          </div>
-          <div class="item">
-            <strong class="shaded">Tags</strong><br/>
+          <div href="#" class="item">
+            <strong class="shaded">Tags   </strong>
             {{item.tags_line}}
+            <br/>
+            <strong class="shaded">Creator</strong>
+            {{item.username}}
           </div>
         </div> 
         <div class="button-bar">

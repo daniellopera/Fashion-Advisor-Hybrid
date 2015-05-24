@@ -232,5 +232,9 @@ border-right-width: 0px;
 }
 
 .shaded{
-	
+	color: rgba(66, 51, 41, 0.34);
+}
+
+.outfitname{
+	color: rgba(33, 50, 47, 0.85);
 }

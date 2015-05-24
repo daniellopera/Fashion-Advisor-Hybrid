@@ -1,23 +1,19 @@
 <ion-view view-title="Outfit details">
   <ion-content>
-      <div class="list card">
-        <div href="#" class="item">
-          <strong class="shaded">Name</strong><br/>
-          {{item.name}}
-        </div>
-        <div class="item">
-          <strong class="shaded">Description</strong><br/>
-          {{item.description}}  
-        </div>
-        <div class="item">
-            <strong class="shaded">Creator</strong><br/>
-            {{item.username}}  
+      <div class="list">
+          <div href="#" class="item">
+            <strong class="outfitname">{{item.name}}</strong>
+            <br/>
+            {{item.description}}
           </div>
-          <div class="item">
-            <strong class="shaded">Tags</strong><br/>
+          <div href="#" class="item">
+            <strong class="shaded">Tags   </strong>
             {{item.tags_line}}
+            <br/>
+            <strong class="shaded">Creator</strong>
+            {{item.username}}
           </div>
-      </div> 
+        </div>  
       <div class="button-bar">
           <a class="button outfit_actions" ng-click="like(1,item)">{{item.likes}} Likes</a>
           <a class="button outfit_actions" ng-click="like(0,item)">{{item.dislikes}} Dislikes</a>
