@@ -240,9 +240,9 @@ border-right-width: 0px;
 }
 
 .selected_style{
-	opacity: 1.0
+	opacity: 1.0;
 }
 
 .image_to_select > img:not(.selected_style){
-	opacity: 0.5
+	opacity: 0.4
 }
