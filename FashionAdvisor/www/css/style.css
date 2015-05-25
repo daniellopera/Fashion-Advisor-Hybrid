@@ -238,3 +238,11 @@ border-right-width: 0px;
 .outfitname{
 	color: rgba(33, 50, 47, 0.85);
 }
+
+.selected_style{
+	opacity: 1.0
+}
+
+.image_to_select > img:not(.selected_style){
+	opacity: 0.5
+}

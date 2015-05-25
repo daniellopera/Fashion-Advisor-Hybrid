@@ -1,21 +1,17 @@
 <ion-view view-title="{{friend.username}}">
   <ion-content>
-      <div class="list card">
+      <div class="list">
         <div href="#" class="item">
-          <strong>Username</strong><br/>
-          {{friend.username}}
-        </div>
-        <div href="#" class="item">
-          <strong>Email</strong><br/>
-          {{friend.email}}
-        </div>
-        <div href="#" class="item">
-          <strong>Followers</strong><br/>
-          {{friend.followers_number}}
-        </div>
-        <div href="#" class="item">
-          <strong>Following</strong><br/>
-          {{friend.following_number}}
+            <strong class="outfitname">{{friend.username}}</strong>
+            <br/>
+            {{friend.email}}
+          </div>
+          <div href="#" class="item">
+            <strong class="shaded">Followers </strong>
+            {{friend.followers_number}}
+            <br/>
+            <strong class="shaded">Following </strong>
+            {{friend.following_number}}
         </div>
       </div>
       <button ng-style="followUserStyle" class="button button-full button-clear button-assertive" ng-click="follow(friend)">
@@ -27,7 +23,7 @@
       <ion-list>
       <ion-item class="item-remove-animate item-icon-right searchitem" ng-repeat="item in items" type="item-text-wrap" href="#/tab/search/detail/outfits/{{item.id}}">
         <div class="item item-avatar item-icon-right">
-          <img ng-src="https://d30y9cdsu7xlg0.cloudfront.net/png/18128-200.png">
+          <img ng-src="http://www.prettydesigns.com/wp-content/uploads/2014/01/Cute-Spring-Outfit-Floral-print-mini-strapless-dress-and-pink-wedges.jpg">
           <h2 class="">{{item.name}}</h2>
           <p>{{item.description}}</p>
           <i class="icon ion-ios-arrow-right"></i>

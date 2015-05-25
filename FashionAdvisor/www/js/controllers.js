@@ -70,7 +70,7 @@ angular.module('starter.controllers', [])
       var length = OutfitManagement.getClothingLength();
       if(length<6){
         OutfitManagement.addClothingToNewOutfit(item);
-        item.selected = "close-round";
+        item.style = "selected_style";
       }else{
         showAlert("Selection error","Can't select more than 6 products")
       }
@@ -106,6 +106,7 @@ angular.module('starter.controllers', [])
         if(result.status==0){
           WardrobeManagement.addOutfitToWardrobe(result.data.outfitid,name,0,0,0,description,OutfitManagement.getClothingOfOutfit());
           OutfitManagement.setClothing([]);
+          UserManagement.getCurrentUser().outfits = currentUser.outfits+1;
           $ionicHistory.nextViewOptions({
             disableAnimate: true,
           });
@@ -357,6 +358,7 @@ $scope.getPeople = function(){
               item.in_wardrobe = true;
               $scope.producticon(item); //Setear estilo de prenda en guardaropa
               WardrobeManagement.addProductToClothing(item);
+              UserManagement.getCurrentUser().clothing = currentUser.clothing+1;
             }else{ //Adición de producto sin éxito
               AlertingSystem.showAlert("Adding Error","Clothing adding unsuccessful")
             }
@@ -558,6 +560,7 @@ $scope.getPeople = function(){
           friend.is_following = true 
           usericon(friend)
           FriendManagement.addFriend(friend);
+          UserManagement.getCurrentUser().following = currentUser.following+1;
         }else{
           AlertingSystem.showAlert("Follow Error","User following unsuccessful")
         }
@@ -806,6 +809,9 @@ $scope.getPeople = function(){
 
 .controller('SearchSelectClothingCtrl', ['$scope','$state', 'UserManagement','OutfitManagement','SearchManagement','$ionicPopup','$timeout','$stateParams','$ionicLoading','$ionicHistory','WardrobeManagement','AlertingSystem',function($scope, $state, UserManagement,OutfitManagement,SearchManagement,$ionicPopup,$timeout,$stateParams,$ionicLoading,$ionicHistory,WardrobeManagement,AlertingSystem){
 
+   var currentUser = UserManagement.getCurrentUser(); 
+    
+
    function getUsersWardrobeClothing(){
     $ionicLoading.show(); 
     var currentUser = UserManagement.getCurrentUser(); 
@@ -827,8 +833,8 @@ $scope.getPeople = function(){
 
   var clothing = WardrobeManagement.getWardrobeClothing();
 
-  if(clothing.length==0){
-      getUsersWardrobeClothing();
+  if(clothing.length!=currentUser.clothing){
+    getUsersWardrobeClothing();
   }else{
     $scope.products = clothing;
   }
@@ -839,13 +845,13 @@ $scope.getPeople = function(){
       var length = OutfitManagement.getClothingLength();
       if(length<3){
         OutfitManagement.addClothingToNewOutfit(item);
-        item.selected = "close-round";
+        item.style = "selected_style";
       }else{
         AlertingSystem.showAlert("Selection error","Can't select more than 3 products")
       }
     }else{
       OutfitManagement.removeClothingFromNewOutfitAtIndex(index);
-      item.selected = "";
+      item.style = "";
     }
   }
 }])
@@ -1324,7 +1330,7 @@ $scope.getPeople = function(){
 
   var clothing = WardrobeManagement.getWardrobeClothing();
 
-  if(clothing.length==0){
+  if(clothing.length!=currentUser.clothing){
       getUsersWardrobeClothing();
   }
 

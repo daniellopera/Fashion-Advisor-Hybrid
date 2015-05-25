@@ -1,21 +1,17 @@
 <ion-view view-title="{{friend.username}}">
   <ion-content>
-    <div class="list card">
+    <div class="list">
         <div href="#" class="item">
-          <strong>Username</strong><br/>
-          {{friend.username}}
-        </div>
-        <div href="#" class="item">
-          <strong>Email</strong><br/>
-          {{friend.email}}
-        </div>
-        <div href="#" class="item">
-          <strong>Followers</strong><br/>
-          {{friend.followers_number}}
-        </div>
-        <div href="#" class="item">
-          <strong>Following</strong><br/>
-          {{friend.following_number}}
+            <strong class="outfitname">{{friend.username}}</strong>
+            <br/>
+            {{friend.email}}
+          </div>
+          <div href="#" class="item">
+            <strong class="shaded">Followers </strong>
+            {{friend.followers_number}}
+            <br/>
+            <strong class="shaded">Following </strong>
+            {{friend.following_number}}
         </div>
       </div>
       <div class="item item-divider">

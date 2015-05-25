@@ -2,27 +2,22 @@
   <ion-content class="">
   <div ng-repeat="product in products" class="full-white-background">
         <div class="row" ng-if="$index%3==0">
-          <div class="col col-33" ng-click="select(products[$index])"
-          ng-style="selectedProductStyle">
-            <i class="icon ion-{{products[$index].selected}}"></i>
-            <center>
-              <img 
-              ng-src="{{products[$index].image.sizes.Medium.url}}">
+          <div class="col col-33" ng-click="select(products[$index])">
+            <center class="image_to_select">
+              <img class="{{products[$index].style}}" 
+              ng-src="{{products[$index].image.sizes.Medium.url}}"
+              >
             </center>
           </div>
-          <div class="col col-33" ng-click="select(products[$index+1])"
-          ng-style="selectedProductStyle">
-            <i class="icon ion-{{products[$index+1].selected}}"></i>
-            <center>
-            <img 
+          <div class="col col-33" ng-click="select(products[$index+1])">
+            <center class="image_to_select">
+            <img class="{{products[$index+1].style}}"
             ng-src="{{products[$index+1].image.sizes.Medium.url}}">
             </center>
           </div>   
-          <div class="col col-33" ng-click="select(products[$index+2])"
-          ng-style="selectedProductStyle">
-            <i class="icon ion-{{products[$index+2].selected}}"></i>
-            <center>
-            <img 
+          <div class="col col-33" ng-click="select(products[$index+2])">
+            <center class="image_to_select">
+            <img class="{{products[$index+2].style}}" 
             ng-src="{{products[$index+2].image.sizes.Medium.url}}">
             </center>
           </div> 
