@@ -76,7 +76,7 @@ angular.module('starter.controllers', [])
       }
     }else{
       OutfitManagement.removeClothingFromNewOutfitAtIndex(index);
-      item.selected = "";
+      item.style = "";
     }
   }
 
