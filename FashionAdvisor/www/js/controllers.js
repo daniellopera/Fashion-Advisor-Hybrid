@@ -131,7 +131,7 @@ angular.module('starter.controllers', [])
     var array = OutfitManagement.getClothingOfOutfit();
     var item = array[position]
     if(item==null){
-      return "https://s-media-cache-ak0.pinimg.com/236x/02/08/fa/0208fa1220e7c078aee55ba410618bb1.jpg"
+      return "http://www.astroscu.unam.mx/cursos/esaobela/Iconos/1305530398_6.png"
     }else{
       return item.image.sizes.Large.url;
     }
@@ -452,6 +452,7 @@ $scope.getPeople = function(){
 .controller('OutfitDetailsCtrl', ['$scope','WardrobeManagement','$stateParams','OutfitManagement','$ionicLoading','$ionicPopup','$timeout','UserManagement','AlertingSystem',function($scope,WardrobeManagement,$stateParams,OutfitManagement,$ionicLoading,$ionicPopup,$timeout,UserManagement,AlertingSystem) {
     var item  = WardrobeManagement.getOutfitAtIndex($stateParams.itemId); //Obtención de item específico
     $scope.item = item;
+    $scope.item.tags_line = getTags($scope.item.tags)
     var products = []
     var clothing = WardrobeManagement.getWardrobeClothing();
     for(i = 0; i < item.products.length; i++){
@@ -462,6 +463,18 @@ $scope.getPeople = function(){
       }
     }
     $scope.products = products
+
+    function getTags(tags){
+      var string = "";
+      if(tags.length>0){
+        string += tags[0].tag
+      }
+      for(i = 1; i < tags.length;i++){
+        string += " "
+        string += tags[i].tag
+      }
+      return string;
+    }
 
     $scope.indexProduct = function(item){ //Obtención de índice de un producto de la vista
      var index = WardrobeManagement.indexOfClothing(item);
@@ -775,6 +788,7 @@ $scope.getPeople = function(){
   }
 
   $scope.recommend = function(tag){
+    tag = "#"+ tag;
     var currentUser = UserManagement.getCurrentUser();
     var recommendPromise = OutfitManagement.recommendOutfits(tag,currentUser);
     $ionicLoading.show();
@@ -799,7 +813,7 @@ $scope.getPeople = function(){
     var array = OutfitManagement.getClothingOfOutfit();
     var item = array[position]
     if(item==null){
-      return "https://s-media-cache-ak0.pinimg.com/236x/02/08/fa/0208fa1220e7c078aee55ba410618bb1.jpg"
+      return "http://www.astroscu.unam.mx/cursos/esaobela/Iconos/1305530398_6.png"
     }else{
       return item.image.sizes.Large.url;
     }
@@ -867,6 +881,7 @@ $scope.getPeople = function(){
     $ionicLoading.hide();
     if(result.status==0){
       $scope.item = result.data.outfit
+      $scope.item.tags_line = getTags($scope.item.tags)
       $scope.products = result.data.outfit_products
       SearchManagement.addOutfit(result.data.outfit)
     }else{
@@ -876,6 +891,18 @@ $scope.getPeople = function(){
     $ionicLoading.hide();
     AlertingSystem.showAlert("Fatal Server Error","Server error, try again later.")    
   })
+
+  function getTags(tags){
+    var string = "";
+    if(tags.length>0){
+      string += tags[0].tag
+    }
+    for(i = 1; i < tags.length;i++){
+      string += " "
+      string += tags[i].tag
+    }
+    return string;
+  }
 
   $scope.like = function(rating,outfit){
       var currentUser = UserManagement.getCurrentUser(); //Obtención de usuario actual
